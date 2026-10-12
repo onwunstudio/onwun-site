@@ -1,0 +1,5 @@
+# Files used to build and preview the site, not part of the published website
+.claude
+_templates
+build_projects.py
+README.md

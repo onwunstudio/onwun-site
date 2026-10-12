@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>rise · Onwun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Project page template. Generated from _templates/project.html by build_projects.py:
+       edit the template or the project content there, then run `python3 build_projects.py`.
+       Nav, closing statement and footer are copied from the home page (index.html); keep them in step. */
+    :root {
+      --nav-h: 41px;
+      --black: #000;
+      --white: #fff;
+      --purple: #6a60f6;
+      --purple-deep: #5d54d7;
+      --purple-cta: #5b3fe4;
+      --muted: #626675;
+      --grey-text: #c9cad0; /* questions at rest and answers: softer than white */
+      --line: #1f1f1f;
+      --line-step: #2e2e2e;
+      --placeholder-bg: #0a0a0a;
+
+      --sora: "Sora", sans-serif;
+      --inter: "Inter", sans-serif;
+      --dm: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--black);
+      scroll-padding-top: var(--nav-h); /* in-page links land below the sticky nav */
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sora);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .dm {
+      font-family: var(--dm);
+      font-weight: 500;
+      font-variation-settings: "opsz" 14;
+    }
+
+    /* ───────── Nav Bar (5:3) ───────── */
+    /* Stays at the top while scrolling; above the pinned sections below it */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--nav-h);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+    }
+
+    /* Shrinks once you scroll past the top of the hero, scaling from its left edge so it stays
+       the same distance from the screen edge; grows back when you return to the hero */
+    .nav__logo {
+      display: block;
+      width: 141px;
+      height: 30px;
+      transform-origin: left center;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav.is-compact .nav__logo { transform: scale(0.72); }
+
+    .nav__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      font-family: var(--sora);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
+    .nav__links a[aria-current="page"],
+    .nav__links a:hover { opacity: 1; }
+
+    .nav__cta {
+      font-family: var(--inter);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      color: var(--purple-cta);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .nav__cta:hover { color: var(--purple); }
+
+
+    /* ───────── Layers ─────────
+       The poster stays put while the overview slides up over it (the home page's splash cut);
+       the footer waits underneath and is uncovered at the end, as on the home page. */
+    .poster { z-index: 1; }
+
+    .overview,
+    .more,
+    .closing {
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+    }
+
+    .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 0;
+      background: var(--black);
+    }
+
+    .overview { border-top: 1px solid var(--line-step); }
+    .closing { border-bottom: 1px solid var(--line-step); }
+
+    /* ───────── Poster ─────────
+       A landscape poster in the same frame as the home splash screen (1326 × 728 inside a 20px margin).
+       Holds once its bottom reaches the bottom of the screen, so the overview cuts up across it. */
+    .poster {
+      position: sticky;
+      top: min(var(--nav-h), calc(100vh - 40px - (100vw - 40px) * 728 / 1326));
+      padding: 20px;
+      background: var(--black);
+    }
+
+    .poster__frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1326 / 728;
+      overflow: hidden;
+      background: var(--poster-bg, var(--placeholder-bg));
+    }
+
+    /* Projects with a photo poster: the image fills the frame */
+    .poster__image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* The Denglish logo, one letter per span cut from the logo image (1157 × 259); --x and --w are each
+       letter's left edge and width. On load the "d" pops in at the centre, slides left into place, then
+       the rest of the word springs up letter by letter, as on the home page card, but once. */
+    .denglish-mark {
+      --spring: cubic-bezier(0.22, 1.4, 0.36, 1);
+      position: relative;
+      width: 46%;
+      aspect-ratio: 1157 / 259;
+    }
+
+    .denglish-mark span {
+      position: absolute;
+      top: 0;
+      left: calc(var(--x) / 1157 * 100%);
+      width: calc(var(--w) / 1157 * 100%);
+      height: 100%;
+      background: url("assets/denglish-logo.png") no-repeat;
+      background-size: calc(1157 / var(--w) * 100%) 100%;
+      background-position: calc(var(--x) / (1157 - var(--w)) * 100%) 0;
+      animation: poster-letter 2.6s 0.3s both;
+      animation-delay: calc(0.3s + var(--i) * 0.07s);
+    }
+
+    .denglish-mark span:first-child {
+      animation-name: poster-d;
+      animation-delay: 0.3s;
+    }
+
+    /* The "d" starts centred: 309% of its own width to the right of where it ends */
+    @keyframes poster-d {
+      0%   { opacity: 0; transform: translateX(309%) scale(0.6); animation-timing-function: var(--spring); }
+      22%  { opacity: 1; transform: translateX(309%) scale(1); }
+      45%  { opacity: 1; transform: translateX(309%) scale(1); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+      80%, 100% { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    @keyframes poster-letter {
+      0%, 76% { opacity: 0; transform: translateY(45%) scale(0.85); animation-timing-function: var(--spring); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ───────── Overview ─────────
+       Project info in the left column, in line with the poster's edge: label, title, description, key details */
+    .overview {
+      padding: 138px 20px;
+    }
+
+    .overview__label {
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* Same type as the project titles on the home page */
+    .overview__title {
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    /* Same type as the project descriptions on the home page */
+    .overview__intro {
+      max-width: 626px;
+      margin-top: 16px;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* Key details: compact rows, no rules */
+    .overview__facts {
+      margin-top: 32px;
+    }
+
+    .overview__fact {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 6px 0;
+    }
+
+    .overview__fact dt {
+      flex: 0 0 120px;
+      font-size: 11px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .overview__fact dd {
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--grey-text);
+    }
+
+    .overview__fact .sep { color: var(--purple); }
+
+    /* ───────── Case study grid ─────────
+       Two columns like the home page project cards (660 | 40 | 626 at 1366px wide, scaling below that).
+       Every row is 138px from the next; the three squares span both columns with 20px gutters. */
+    .case {
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      row-gap: 138px; /* the same rhythm as the space either side of each home page section boundary */
+      align-items: start;
+    }
+
+    /* Section labels, in the same style as "PROJECT:" and the home page labels */
+    .case__label {
+      grid-column: 1;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+      padding-top: 7px; /* lines the label up with the first line of the text beside it */
+    }
+
+    /* Same type as the section intro paragraphs */
+    .case__text {
+      grid-column: 2;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .case__squares {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    /* Image placeholders, in the same style as the home page ones */
+    .filler {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--placeholder-bg);
+      border: 1px solid var(--line);
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* Full width, in the same proportions as the poster */
+    .filler--landscape {
+      grid-column: 1 / -1;
+      aspect-ratio: 1326 / 728;
+    }
+    .filler--square { aspect-ratio: 1; }
+
+    /* Real project images take the place of the fillers, in the same sizes */
+    .media {
+      overflow: hidden;
+      background: var(--placeholder-bg);
+    }
+
+    .media--landscape {
+      grid-column: 1 / -1;
+      aspect-ratio: 1326 / 728;
+    }
+
+    .media--square { aspect-ratio: 1; }
+
+    .media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* A pair of images side by side across the full width, at the same height: each takes a share of the
+       width in proportion to its shape (--ratio = width / height) */
+    .media-pair {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 20px;
+    }
+
+    .media--pair-item {
+      flex: var(--ratio) 1 0;
+      min-width: 0;
+      aspect-ratio: var(--ratio);
+    }
+
+    /* Images shown whole (nothing cropped), centred on a background matching their own */
+    .media--whole { background: var(--media-bg); }
+    .media--whole img { object-fit: contain; }
+
+    /* Each block rises in the first time it comes into view (staggered by --i within a row) */
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i, 0) * 0.1s);
+    }
+
+    .js .reveal.is-in { opacity: 1; transform: none; }
+
+    /* ───────── More projects ─────────
+       The home page project images in a strip that slides left as you scroll down the page.
+       Same label style and 138px rhythm as the rest of the page. */
+    .more {
+      padding: 0 0 138px;
+    }
+
+    .more.is-pinned .more__pin {
+      position: sticky;
+      top: var(--pin-top, var(--nav-h));
+    }
+
+    .more__viewport { overflow: hidden; }
+
+    /* Phones and reduced motion: a normal sideways-swipeable row that snaps to each project */
+    .more.is-native .more__viewport {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .more.is-native .more__viewport::-webkit-scrollbar { display: none; }
+    .more.is-native .more__track { transform: none; }
+    .more.is-native .more__card { scroll-snap-align: start; scroll-margin-left: 20px; }
+
+    .more__label {
+      padding: 0 20px 40px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .more__track {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      padding: 0 20px;
+      transform: translate3d(calc(var(--shift, 0) * -1px), 0, 0);
+      will-change: transform;
+    }
+
+    .more__card { display: block; width: 660px; }
+
+    /* Same size and border as the home page project images */
+    .more__image {
+      aspect-ratio: 660 / 420;
+      overflow: hidden;
+      background: var(--placeholder-bg);
+      border: 1px solid var(--line);
+    }
+
+    .more__image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Denglish: the logo on its burgundy, as on the home page card */
+    .more__image--denglish {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #440624;
+    }
+
+    .more__image--denglish img {
+      width: 60%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .more__title {
+      margin-top: 16px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .more__meta {
+      margin-top: 4px;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: normal;
+      color: var(--muted);
+    }
+
+    /* "View project" label that follows the mouse over project images (mouse and trackpad only),
+       as on the home page. The outer element tracks the mouse; the box inside scales in and out. */
+    .view-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 20;
+      pointer-events: none;
+      transform: translate(var(--cx, 0), var(--cy, 0));
+    }
+
+    .view-cursor span {
+      display: block;
+      padding: 10px 16px;
+      background: var(--black);
+      color: var(--purple);
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.6);
+      transition: opacity 0.2s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .view-cursor.is-visible span {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .more__image { cursor: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .denglish-mark span { animation: none; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ───────── Footer Screen (5:299) ───────── */
+    .footer {
+      padding: 136px 20px 20px; /* the Instagram text starts 138px under the dividing line (its line box adds 2px); the legal links sit 20px from the bottom, matching the sides */
+      display: flex;
+    }
+
+    /* Contact links, the wordmark and tagline, then the legal links */
+    .footer__frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ───────── Closing statement ─────────
+       The last part of the page before the footer: same type as the hero and section intro paragraphs,
+       138px from the top like they do. Its bottom edge, with a thin rule, slides over the footer. */
+    .closing {
+      padding: 138px 20px;
+    }
+
+    .closing__cta {
+      max-width: 480px; /* "We look forward to working with you. / Start a project or book a call and we can / get started straight away." */
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Purple links whose underline draws in from the left on hover (works across line breaks too) */
+    .closing__cta a {
+      color: var(--purple);
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .closing__cta a:hover,
+    .closing__cta a:focus-visible { background-size: 100% 1px; }
+
+    .footer__brand {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    /* The wordmark image has transparent margins (20px left, 36px below the baseline, of 3306 × 706);
+       pull them back so the letters sit exactly 20px from the page edge and on the bottom line */
+    .footer__brand-main {
+      flex: 0 0 47%;
+      min-width: 0;
+    }
+
+    .footer__logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-left: calc(-20 / 3306 * 100%);
+      margin-bottom: calc(-36 / 3306 * 100%); /* % margins are measured against the width, so this is 36/706 of the logo's height */
+    }
+
+    /* Socials pressed to the left, then email and phone; they sit 40px above the tops of the letters
+       (the logo image has 20/706 of transparent space above them, hence the subtraction) */
+    .footer__links {
+      display: flex;
+      gap: 96px;
+      margin-bottom: calc(40px - 20 / 3306 * 100%);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer__social { list-style: none; }
+
+    .footer__link {
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible { color: var(--purple); }
+
+    /* Small links under the wordmark (left) and the tagline (right), in Sora Light capitals */
+    .footer__legal {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px; /* 20px below the wordmark and tagline */
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .footer__legal a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__legal a:hover,
+    .footer__legal a:focus-visible { color: var(--white); }
+
+    /* Same type as the project titles (StuartFox, Denglish…) */
+    .footer__tagline {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--purple);
+      margin-bottom: -0.19em; /* drops the last line onto the same baseline as the wordmark */
+    }
+
+
+    @media (max-width: 899px) {
+      .nav__links { display: none; }
+
+      .overview { padding: 56px 20px 64px; }
+      .case { grid-template-columns: minmax(0, 1fr); row-gap: 56px; }
+      .case__label, .case__text { grid-column: 1; }
+      .case__label { padding-top: 0; margin-bottom: -40px; }
+      .case__text { font-size: 20px; }
+      .case__squares { grid-template-columns: minmax(0, 1fr); }
+      .media-pair { flex-direction: column; }
+      .media--pair-item { flex: none; width: 100%; }
+      .more { padding-bottom: 64px; }
+      .more__card { width: 80vw; }
+      .more__track { padding-right: 20px; }
+      .overview__fact dt { flex-basis: 96px; }
+
+      .footer { padding-top: 56px; }
+      .closing { padding: 56px 20px 64px; }
+      .footer__brand { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px; }
+      .footer__brand-main { flex: none; width: 100%; }
+      .footer__links { gap: 48px; }
+      /* Scaled down in proportion to the wordmark above it, on one line */
+      .footer__tagline { text-align: left; font-size: 20px; line-height: 1.2; margin-bottom: 0; }
+      .footer__tagline br { display: none; }
+      .footer__legal { margin-top: 24px; }
+    }
+
+    /* Phones: the poster and footer simply scroll with the page; pinning them made them flash back into
+       view when the phone's address bar resized the screen */
+    @media (max-width: 899px) {
+      .poster,
+      .footer {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+    }
+
+    /* ───────── Phone menu ─────────
+       Below 900px the nav links and "Talk to us" give way to a "Menu" button, which opens a full-screen
+       list of the pages under the nav. Shared by every page; keep them in step. */
+    .nav__menu { display: none; }
+    .menu { display: none; }
+
+    @media (max-width: 899px) {
+      .nav__cta { display: none; }
+
+      .nav__menu {
+        display: block;
+        padding: 8px 0 8px 16px;
+        background: none;
+        border: 0;
+        color: var(--white);
+        font: inherit;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: normal;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        inset: var(--nav-h) 0 0;
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 20px 20px;
+        background: var(--black);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0s 0.3s;
+      }
+
+      .menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .menu__links { list-style: none; }
+
+      /* Each page rises in, one after another, as the menu opens */
+      .menu__links li {
+        border-bottom: 1px solid var(--line-step);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .menu.is-open .menu__links li {
+        opacity: 1;
+        transform: none;
+        transition-delay: calc(0.05s + var(--i) * 0.06s);
+      }
+
+      /* Same type as the project titles */
+      .menu__links a {
+        display: block;
+        padding: 18px 0;
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 1.1;
+        color: var(--white);
+      }
+
+      .menu__links a[aria-current="page"] { color: var(--muted); }
+      .menu__links .menu__cta { color: var(--purple); }
+
+      .menu__foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      html.menu-open { overflow: hidden; }
+    }
+
+    @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+      .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <script>document.documentElement.classList.add('js');</script>
+
+  <header class="nav">
+    <a class="nav__logo" href="index.html" aria-label="Onwun home">
+      <img src="assets/onwun-logo.png" alt="Onwun">
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#work" aria-current="page">Work</a></li>
+        <li><a href="about.html">About us</a></li>
+      </ul>
+    </nav>
+    <a class="nav__cta" href="contact.html">Talk to us</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </header>
+
+  <!-- Phone menu, opened by the "Menu" button in the nav -->
+  <nav class="menu" id="menu" aria-label="Menu">
+    <ul class="menu__links">
+        <li style="--i: 0;"><a href="index.html">Home</a></li>
+        <li style="--i: 1;"><a href="index.html#work" aria-current="page">Work</a></li>
+        <li style="--i: 2;"><a href="about.html">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="contact.html">Talk to us</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a href="mailto:contact@onwun.com">contact@onwun.com</a>
+      <a href="tel:+447941625316">+44 7941 625316</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="poster" aria-label="rise">
+      <div class="poster__frame">
+        <img class="poster__image" src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root">
+      </div>
+    </section>
+
+    <section class="overview" aria-labelledby="project-title">
+      <!-- Two columns, as on the home page project cards: 660px | 40px gap | 626px -->
+      <div class="case">
+        <!-- Project info on the left; the right is left empty -->
+        <div class="overview__body reveal">
+          <p class="overview__label dm">Project:</p>
+          <h1 class="overview__title" id="project-title">rise</h1>
+          <p class="overview__intro">A playful, sustainable identity and packaging for an insect protein granola that makes better breakfasts easy.</p>
+          <dl class="overview__facts">
+            <div class="overview__fact"><dt class="dm">Client</dt><dd>rise</dd></div>
+            <div class="overview__fact"><dt class="dm">Industry</dt><dd>Insect granola</dd></div>
+            <div class="overview__fact"><dt class="dm">Year</dt><dd>2025</dd></div>
+            <div class="overview__fact"><dt class="dm">Services</dt><dd>Brand identity <span class="sep">/</span> Visual direction <span class="sep">/</span> Packaging</dd></div>
+          </dl>
+        </div>
+
+        <!-- A big full-width landscape image under the info -->
+        <div class="media media--landscape reveal" style="aspect-ratio: 3 / 2;"><img src="assets/rise/pouches-pink.webp" alt="Three rise granola pouches in cacao, apple and coconut flavours on a pink background" loading="lazy"></div>
+
+        <!-- Challenges: label on the left, text in the right column -->
+        <h2 class="case__label dm reveal">Challenges:</h2>
+        <p class="case__text">Insects are one of the most sustainable sources of protein, but for most people the idea of eating them is a hard no. rise needed to win over a sceptical audience, reducing the stigma around entomophagy so an insect-powered granola feels like a trusted breakfast, not a novelty.</p>
+
+        <!-- Three square images across the full width -->
+        <div class="case__squares">
+          <div class="media media--square reveal"><img src="assets/rise/pouch-leaves.webp" alt="A rise apple and cinnamon pouch seen through green leaves" loading="lazy"></div>
+          <div class="media media--square reveal" style="--i: 1;"><img src="assets/rise/pouches-flatlay.webp" alt="A flat lay of rise granola pouches, fronts and backs, with nutrition panels" loading="lazy"></div>
+          <div class="media media--square reveal" style="--i: 2;"><img src="assets/rise/pouches-stump.jpg" alt="rise pouches propped against a tree stump on the forest floor" loading="lazy"></div>
+        </div>
+
+        <!-- Solution: same layout as the challenges -->
+        <h2 class="case__label dm reveal">Solution:</h2>
+        <p class="case__text">We made typography the brand’s main visual language. Soft, wriggling letterforms that echo a worm turn the insect story into something bold, playful and approachable, while warm colours, kraft pouches and honest messaging keep rise familiar and easy to enjoy.</p>
+
+        <!-- A second full-width landscape image -->
+        <div class="media-pair"><div class="media media--pair-item reveal" style="--ratio: 1.5039;"><img src="assets/rise/van.webp" alt="A brown vintage food van branded with the rise logo, menu and patterns" loading="lazy"></div><div class="media media--pair-item reveal" style="--ratio: 0.5907; --i: 1;"><img src="assets/rise/apron.jpg" alt="A barista wearing a brown rise cap and apron" loading="lazy"></div></div>
+
+        <!-- Result: same layout as the challenges and solution -->
+        <h2 class="case__label dm reveal">Result:</h2>
+        <p class="case__text">rise makes eating insects feel normal: a high-protein breakfast people actually want to try.</p>
+        <div class="media-pair"><div class="media media--pair-item reveal" style="--ratio: 1.5628;"><img src="assets/rise/hoarding.jpg" alt="A row of rise street posters on a hoarding with a passer-by" loading="lazy"></div><div class="media media--pair-item reveal" style="--ratio: 0.6593; --i: 1;"><img src="assets/rise/billboard.jpg" alt="A rooftop rise billboard reading fuel your rise" loading="lazy"></div></div>
+      </div>
+    </section>
+
+    <section class="more" aria-labelledby="more-label">
+      <!-- On wide screens the block pins in the middle of the screen while scrolling slides the strip
+           sideways (script sets --shift and the section height); on phones the strip is swiped instead -->
+      <div class="more__pin">
+      <h2 class="more__label dm" id="more-label">More projects:</h2>
+      <div class="more__viewport">
+        <div class="more__track">
+          <a class="more__card" href="stuartfox.html">
+            <div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>
+            <p class="more__title">StuartFox</p>
+            <p class="more__meta">Specialist Finishes - 2026</p>
+          </a>
+          <a class="more__card" href="denglish.html">
+            <div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>
+            <p class="more__title">Denglish</p>
+            <p class="more__meta">Language app - 2026</p>
+          </a>
+          <a class="more__card" href="atlas.html">
+            <div class="more__image"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>
+            <p class="more__title">ATLAS</p>
+            <p class="more__meta">Premium menswear - 2026</p>
+          </a>
+          <a class="more__card" href="elev8.html">
+            <div class="more__image"><img src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>
+            <p class="more__title">ELEV8</p>
+            <p class="more__meta">Electrolyte craft beer - 2025</p>
+          </a>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="closing" id="contact" aria-label="Start a project">
+      <!-- TODO: point "book a call" at the Calendly link once it exists -->
+      <p class="closing__cta">We look forward to working with you. <a href="contact.html">Start a project</a> or <a href="#">book a call</a> and we can get started straight away.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__frame">
+      <div class="footer__brand">
+        <div class="footer__brand-main">
+          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <div class="footer__links">
+            <ul class="footer__social">
+              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="#">LinkedIn</a></li>
+            </ul>
+            <div class="footer__reach">
+              <a class="footer__link" href="mailto:contact@onwun.com">contact@onwun.com</a>
+              <p>+44 7941 625316</p>
+            </div>
+          </div>
+          <img class="footer__logo" src="assets/onwun-wordmark.png" alt="Onwun">
+        </div>
+        <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
+      </div>
+      <!-- TODO: link these to the terms and privacy pages once they exist -->
+      <div class="footer__legal">
+        <a href="#">T&amp;Cs</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="view-cursor dm" aria-hidden="true"><span>View project</span></div>
+
+  <script>
+    // Blocks rise in the first time they come into view
+    (() => {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    })();
+
+    // More projects: on wide screens the block pins in the middle of the screen and scrolling slides the
+    // strip sideways one pixel per pixel scrolled; once every project has passed, the page carries on.
+    // On phones and with reduced motion, the strip is simply swiped sideways instead.
+    (() => {
+      const section = document.querySelector('.more');
+      const pin = section.querySelector('.more__pin');
+      const viewport = section.querySelector('.more__viewport');
+      const track = section.querySelector('.more__track');
+      const wide = window.matchMedia('(min-width: 900px) and (prefers-reduced-motion: no-preference)');
+      let travel = 0, pinTop = 0, ticking = false;
+
+      function measure() {
+        section.classList.toggle('is-pinned', wide.matches);
+        section.classList.toggle('is-native', !wide.matches);
+        if (!wide.matches) {
+          section.style.height = '';
+          track.style.removeProperty('--shift');
+          return;
+        }
+        const navH = document.querySelector('.nav').offsetHeight;
+        travel = Math.max(track.scrollWidth - viewport.clientWidth, 0);
+        // Centre the pinned block in the space under the nav
+        pinTop = Math.max(navH, (innerHeight + navH - pin.offsetHeight) / 2);
+        section.style.setProperty('--pin-top', pinTop + 'px');
+        section.style.height = pin.offsetHeight + travel + parseFloat(getComputedStyle(section).paddingBottom) + 'px';
+        update();
+      }
+
+      function update() {
+        ticking = false;
+        if (!wide.matches) return;
+        const scrolled = Math.min(Math.max(pinTop - section.getBoundingClientRect().top, 0), travel);
+        track.style.setProperty('--shift', scrolled.toFixed(1));
+      }
+
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', measure);
+      wide.addEventListener('change', measure);
+      document.fonts.ready.then(measure);
+      window.addEventListener('load', measure);
+      measure();
+    })();
+
+    // Project images: a "View project" label follows the mouse, easing behind it slightly (as on the home page)
+    (() => {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      const label = document.querySelector('.view-cursor');
+      let x = 0, y = 0, lx = 0, ly = 0, frame = null;
+
+      function follow() {
+        lx += (x - lx) * 0.25;
+        ly += (y - ly) * 0.25;
+        label.style.setProperty('--cx', lx + 'px');
+        label.style.setProperty('--cy', ly + 'px');
+        frame = Math.abs(x - lx) + Math.abs(y - ly) > 0.5 ? requestAnimationFrame(follow) : null;
+      }
+
+      document.querySelectorAll('.more__image').forEach((img) => {
+        img.addEventListener('pointerenter', (e) => {
+          x = lx = e.clientX;
+          y = ly = e.clientY;
+          follow();
+          label.classList.add('is-visible');
+        });
+        img.addEventListener('pointermove', (e) => {
+          x = e.clientX;
+          y = e.clientY;
+          if (!frame) frame = requestAnimationFrame(follow);
+        });
+        img.addEventListener('pointerleave', () => label.classList.remove('is-visible'));
+      });
+    })();
+
+    // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
+    (() => {
+      const nav = document.querySelector('.nav');
+      let ticking = false;
+      function update() {
+        nav.classList.toggle('is-compact', window.scrollY > 40);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Phone menu: the "Menu" button opens and closes the list of pages; choosing a page, pressing Escape
+    // or widening the window past the phone layout closes it
+    (() => {
+      const button = document.querySelector('.nav__menu');
+      const menu = document.getElementById('menu');
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Close' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+      }
+
+      button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          setOpen(false);
+          button.focus();
+        }
+      });
+      window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>

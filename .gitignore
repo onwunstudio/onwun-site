@@ -1,0 +1,13 @@
+# Mac
+.DS_Store
+
+# Python
+__pycache__/
+
+# Claude Code: personal settings stay on each person's computer
+# (.claude/serve.py and .claude/launch.json are shared, for previewing the site)
+.claude/settings.local.json
+
+# Hosting tools
+.vercel/
+.netlify/

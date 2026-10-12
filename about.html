@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About us · Onwun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* About us page, opened from "About us" in the nav.
+       Nav, splash screen, closing statement and footer follow the home page (index.html); keep them in step. */
+    :root {
+      --nav-h: 41px;
+      --black: #000;
+      --white: #fff;
+      --purple: #6a60f6;
+      --purple-deep: #5d54d7;
+      --purple-cta: #5b3fe4;
+      --muted: #626675;
+      --grey-text: #c9cad0;
+      --line: #1f1f1f;
+      --line-step: #2e2e2e;
+      --placeholder-bg: #0a0a0a;
+      --error: #e5484d;
+
+      --sora: "Sora", sans-serif;
+      --inter: "Inter", sans-serif;
+      --dm: "DM Sans", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--black); }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sora);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .dm {
+      font-family: var(--dm);
+      font-weight: 500;
+      font-variation-settings: "opsz" 14;
+    }
+
+    /* ───────── Nav Bar ───────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--nav-h);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+    }
+
+    .nav__logo {
+      display: block;
+      width: 141px;
+      height: 30px;
+      transform-origin: left center;
+      transition: transform 0.45s var(--ease);
+    }
+
+    .nav.is-compact .nav__logo { transform: scale(0.72); }
+
+    .nav__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
+    .nav__links a[aria-current="page"],
+    .nav__links a:hover { opacity: 1; }
+
+    .nav__cta {
+      font-family: var(--inter);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      color: var(--purple-cta);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .nav__cta:hover { color: var(--purple); }
+
+    /* ───────── Layers ─────────
+       The splash screen stays put while the page slides up over it (as on the home page); the footer
+       waits underneath and is uncovered at the end */
+    .splash {
+      position: sticky;
+      top: min(var(--nav-h), calc(100vh - 40px - (100vw - 40px) * 728 / 1326));
+      z-index: 1;
+      padding: 20px;
+      container-type: inline-size;
+      background: var(--black);
+    }
+
+    .values,
+    .why,
+    .team,
+    .services,
+    .closing {
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+    }
+
+    .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 0;
+      background: var(--black);
+    }
+
+    /* A thin rule marks the edge cutting up through the splash screen, and another sections off the footer */
+    .values { border-top: 1px solid var(--line-step); }
+    .closing { border-bottom: 1px solid var(--line-step); }
+
+    /* ───────── Splash screen ─────────
+       The same 1326 × 728 frame as the home page, scaling with the screen (1cqw = frame width / 100).
+       The statement sits on the left edge, at the same height and in the same type as the home page's. */
+    .splash__frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1326 / 728;
+    }
+
+    .splash__intro {
+      position: absolute;
+      left: 0;
+      top: calc(184 / 1326 * 100cqw);
+      width: calc(680 / 1326 * 100cqw);
+      font-weight: 300;
+      font-size: calc(24 / 1326 * 100cqw);
+      line-height: normal;
+    }
+
+    /* ───────── Our values ─────────
+       The label on the left; each value in the right-hand column (660 | 40 | 626, as on the project
+       cards), under a thin rule: a purple number, the value in the project title type, then a line
+       in the statement type. */
+    .values {
+      --values-pin: 47px; /* height of the pinned intro; kept in sync by script */
+      --value-h: 280px;   /* one value, incl. its rule: room for a two-line title and three-line text */
+    }
+
+    .values__intro {
+      padding: 138px 20px 30px;
+      background: var(--black);
+    }
+
+    .values__label {
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .value {
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      padding: 0 20px;
+      background: var(--black);
+    }
+
+    .value__body {
+      grid-column: 2;
+      min-height: var(--value-h);
+      padding: 40px 0 80px;
+      border-top: 1px solid var(--line-step);
+    }
+
+    .value__num {
+      font-size: 13px;
+      line-height: normal;
+      color: var(--purple);
+    }
+
+    /* The project title size, in Sora SemiBold */
+    .value__title {
+      margin-top: 16px;
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    /* Same type as the statements */
+    .value__text {
+      margin-top: 16px;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+      color: var(--grey-text);
+    }
+
+    /* ───────── Why choose us ─────────
+       A compact block in the left-hand column (660px), under the values: the label, then the three reasons,
+       set close together so it leads straight into the team below */
+    .why {
+      --why-pin: 179px; /* height of the pinned label block; kept in sync by script */
+      --why-h: 140px;   /* one reason, incl. its rule */
+      padding: 0 20px;
+    }
+
+    .why__inner { max-width: 660px; }
+
+    /* Less space above than other sections: the last value already ends in some empty space, and the two
+       together make the usual 138px from the last value's text to this label */
+    .why__intro {
+      padding: 48px 0 24px;
+      background: var(--black);
+    }
+
+    .why__label {
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .why__list { list-style: none; }
+
+    /* Same type as the statements */
+    .why__item {
+      padding: 24px 0;
+      background: var(--black);
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Stacked reasons, as the values above: the label pins, each reason pins just below it and the
+       next slides up over it, then the block scrolls away together */
+    @media (min-width: 900px) and (min-height: 750px) {
+      .why__intro {
+        position: sticky;
+        top: var(--nav-h);
+        z-index: 2;
+        margin-bottom: var(--why-h);
+      }
+
+      .why__list { margin-top: calc(var(--why-h) * -1); }
+
+      .why__item {
+        position: sticky;
+        top: calc(var(--nav-h) + var(--why-pin));
+        height: var(--why-h);
+      }
+    }
+
+    /* ───────── Meet the team ─────────
+       Two portraits side by side across the full width (20px apart, as the paired project images),
+       each with a name and role underneath, in the style of the "More projects" cards */
+    .team { padding: 114px 20px 0; } /* 138px from the last reason's text, with its 24px padding */
+
+    .team__label {
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .team__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      list-style: none;
+    }
+
+    .team__photo {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--placeholder-bg);
+      border: 1px solid var(--line);
+    }
+
+    .team__photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Placeholder until the photos are in, in the same style as the project page ones */
+    .team__photo--empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .team__name {
+      margin-top: 16px;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .team__role {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--purple);
+      text-transform: uppercase;
+    }
+
+    /* ───────── Services ─────────
+       Label on the left, the three categories on the right (660 | 40 | 626), in the style of the home page
+       FAQs: hovering a category draws a purple rule along its line; clicking it turns its "+" into a
+       purple "×" and slides open its list of services. Rows rise in the first time the section is seen. */
+    .services {
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+      padding: 138px 20px 0;
+    }
+
+    .services__label {
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .services__list {
+      list-style: none;
+      border-top: 1px solid var(--line-step);
+    }
+
+    .service {
+      position: relative;
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    .service::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: var(--purple);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .service:hover::after,
+    .service.is-open::after { transform: scaleX(1); }
+
+    /* The category in the value title type */
+    .service__toggle {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      padding: 28px 0;
+      background: none;
+      border: 0;
+      font: inherit;
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: left;
+      color: var(--grey-text);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .service:hover .service__toggle,
+    .service.is-open .service__toggle,
+    .service__toggle:focus-visible { color: var(--white); }
+
+    .service__toggle:focus-visible { outline: 1px solid var(--purple); outline-offset: 4px; }
+
+    .service__name {
+      flex: 1 1 auto;
+      transition: transform 0.4s var(--ease);
+    }
+
+    .service:hover .service__name { transform: translateX(8px); }
+
+    /* "+" drawn from two lines; rotates into a purple "×" when open */
+    .service__icon {
+      position: relative;
+      flex: 0 0 18px;
+      height: 18px;
+      color: var(--muted);
+      transition: transform 0.5s var(--ease), color 0.3s;
+    }
+
+    .service__icon::before,
+    .service__icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      margin-top: -0.5px;
+      background: currentColor;
+    }
+
+    .service__icon::after { transform: rotate(90deg); }
+
+    .service:hover .service__icon { color: var(--white); }
+    .service.is-open .service__icon { color: var(--purple); transform: rotate(135deg); }
+
+    /* The list slides open by animating its row from 0 to its natural height */
+    .service__panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s var(--ease);
+    }
+
+    .service.is-open .service__panel { grid-template-rows: 1fr; }
+
+    .service__panel-inner { overflow: hidden; }
+
+    /* Services as a list with small purple square bullets; each one rises in just after the last */
+    .service__items {
+      list-style: none;
+      padding: 0 0 32px 8px;
+    }
+
+    .service__items li {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 6px 0;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 1.4;
+      color: var(--grey-text);
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.3s, transform 0.4s var(--ease);
+    }
+
+    .service__items li::before {
+      content: "";
+      flex: 0 0 6px;
+      height: 6px;
+      background: var(--purple);
+    }
+
+    .service.is-open .service__items li {
+      opacity: 1;
+      transform: none;
+      transition-delay: calc(0.12s + var(--n) * 0.04s);
+    }
+
+    .js .service {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s, transform 0.8s var(--ease);
+      transition-delay: calc(var(--i) * 0.06s);
+    }
+
+    .js .services.is-in .service { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .service { opacity: 1; transform: none; transition: none; }
+      .service__panel, .service__items li, .service__icon, .service__name, .service::after { transition: none; }
+    }
+
+    /* Stacked values, as the home page projects: the label pins to the top, each value pins just below
+       it, and the next one slides up over the previous one */
+    @media (min-width: 900px) and (min-height: 750px) {
+      /* The intro's bottom margin equals one value, so it is released at the same moment as the stacked
+         values and the whole block scrolls away together; the first value's negative margin gives the
+         space back, so nothing moves before you scroll */
+      .values__intro {
+        position: sticky;
+        top: var(--nav-h);
+        z-index: 2;
+        margin-bottom: var(--value-h);
+      }
+
+      .value:first-of-type { margin-top: calc(var(--value-h) * -1); }
+
+      .value {
+        position: sticky;
+        top: calc(var(--nav-h) + var(--values-pin));
+      }
+
+      .value__body { height: var(--value-h); }
+    }
+
+    /* ───────── Closing statement ───────── */
+    .closing { padding: 138px 20px; }
+
+    .closing__cta {
+      max-width: 480px;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .closing__cta a {
+      color: var(--purple);
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: background-size 0.4s var(--ease);
+    }
+
+    .closing__cta a:hover,
+    .closing__cta a:focus-visible { background-size: 100% 1px; }
+
+    /* ───────── Letter-by-letter text reveal (as on the home page) ─────────
+       Script splits [data-letters] text into words and letters. Letters fade in left to right,
+       and each line starts as the one above it is finishing. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .js [data-letters]:not(.is-ready) { visibility: hidden; }
+    [data-letters] .w { white-space: nowrap; }
+    [data-letters] .ch { opacity: 0; }
+
+    [data-letters].is-playing .ch {
+      animation: letter-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) forwards;
+    }
+
+    @keyframes letter-in {
+      from { opacity: 0; filter: blur(6px); }
+      to { opacity: 1; filter: none; }
+    }
+
+    /* ───────── Footer ───────── */
+    .footer {
+      padding: 136px 20px 20px;
+      display: flex;
+    }
+
+    .footer__frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer__brand {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .footer__brand-main {
+      flex: 0 0 47%;
+      min-width: 0;
+    }
+
+    .footer__logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-left: calc(-20 / 3306 * 100%);
+      margin-bottom: calc(-36 / 3306 * 100%);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 96px;
+      margin-bottom: calc(40px - 20 / 3306 * 100%);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer__social { list-style: none; }
+
+    .footer__link {
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible { color: var(--purple); }
+
+    .footer__legal {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .footer__legal a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__legal a:hover,
+    .footer__legal a:focus-visible { color: var(--white); }
+
+    .footer__tagline {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--purple);
+      margin-bottom: -0.19em;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-letters] .ch { opacity: 1; }
+      [data-letters].is-playing .ch { animation: none; }
+    }
+
+    @media (max-width: 899px) {
+      .nav__links { display: none; }
+
+      /* Phones: the statement at a readable size, in a frame a little shorter than the screen */
+      .splash { top: var(--nav-h); }
+      .splash__frame { aspect-ratio: auto; height: calc(100svh - var(--nav-h) - 40px); }
+      .splash__intro { top: 56px; width: 100%; font-size: 20px; line-height: 1.3; }
+      .closing { padding: 56px 20px 64px; }
+      .values__intro { padding: 56px 20px 24px; }
+      .value { grid-template-columns: minmax(0, 1fr); }
+      .value__body { grid-column: 1; min-height: 0; padding: 32px 0 48px; }
+      .value__text { font-size: 20px; }
+      .why__intro { padding-top: 56px; }
+      .why__item { font-size: 20px; }
+      .team { padding-top: 56px; }
+      .services { grid-template-columns: minmax(0, 1fr); row-gap: 24px; padding-top: 56px; }
+      .service__toggle { padding: 22px 0; font-size: 28px; }
+      .service__items { padding-left: 0; }
+      .service__items li { font-size: 18px; }
+      .team__grid { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
+
+      .footer { padding-top: 56px; }
+      .footer__brand { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px; }
+      .footer__brand-main { flex: none; width: 100%; }
+      .footer__links { gap: 48px; }
+      /* Scaled down in proportion to the wordmark above it, on one line */
+      .footer__tagline { text-align: left; font-size: 20px; line-height: 1.2; margin-bottom: 0; }
+      .footer__tagline br { display: none; }
+      .footer__legal { margin-top: 24px; }
+    }
+
+    /* Phones: the splash screen and footer simply scroll with the page; pinning them made them flash back into
+       view when the phone's address bar resized the screen */
+    @media (max-width: 899px) {
+      .splash,
+      .footer {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+    }
+
+    /* ───────── Phone menu ─────────
+       Below 900px the nav links and "Talk to us" give way to a "Menu" button, which opens a full-screen
+       list of the pages under the nav. Shared by every page; keep them in step. */
+    .nav__menu { display: none; }
+    .menu { display: none; }
+
+    @media (max-width: 899px) {
+      .nav__cta { display: none; }
+
+      .nav__menu {
+        display: block;
+        padding: 8px 0 8px 16px;
+        background: none;
+        border: 0;
+        color: var(--white);
+        font: inherit;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: normal;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        inset: var(--nav-h) 0 0;
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 20px 20px;
+        background: var(--black);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0s 0.3s;
+      }
+
+      .menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .menu__links { list-style: none; }
+
+      /* Each page rises in, one after another, as the menu opens */
+      .menu__links li {
+        border-bottom: 1px solid var(--line-step);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .menu.is-open .menu__links li {
+        opacity: 1;
+        transform: none;
+        transition-delay: calc(0.05s + var(--i) * 0.06s);
+      }
+
+      /* Same type as the project titles */
+      .menu__links a {
+        display: block;
+        padding: 18px 0;
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 1.1;
+        color: var(--white);
+      }
+
+      .menu__links a[aria-current="page"] { color: var(--muted); }
+      .menu__links .menu__cta { color: var(--purple); }
+
+      .menu__foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      html.menu-open { overflow: hidden; }
+    }
+
+    @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+      .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <script>document.documentElement.classList.add('js');</script>
+  <header class="nav">
+    <a class="nav__logo" href="index.html" aria-label="Onwun home">
+      <img src="assets/onwun-logo.png" alt="Onwun">
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="about.html" aria-current="page">About us</a></li>
+      </ul>
+    </nav>
+    <a class="nav__cta" href="contact.html">Talk to us</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </header>
+
+  <!-- Phone menu, opened by the "Menu" button in the nav -->
+  <nav class="menu" id="menu" aria-label="Menu">
+    <ul class="menu__links">
+        <li style="--i: 0;"><a href="index.html">Home</a></li>
+        <li style="--i: 1;"><a href="index.html#work">Work</a></li>
+        <li style="--i: 2;"><a href="about.html" aria-current="page">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="contact.html">Talk to us</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a href="mailto:contact@onwun.com">contact@onwun.com</a>
+      <a href="tel:+447941625316">+44 7941 625316</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="splash" aria-label="About Onwun">
+      <div class="splash__frame">
+        <h1 class="splash__intro" data-letters>Onwun is a two-person design studio. Based between Manchester and London, we build identities, websites and digital experiences for businesses who want to lead, not follow.</h1>
+      </div>
+    </section>
+
+    <section class="values" aria-labelledby="values-label">
+      <div class="values__intro">
+        <h2 class="values__label dm" id="values-label">Our values:</h2>
+      </div>
+
+      <article class="value">
+        <div class="value__body">
+          <p class="value__num dm">01</p>
+          <h3 class="value__title">Outcomes first, taste second</h3>
+          <p class="value__text">Every creative decision earns its place by doing useful work for the people and business it serves.</p>
+        </div>
+      </article>
+
+      <article class="value">
+        <div class="value__body">
+          <p class="value__num dm">02</p>
+          <h3 class="value__title">All in or nothing</h3>
+          <p class="value__text">We take on fewer projects so every partnership gets our full attention, judgement and care.</p>
+        </div>
+      </article>
+
+      <article class="value">
+        <div class="value__body">
+          <p class="value__num dm">03</p>
+          <h3 class="value__title">Human-first, always</h3>
+          <p class="value__text">Behind every brand is a real story and real problems. We never lose sight of who the work is for.</p>
+        </div>
+      </article>
+
+      <article class="value">
+        <div class="value__body">
+          <p class="value__num dm">04</p>
+          <h3 class="value__title">Considered, never rushed</h3>
+          <p class="value__text">We move at the pace the work actually needs: fast when it should be, patient when it matters more.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="why" aria-labelledby="why-label">
+      <div class="why__inner">
+      <div class="why__intro">
+        <h2 class="why__label dm" id="why-label">Why choose us:</h2>
+      </div>
+      <ul class="why__list">
+        <li class="why__item">You work directly with the two people actually designing your brand, from the first call to final delivery.</li>
+        <li class="why__item">We take on fewer clients by design, so every project gets the depth of research and craft we’d want for our own studio.</li>
+        <li class="why__item">Strategy, identity and build stay under one roof, so nothing gets diluted or lost moving between separate teams.</li>
+      </ul>
+      </div>
+    </section>
+
+    <section class="team" aria-labelledby="team-label">
+      <h2 class="team__label dm" id="team-label">Meet the team:</h2>
+      <ul class="team__grid">
+        <!-- TODO: swap each placeholder for <div class="team__photo"><img src="assets/team/…" alt="…"></div> -->
+        <li class="team__member">
+          <div class="team__photo team__photo--empty dm">Photo</div>
+          <h3 class="team__name">Niall Penny</h3>
+          <p class="team__role dm">Creative Director</p>
+        </li>
+        <li class="team__member">
+          <div class="team__photo team__photo--empty dm">Photo</div>
+          <h3 class="team__name">Rohan McCallum</h3>
+          <p class="team__role dm">Creative Director</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="services" aria-labelledby="services-label">
+      <h2 class="services__label dm" id="services-label">Services:</h2>
+      <!-- TODO: the services in each category are filler; swap in the real lists -->
+      <ul class="services__list">
+        <li class="service" style="--i: 0;">
+          <h3>
+            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-branding" id="service-branding-toggle">
+              <span class="service__name">Branding</span>
+              <span class="service__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="service__panel" id="service-branding" role="region" aria-labelledby="service-branding-toggle">
+            <div class="service__panel-inner">
+              <ul class="service__items">
+                <li style="--n: 0;">Brand strategy</li>
+                <li style="--n: 1;">Logo &amp; identity design</li>
+                <li style="--n: 2;">Visual systems</li>
+                <li style="--n: 3;">Brand guidelines</li>
+                <li style="--n: 4;">Packaging</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="service" style="--i: 1;">
+          <h3>
+            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-content" id="service-content-toggle">
+              <span class="service__name">Content</span>
+              <span class="service__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="service__panel" id="service-content" role="region" aria-labelledby="service-content-toggle">
+            <div class="service__panel-inner">
+              <ul class="service__items">
+                <li style="--n: 0;">Art direction</li>
+                <li style="--n: 1;">Social media content</li>
+                <li style="--n: 2;">Photography direction</li>
+                <li style="--n: 3;">Campaign design</li>
+                <li style="--n: 4;">Copywriting</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="service" style="--i: 2;">
+          <h3>
+            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-web" id="service-web-toggle">
+              <span class="service__name">Web</span>
+              <span class="service__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="service__panel" id="service-web" role="region" aria-labelledby="service-web-toggle">
+            <div class="service__panel-inner">
+              <ul class="service__items">
+                <li style="--n: 0;">Website design</li>
+                <li style="--n: 1;">Web development</li>
+                <li style="--n: 2;">UI &amp; UX design</li>
+                <li style="--n: 3;">E-commerce</li>
+                <li style="--n: 4;">Ongoing support</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="closing" aria-label="Start a project">
+      <!-- TODO: point "book a call" at the Calendly link once it exists -->
+      <p class="closing__cta">We look forward to working with you. <a href="contact.html">Start a project</a> or <a href="#">book a call</a> and we can get started straight away.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__frame">
+      <div class="footer__brand">
+        <div class="footer__brand-main">
+          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <div class="footer__links">
+            <ul class="footer__social">
+              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="#">LinkedIn</a></li>
+            </ul>
+            <div class="footer__reach">
+              <a class="footer__link" href="mailto:contact@onwun.com">contact@onwun.com</a>
+              <p>+44 7941 625316</p>
+            </div>
+          </div>
+          <img class="footer__logo" src="assets/onwun-wordmark.png" alt="Onwun">
+        </div>
+        <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
+      </div>
+      <!-- TODO: link these to the terms and privacy pages once they exist -->
+      <div class="footer__legal">
+        <a href="#">T&amp;Cs</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Splash statement: fades in letter by letter, line by line, as on the home page
+    (() => {
+      const STEP = 0.022;    // seconds between letters
+      const OVERLAP = 0.6;   // the next line starts when this much of the current line has played
+      const el = document.querySelector('.splash__intro');
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.classList.add('is-ready');
+        return;
+      }
+
+      function split() {
+        const text = el.textContent;
+        const visual = document.createElement('span');
+        visual.setAttribute('aria-hidden', 'true');
+        text.split(/(\s+)/).forEach((token) => {
+          if (!token) return;
+          if (/^\s+$/.test(token)) {
+            visual.appendChild(document.createTextNode(token));
+            return;
+          }
+          const word = document.createElement('span');
+          word.className = 'w';
+          for (const char of token) {
+            const ch = document.createElement('span');
+            ch.className = 'ch';
+            ch.textContent = char;
+            word.appendChild(ch);
+          }
+          visual.appendChild(word);
+        });
+        const label = document.createElement('span');
+        label.className = 'sr-only';
+        label.textContent = text;
+        el.replaceChildren(label, visual);
+      }
+
+      function play(startDelay) {
+        // group words into the lines they actually wrap onto
+        const lines = [];
+        let lastTop = null;
+        el.querySelectorAll('.w').forEach((word) => {
+          const top = Math.round(word.offsetTop);
+          if (top !== lastTop) {
+            lines.push([]);
+            lastTop = top;
+          }
+          lines[lines.length - 1].push(...word.querySelectorAll('.ch'));
+        });
+        let lineStart = startDelay;
+        lines.forEach((chars) => {
+          chars.forEach((ch, i) => ch.style.setProperty('--d', (lineStart + i * STEP).toFixed(3) + 's'));
+          lineStart += chars.length * STEP * OVERLAP;
+        });
+        el.classList.add('is-ready', 'is-playing');
+      }
+
+      document.fonts.ready.then(() => {
+        split();
+        play(0.35);
+      });
+    })();
+
+    // Our values: each value pins directly below the pinned label, whatever its height
+    (() => {
+      const section = document.querySelector('.values');
+      const intro = section.querySelector('.values__intro');
+      new ResizeObserver(() => section.style.setProperty('--values-pin', intro.offsetHeight + 'px')).observe(intro);
+    })();
+
+    // Why choose us: each reason pins directly below the pinned label, whatever its height
+    (() => {
+      const section = document.querySelector('.why');
+      const intro = section.querySelector('.why__intro');
+      new ResizeObserver(() => section.style.setProperty('--why-pin', intro.offsetHeight + 'px')).observe(intro);
+    })();
+
+    // Services: one category open at a time; rows rise in the first time the section comes into view
+    (() => {
+      const section = document.querySelector('.services');
+      const items = [...section.querySelectorAll('.service')];
+
+      items.forEach((item) => {
+        const button = item.querySelector('.service__toggle');
+        button.addEventListener('click', () => {
+          const opening = !item.classList.contains('is-open');
+          items.forEach((other) => {
+            other.classList.remove('is-open');
+            other.querySelector('.service__toggle').setAttribute('aria-expanded', 'false');
+          });
+          if (opening) {
+            item.classList.add('is-open');
+            button.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          section.classList.add('is-in');
+          io.disconnect();
+        }
+      }, { threshold: 0.2 });
+      io.observe(section);
+    })();
+
+    // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
+    (() => {
+      const nav = document.querySelector('.nav');
+      let ticking = false;
+      function update() {
+        nav.classList.toggle('is-compact', window.scrollY > 40);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Phone menu: the "Menu" button opens and closes the list of pages; choosing a page, pressing Escape
+    // or widening the window past the phone layout closes it
+    (() => {
+      const button = document.querySelector('.nav__menu');
+      const menu = document.getElementById('menu');
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Close' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+      }
+
+      button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          setOpen(false);
+          button.focus();
+        }
+      });
+      window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>

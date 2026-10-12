@@ -1,0 +1,1965 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Onwun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Figma: "Desktop - 1" (2:3), designed at 1366px wide. */
+    @property --spot-r {
+      syntax: "<length>";
+      inherits: true;
+      initial-value: 0px;
+    }
+
+    :root {
+      --nav-h: 41px;
+      --black: #000;
+      --white: #fff;
+      --purple: #6a60f6;
+      --purple-deep: #5d54d7;
+      --purple-cta: #5b3fe4;
+      --muted: #626675;
+      --grey-text: #c9cad0; /* questions at rest and answers: softer than white */
+      --line: #1f1f1f;
+      --line-step: #2e2e2e;
+      --placeholder-bg: #0a0a0a;
+
+      --sora: "Sora", sans-serif;
+      --inter: "Inter", sans-serif;
+      --dm: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--black);
+      scroll-padding-top: var(--nav-h); /* in-page links land below the sticky nav */
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sora);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .dm {
+      font-family: var(--dm);
+      font-weight: 500;
+      font-variation-settings: "opsz" 14;
+    }
+
+    /* ───────── Nav Bar (5:3) ───────── */
+    /* Stays at the top while scrolling; above the pinned sections below it */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--nav-h);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+    }
+
+    /* Shrinks once you scroll past the top of the hero, scaling from its left edge so it stays
+       the same distance from the screen edge; grows back when you return to the hero */
+    .nav__logo {
+      display: block;
+      width: 141px;
+      height: 30px;
+      transform-origin: left center;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav.is-compact .nav__logo { transform: scale(0.72); }
+
+    .nav__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      font-family: var(--sora);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
+    .nav__links a[aria-current="page"],
+    .nav__links a:hover { opacity: 1; }
+
+    .nav__cta {
+      font-family: var(--inter);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      color: var(--purple-cta);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .nav__cta:hover { color: var(--purple); }
+
+    /* ───────── Featured Work Screen (5:109) ─────────
+       The 1326 × 728 frame scales proportionally; 1cqw = frame width / 100. */
+    .hero {
+      padding: 20px;
+      container-type: inline-size;
+      /* The frame no longer clips, so the wordmark bleeds to the page edges */
+      overflow: clip;
+      /* Stays put once its bottom reaches the bottom of the screen (or it reaches the nav, if it is
+         shorter than the screen), so the sections below slide up over it */
+      position: sticky;
+      top: min(var(--nav-h), calc(100vh - 40px - (100vw - 40px) * 728 / 1326));
+      /* Above the footer waiting underneath (solid, so it never shows through); the sections after it
+         share this layer and, coming later in the page, still slide over it */
+      z-index: 1;
+      background: var(--black);
+    }
+
+    /* Everything after the hero scrolls over it */
+    .projects,
+    .process,
+    .faq,
+    .closing {
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+    }
+
+    /* The footer waits underneath at the bottom of the screen: the closing statement slides up off it as you
+       scroll down, and back down over it as you scroll up, the splash screen's cut in reverse */
+    .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 0; /* beneath every section, including the splash screen */
+      background: var(--black);
+    }
+
+    /* A thin rule sections off the footer and marks the edge cutting across it, as on the splash screen */
+    .closing { border-bottom: 1px solid var(--line-step); }
+
+    /* A thin rule marks the edge cutting up through the hero */
+    .projects { border-top: 1px solid var(--line-step); }
+
+    .hero__frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1326 / 728;
+      border: 1px solid var(--black);
+    }
+
+    .hero__intro {
+      position: absolute;
+      left: calc(175 / 1326 * 100cqw);
+      top: calc(184 / 1326 * 100cqw);
+      width: calc(680 / 1326 * 100cqw);
+      font-weight: 300;
+      font-size: calc(24 / 1326 * 100cqw);
+      line-height: normal;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .hero__wordmark {
+      position: absolute;
+      left: calc(-168 / 1326 * 100cqw);
+      top: calc(414 / 1326 * 100cqw);
+      width: calc(1557 / 1326 * 100cqw);
+      height: calc(331 / 1326 * 100cqw);
+      /* Spotlight: grey wordmark, purple revealed in a soft circle around the cursor */
+      --mark-h: calc(331 / 1326 * 100cqw);
+      --spot-x: 50%;
+      --spot-y: 50%;
+      --spot-r: 0px;
+      transition: --spot-r 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .hero__wordmark.is-lit { --spot-r: calc(250 / 1326 * 100cqw); }
+
+    .hero__wordmark-glow,
+    .hero__wordmark-base,
+    .hero__wordmark-reveal,
+    .hero__wordmark-sweep {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* The letter layers all take their shape from the high-resolution logo image */
+    .hero__wordmark-base,
+    .hero__wordmark-reveal,
+    .hero__wordmark-sweep {
+      -webkit-mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
+      mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
+    }
+
+    /* Soft purple light spilling onto the black around the cursor, as if the cursor were a light source.
+       It fades in from the top of the hero and out before the bottom, so it never ends in a hard line. */
+    .hero__wordmark-glow {
+      top: calc(var(--mark-h) * -1.25);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 80%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 80%, transparent 100%);
+      background: radial-gradient(circle at var(--spot-x) calc(var(--spot-y) + var(--mark-h) * 1.25),
+        rgba(106, 96, 246, 0.3) 0,
+        rgba(106, 96, 246, 0.1) calc(var(--spot-r) * 0.9),
+        transparent calc(var(--spot-r) * 1.8));
+    }
+
+    /* Resting state: clean flat grey with a gentle top-to-bottom fall-off. The grey is cut away wherever
+       the purple is fully shown, so no grey fringe appears at the letter edges. */
+    .hero__wordmark-base {
+      background: linear-gradient(to bottom, #72768a 0%, var(--muted) 45%, #4e5160 100%);
+      -webkit-mask:
+        url("assets/onwun-wordmark.png") center / cover no-repeat,
+        radial-gradient(circle at var(--spot-x) var(--spot-y), transparent calc(var(--spot-r) * 0.8 - 1px), #000 calc(var(--spot-r) * 0.8));
+      -webkit-mask-composite: source-in;
+      mask:
+        url("assets/onwun-wordmark.png") center / cover no-repeat,
+        radial-gradient(circle at var(--spot-x) var(--spot-y), transparent calc(var(--spot-r) * 0.8 - 1px), #000 calc(var(--spot-r) * 0.8));
+      mask-composite: intersect;
+    }
+
+    /* Hover: the letters turn flat purple around the cursor */
+    .hero__wordmark-reveal {
+      background: var(--purple);
+      -webkit-mask:
+        url("assets/onwun-wordmark.png") center / cover no-repeat,
+        radial-gradient(circle at var(--spot-x) var(--spot-y), #000 calc(var(--spot-r) * 0.8), transparent var(--spot-r));
+      -webkit-mask-composite: source-in;
+      mask:
+        url("assets/onwun-wordmark.png") center / cover no-repeat,
+        radial-gradient(circle at var(--spot-x) var(--spot-y), #000 calc(var(--spot-r) * 0.8), transparent var(--spot-r));
+      mask-composite: intersect;
+    }
+
+    /* Touch screens have no cursor to light the letters, so the grey layer takes the plain logo shape.
+       (iPhone Safari drops the combined logo-and-spotlight mask above, which left the grey letters
+       invisible after the load animation.) The load reveal and purple sweep play as on desktop. */
+    @media (hover: none) {
+      .hero__wordmark-base {
+        -webkit-mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
+        mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
+      }
+
+      .hero__wordmark-glow,
+      .hero__wordmark-reveal { display: none; }
+    }
+
+    /* On load, step 1: the wordmark is revealed from the left by a soft, feathered edge while drifting
+       in slightly. The mask only exists during the animation ("backwards" fill), so afterwards nothing
+       clips the hover glow. */
+    .hero__wordmark {
+      animation: wordmark-reveal 1.8s cubic-bezier(0.55, 0, 0.25, 1) 0.2s backwards;
+    }
+
+    @keyframes wordmark-reveal {
+      from {
+        -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+        mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+        -webkit-mask-size: 250% 100%;
+        mask-size: 250% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+        transform: translateX(-3%);
+      }
+      to {
+        -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+        mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+        -webkit-mask-size: 250% 100%;
+        mask-size: 250% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+        transform: none;
+      }
+    }
+
+    /* On load, step 2: once the letters are in, one soft band of purple sweeps across them from the left */
+    .hero__wordmark-sweep {
+      background: linear-gradient(100deg,
+        transparent 41%,
+        rgba(106, 96, 246, 0.6) 45.5%,
+        var(--purple) 48%,
+        var(--purple) 52%,
+        rgba(106, 96, 246, 0.6) 54.5%,
+        transparent 59%) no-repeat;
+      background-size: 300% 100%;
+      background-position: 0 0;
+      animation: wordmark-sweep 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.8s both;
+    }
+
+    @keyframes wordmark-sweep {
+      from { background-position: 100% 0; }
+      to { background-position: 0 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero__wordmark { animation: none; }
+      .hero__wordmark-sweep { display: none; }
+    }
+
+    /* ───────── Featured Projects (5:166) ───────── */
+    .projects {
+      padding-bottom: 0;
+      --projects-pin: 180px; /* height of the pinned intro; kept in sync by script */
+    }
+
+    /* The intro's lower 130px is a spacer, so the pinned part is just the label and statement */
+    .projects__intro {
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+      padding: 138px 48px 30px;
+      margin-bottom: 130px;
+      background: var(--black);
+    }
+
+    .projects__label {
+      flex: 0 0 220px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .projects__statement-box {
+      flex: 0 0 610px;
+      min-height: 70px;
+    }
+
+    /* The statement and its "Get in touch" link, offset to sit where the statement always has */
+    .projects__statement-group {
+      margin-left: 366px;
+      width: 650px;
+    }
+
+    .projects__statement {
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Grey at rest; on hover it turns purple, an arrow slides in from the left, the words shift
+       across to make room and an underline draws in beneath them */
+    .projects__cta {
+      position: relative;
+      display: inline-block;
+      margin-top: 24px;
+      font-size: 14px;
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .projects__cta-arrow {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.3s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .projects__cta-text {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .projects__cta-text::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
+    }
+
+    .projects__cta:hover,
+    .projects__cta:focus-visible { color: var(--purple); }
+
+    .projects__cta:hover .projects__cta-arrow,
+    .projects__cta:focus-visible .projects__cta-arrow { opacity: 1; transform: none; }
+
+    .projects__cta:hover .projects__cta-text,
+    .projects__cta:focus-visible .projects__cta-text { transform: translateX(24px); }
+
+    .projects__cta:hover .projects__cta-text::after,
+    .projects__cta:focus-visible .projects__cta-text::after { transform: scaleX(1); }
+
+    .rule {
+      height: 1px;
+      background: var(--line);
+    }
+
+    .project { background: var(--black); }
+
+    /* Stacked cards: the intro pins to the top, each card pins just below it,
+       and the next card slides up over the previous one */
+    @media (min-width: 900px) and (min-height: 750px) {
+      /* --card-h: one card incl. its divider. The negative margin ends the section 7px into the last
+         card's (empty) bottom padding, as Figma did before its intro grew, so there's no divider under it. */
+      .projects { --card-h: 461px; margin-bottom: -7px; }
+
+      /* The intro's bottom margin equals one card, so it is released at the same moment as the
+         stacked cards and the whole block scrolls away together. The first card's negative margin
+         gives back the extra space, so nothing moves before you scroll. */
+      .projects__intro {
+        position: sticky;
+        top: var(--nav-h);
+        z-index: 2;
+        margin-bottom: var(--card-h);
+      }
+
+      .project:first-of-type { margin-top: calc(130px - var(--card-h)); }
+
+      .project {
+        position: sticky;
+        top: calc(var(--nav-h) + var(--projects-pin));
+      }
+    }
+
+    .project__card {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 20px;
+    }
+
+    .project__mockup {
+      flex: 0 0 660px;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--placeholder-bg);
+      border: 1px solid var(--line);
+      font-size: 11px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .project__mockup { overflow: hidden; }
+
+    .project__mockup img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Denglish: the "d" pops in at the centre, slides left into place, then the rest of the word springs up
+       letter by letter after it. Each letter is cut from the logo image (1157 × 259); --x and --w are its
+       left edge and width. Plays on a loop while the card is on screen (script adds .is-playing). */
+    .denglish-mark {
+      --cycle: 6s;
+      --spring: cubic-bezier(0.22, 1.4, 0.36, 1);
+      background: #440624;
+    }
+
+    .denglish-mark__word {
+      position: relative;
+      width: 60%;
+      aspect-ratio: 1157 / 259;
+    }
+
+    .denglish-mark__word span {
+      position: absolute;
+      top: 0;
+      left: calc(var(--x) / 1157 * 100%);
+      width: calc(var(--w) / 1157 * 100%);
+      height: 100%;
+      background: url("assets/denglish-logo.png") no-repeat;
+      background-size: calc(1157 / var(--w) * 100%) 100%;
+      background-position: calc(var(--x) / (1157 - var(--w)) * 100%) 0;
+      opacity: 0;
+    }
+
+    .denglish-mark.is-playing .denglish-mark__word span {
+      animation: denglish-letter var(--cycle) infinite both;
+      animation-delay: calc(var(--i) * 0.07s);
+    }
+
+    /* The "d" starts centred: 498px of the 1157px word to the right of where it ends, i.e. 309% of its own width */
+    .denglish-mark.is-playing .denglish-mark__word span:first-child {
+      animation-name: denglish-d;
+      animation-delay: 0s;
+    }
+
+    @keyframes denglish-d {
+      0%   { opacity: 0; transform: translateX(309%) scale(0.6); animation-timing-function: var(--spring); }
+      9%   { opacity: 1; transform: translateX(309%) scale(1); }
+      20%  { opacity: 1; transform: translateX(309%) scale(1); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+      36%  { opacity: 1; transform: translateX(0) scale(1); }
+      86%  { opacity: 1; transform: translateX(0) scale(1); animation-timing-function: ease-in; }
+      93%, 100% { opacity: 0; transform: translateX(0) scale(1); }
+    }
+
+    @keyframes denglish-letter {
+      0%, 34% { opacity: 0; transform: translateY(45%) scale(0.85); animation-timing-function: var(--spring); }
+      43%  { opacity: 1; transform: translateY(0) scale(1); }
+      86%  { opacity: 1; transform: translateY(0) scale(1); animation-timing-function: ease-in; }
+      93%, 100% { opacity: 0; transform: translateY(0) scale(1); }
+    }
+
+    /* Reduced motion: just the logo */
+    @media (prefers-reduced-motion: reduce) {
+      .denglish-mark__word span { opacity: 1; animation: none !important; }
+    }
+
+    /* "View project" label that follows the mouse over project images (mouse and trackpad only).
+       The outer element tracks the mouse; the box inside scales in and out. */
+    .view-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 20;
+      pointer-events: none;
+      transform: translate(var(--cx, 0), var(--cy, 0));
+    }
+
+    .view-cursor span {
+      display: block;
+      padding: 10px 16px;
+      background: var(--black);
+      color: var(--purple);
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.6);
+      transition: opacity 0.2s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .view-cursor.is-visible span {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .project__mockup { cursor: none; }
+    }
+
+    .project__details {
+      position: relative;
+      flex: 1 0 0;
+      min-width: 1px;
+      height: 420px;
+    }
+
+    .project__heading {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-weight: 300;
+    }
+
+    .project__title {
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    .project__meta {
+      font-size: 16px;
+      line-height: normal;
+      color: var(--muted);
+    }
+
+    .project__bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .project__desc {
+      width: 100%;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .project__desc--15 { font-size: 15px; }
+
+    .project__tags {
+      padding: 12px 0;
+      font-weight: 300;
+      font-size: 12px;
+      line-height: normal;
+      white-space: pre;
+    }
+
+    .project__tags .sep { color: var(--purple); }
+    .project__tags .sep--deep { color: var(--purple-deep); }
+
+    .project__link {
+      font-size: 14px;
+      line-height: normal;
+      color: var(--purple);
+      white-space: nowrap;
+    }
+
+    .project__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ───────── Our Process (5:240) ─────────
+       An intro page, then one page per ONWUN step. On wide screens (script adds .is-flick) the section
+       pins and each page slides in sideways over the last; otherwise the pages simply stack. */
+    .process {
+      overflow: hidden;
+    }
+
+    .process__logo { display: none; }
+
+    /* Unwritten letters are black, so the logo appears out of nothing as the purple writes it */
+    .process__logo-base { fill: var(--black); }
+
+    .process__logo-ink path {
+      fill: none;
+      stroke: var(--purple);
+      stroke-linejoin: round;
+      stroke-dasharray: 1 1;
+      stroke-dashoffset: 0; /* fully written unless the script is driving it */
+    }
+
+    .process__track {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .process__panel {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+      padding: 138px 20px 40px;
+    }
+
+    /* Page 1: the statement, where the old intro sat */
+    .process__panel--intro { align-items: flex-start; }
+
+    .process__statement {
+      max-width: 700px;
+      padding: 0 40px;
+    }
+
+    /* 620px wide from x = 60, so the text never runs past the right edge of the project images (x = 680) */
+    .process__statement p {
+      max-width: 620px;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Paragraphs are separated by one blank line, as in Figma */
+    .process__statement p + p { margin-top: 1.25em; }
+
+    .process__hint {
+      position: absolute;
+      left: 60px;
+      bottom: 40px;
+      display: none;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* Step pages: just the word, with its description underneath */
+    .process__copy {
+      padding: 0 40px;
+    }
+
+    .process__name {
+      font-weight: 300;
+      font-size: 90px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    /* The first letter is white and the rest grey while the page slides in; once the page is fully
+       in view (script adds .is-lit), the white flows on through the rest of the word */
+    .process__initial { color: var(--white); }
+
+    @property --flow {
+      syntax: "<percentage>";
+      inherits: false;
+      initial-value: -40%;
+    }
+
+    .process__rest {
+      --flow: -40%;
+      background: linear-gradient(90deg, var(--white) var(--flow), var(--muted) calc(var(--flow) + 40%));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: --flow 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .process__panel.is-lit .process__rest { --flow: 100%; }
+
+    .process__desc {
+      max-width: 600px;
+      margin-top: 23px;
+      font-weight: 300;
+      font-size: 16.5px;
+      line-height: 1.25;
+    }
+
+    /* ── Wide screens: pinned, full-height pages that slide in sideways ── */
+    .process.is-flick .process__track {
+      position: relative;
+      height: calc(100vh - var(--nav-h));
+    }
+
+    /* Pages stack on top of each other; each new one slides in from the right over the last,
+       with a thin rule on its leading edge, the way the project cards slide up over each other */
+    .process.is-flick .process__panel {
+      position: absolute;
+      inset: 0;
+      background: var(--black);
+    }
+
+    .process.is-flick .process__panel + .process__panel {
+      border-left: 1px solid var(--line-step);
+      will-change: transform;
+    }
+
+    /* The word sits just below the middle of the page, at the same height on every page */
+    .process.is-flick .process__panel:not(.process__panel--intro) {
+      align-items: flex-start;
+      padding-top: calc((100vh - var(--nav-h)) * 0.465);
+    }
+
+    /* The intro text ends level with the Observe description (script sets the bottom padding) */
+    .process.is-flick .process__panel--intro { align-items: flex-end; }
+
+    .process.is-flick .process__hint { display: block; }
+
+    .process.is-flick .process__logo {
+      display: block;
+      position: absolute;
+      top: 40px;
+      right: 20px; /* lines up with the right edge of "Talk to us" in the nav */
+      z-index: 2;
+      height: 20px;
+      width: auto;
+      aspect-ratio: 3306 / 706;
+    }
+
+    /* ───────── FAQs ─────────
+       Label on the left like "Featured projects:"; questions on the right, starting where the project images end.
+       Hovering a question draws a purple rule along its line; opening one turns its "+" into a purple "×"
+       and slides the answer open. Rows rise in one after another the first time the section comes into view. */
+    .faq {
+      display: flex;
+      align-items: flex-start;
+      padding: 138px 20px;
+    }
+
+    .faq__label {
+      flex: 0 1 660px;
+      padding-left: 28px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .faq__list {
+      flex: 1 1 0;
+      min-width: 0;
+      list-style: none;
+      border-top: 1px solid var(--line-step);
+    }
+
+    .faq__item {
+      position: relative;
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    /* Purple rule that draws along the bottom of a row on hover, and stays while it is open */
+    .faq__item::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: var(--purple);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .faq__item:hover::after,
+    .faq__item.is-open::after { transform: scaleX(1); }
+
+    .faq__question {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      padding: 26px 0;
+      background: none;
+      border: 0;
+      font: inherit;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+      text-align: left;
+      color: var(--grey-text);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .faq__item:hover .faq__question,
+    .faq__item.is-open .faq__question,
+    .faq__question:focus-visible { color: var(--white); }
+
+    .faq__question:focus-visible { outline: 1px solid var(--purple); outline-offset: 4px; }
+
+    .faq__q-text {
+      flex: 1 1 auto;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .faq__item:hover .faq__q-text { transform: translateX(8px); }
+
+    /* "+" drawn from two lines; rotates into a purple "×" when open */
+    .faq__icon {
+      position: relative;
+      flex: 0 0 14px;
+      height: 14px;
+      color: var(--muted);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s;
+    }
+
+    .faq__icon::before,
+    .faq__icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      margin-top: -0.5px;
+      background: currentColor;
+    }
+
+    .faq__icon::after { transform: rotate(90deg); }
+
+    .faq__item:hover .faq__icon { color: var(--white); }
+    .faq__item.is-open .faq__icon { color: var(--purple); transform: rotate(135deg); }
+
+    /* Answer slides open by animating its row from 0 to its natural height */
+    .faq__answer {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .faq__item.is-open .faq__answer { grid-template-rows: 1fr; }
+
+    .faq__answer-inner { overflow: hidden; }
+
+    .faq__answer p {
+      max-width: 560px;
+      padding: 0 0 28px 8px;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--grey-text);
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.3s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .faq__item.is-open .faq__answer p {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0.12s;
+    }
+
+    /* Rows rise in, one after another, the first time the section comes into view */
+    .js .faq__item {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i) * 0.06s);
+    }
+
+    .js .faq.is-in .faq__item { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .faq__item { opacity: 1; transform: none; transition: none; }
+      .faq__answer, .faq__answer p, .faq__icon, .faq__q-text, .faq__item::after { transition: none; }
+    }
+
+    /* Narrower windows: let the questions take a bit more room so they don't wrap awkwardly */
+    @media (max-width: 1199px) {
+      .faq__list { min-width: 55%; }
+    }
+
+    @media (max-width: 899px) {
+      .faq { flex-direction: column; gap: 24px; padding: 56px 20px 64px; }
+      .faq__label { flex: none; padding-left: 0; }
+      .faq__list { flex: none; width: 100%; }
+      .faq__question { padding: 20px 0; font-size: 20px; }
+      .faq__answer p { padding-left: 0; }
+    }
+
+    /* ───────── Footer Screen (5:299) ───────── */
+    .footer {
+      padding: 136px 20px 20px; /* the Instagram text starts 138px under the dividing line (its line box adds 2px); the legal links sit 20px from the bottom, matching the sides */
+      display: flex;
+    }
+
+    /* Contact links, the wordmark and tagline, then the legal links */
+    .footer__frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ───────── Closing statement ─────────
+       The last part of the page before the footer: same type as the hero and section intro paragraphs,
+       138px from the top like they do. Its bottom edge, with a thin rule, slides over the footer. */
+    .closing {
+      padding: 138px 20px;
+    }
+
+    .closing__cta {
+      max-width: 480px; /* "We look forward to working with you. / Start a project or book a call and we can / get started straight away." */
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Purple links whose underline draws in from the left on hover (works across line breaks too) */
+    .closing__cta a {
+      color: var(--purple);
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .closing__cta a:hover,
+    .closing__cta a:focus-visible { background-size: 100% 1px; }
+
+    .footer__brand {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    /* The wordmark image has transparent margins (20px left, 36px below the baseline, of 3306 × 706);
+       pull them back so the letters sit exactly 20px from the page edge and on the bottom line */
+    .footer__brand-main {
+      flex: 0 0 47%;
+      min-width: 0;
+    }
+
+    .footer__logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-left: calc(-20 / 3306 * 100%);
+      margin-bottom: calc(-36 / 3306 * 100%); /* % margins are measured against the width, so this is 36/706 of the logo's height */
+    }
+
+    /* Socials pressed to the left, then email and phone; they sit 40px above the tops of the letters
+       (the logo image has 20/706 of transparent space above them, hence the subtraction) */
+    .footer__links {
+      display: flex;
+      gap: 96px;
+      margin-bottom: calc(40px - 20 / 3306 * 100%);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer__social { list-style: none; }
+
+    .footer__link {
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible { color: var(--purple); }
+
+    /* Small links under the wordmark (left) and the tagline (right), in Sora Light capitals */
+    .footer__legal {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px; /* 20px below the wordmark and tagline */
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .footer__legal a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__legal a:hover,
+    .footer__legal a:focus-visible { color: var(--white); }
+
+    /* Same type as the project titles (StuartFox, Denglish…) */
+    .footer__tagline {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--purple);
+      margin-bottom: -0.19em; /* drops the last line onto the same baseline as the wordmark */
+    }
+
+    /* ───────── Narrower screens ───────── */
+    @media (max-width: 1365px) {
+      .projects__statement-box { flex: 1 1 auto; }
+      .projects__statement-group { width: auto; max-width: 650px; margin-left: auto; }
+      .project__mockup { flex: 0 1 660px; min-width: 0; }
+      .project__details { flex: 1 1 0; }
+    }
+
+    @media (max-width: 899px) {
+      .nav__links { display: none; }
+
+      .projects { padding-bottom: 40px; }
+      .projects__intro { flex-direction: column; gap: 20px; padding: 56px 20px 64px; margin-bottom: 0; }
+      .projects__label { flex: none; }
+      .projects__statement-group { margin-left: 0; }
+
+      .project__card { flex-direction: column; gap: 24px; }
+      .project__mockup { flex: none; width: 100%; height: auto; aspect-ratio: 660 / 420; }
+      .project__details { flex: none; width: 100%; height: auto; }
+      .project__bottom { position: static; margin-top: 32px; }
+      .project__tags { white-space: pre-wrap; }
+
+      .footer { height: auto; aspect-ratio: auto; }
+      .footer { padding-top: 56px; }
+      .closing { height: auto; padding: 56px 20px 64px; }
+      .footer__brand { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px; }
+      .footer__brand-main { flex: none; width: 100%; }
+      .footer__links { gap: 48px; }
+      /* Scaled down in proportion to the wordmark above it, on one line */
+      .footer__tagline { text-align: left; font-size: 20px; line-height: 1.2; margin-bottom: 0; }
+      .footer__tagline br { display: none; }
+      .footer__legal { margin-top: 24px; }
+    }
+
+    @media (max-width: 899px) {
+      .process__panel { padding: 56px 20px 0; }
+      .process__panel:last-child { padding-bottom: 64px; }
+      .process__statement,
+      .process__copy { padding: 0; }
+      .process__name { font-size: 56px; }
+      .process__desc { margin-top: 20px; }
+    }
+
+    /* ───────── Letter-by-letter text reveal ─────────
+       Script splits [data-letters] text into words and letters. Letters fade in left to right,
+       and each line starts as the one above it is finishing. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    /* Hidden until split, so the full text never flashes before the animation */
+    .js [data-letters]:not(.is-ready) { visibility: hidden; }
+
+    [data-letters] .w { white-space: nowrap; }
+
+    [data-letters] .ch { opacity: 0; }
+
+    [data-letters].is-playing .ch {
+      animation: letter-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) forwards;
+    }
+
+    @keyframes letter-in {
+      from { opacity: 0; filter: blur(6px); }
+      to { opacity: 1; filter: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-letters] .ch { opacity: 1; }
+      [data-letters].is-playing .ch { animation: none; }
+    }
+
+    /* ───────── Splash screen on phones ─────────
+       Fills the screen under the nav: the statement at the top at a readable size, and the wordmark
+       running edge to edge along the bottom */
+    @media (max-width: 899px) {
+      .hero { top: var(--nav-h); }
+
+      .hero__frame {
+        aspect-ratio: auto;
+        height: calc(100svh - var(--nav-h) - 40px);
+      }
+
+      .hero__intro {
+        left: 0;
+        top: 0;
+        width: 100%;
+        font-size: 26px;
+        line-height: 1.25;
+        white-space: normal; /* drops the extra space the desktop line breaks rely on */
+      }
+
+      /* Edge to edge, sitting on the bottom of the screen (the image's margin below the letters takes
+         up the last few pixels) */
+      .hero__wordmark {
+        top: auto;
+        left: -20px;
+        bottom: -20px;
+        width: calc(100% + 40px);
+        height: auto;
+        aspect-ratio: 3306 / 706;
+        --mark-h: calc(100vw * 706 / 3306);
+      }
+    }
+
+    /* ───────── Scrolling on phones ─────────
+       Only the projects and the process steps keep a scroll effect: each card or step pins under the nav
+       and the next slides up over it (script sets --stack-h to the tallest one and adds .is-stacked,
+       only when that fits on the screen). The splash screen and footer simply scroll with the page, as
+       pinning them made them flash back into view when the phone's address bar resized the screen. */
+    @media (max-width: 899px) {
+      .hero,
+      .footer {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+
+      /* Clip rather than hide, so the steps inside can still pin to the screen */
+      .process { overflow: clip; }
+
+      .projects.is-stacked .project,
+      .process.is-stacked .process__panel:not(.process__panel--intro) {
+        position: sticky;
+        top: var(--nav-h);
+        min-height: var(--stack-h);
+        align-items: flex-start;
+        background: var(--black);
+      }
+
+      /* A thin rule on each step's leading edge, as on the project cards */
+      .process.is-stacked .process__panel:not(.process__panel--intro) {
+        border-top: 1px solid var(--line-step);
+      }
+    }
+
+    /* ───────── Phone menu ─────────
+       Below 900px the nav links and "Talk to us" give way to a "Menu" button, which opens a full-screen
+       list of the pages under the nav. Shared by every page; keep them in step. */
+    .nav__menu { display: none; }
+    .menu { display: none; }
+
+    @media (max-width: 899px) {
+      .nav__cta { display: none; }
+
+      .nav__menu {
+        display: block;
+        padding: 8px 0 8px 16px;
+        background: none;
+        border: 0;
+        color: var(--white);
+        font: inherit;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: normal;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        inset: var(--nav-h) 0 0;
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 20px 20px;
+        background: var(--black);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0s 0.3s;
+      }
+
+      .menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .menu__links { list-style: none; }
+
+      /* Each page rises in, one after another, as the menu opens */
+      .menu__links li {
+        border-bottom: 1px solid var(--line-step);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .menu.is-open .menu__links li {
+        opacity: 1;
+        transform: none;
+        transition-delay: calc(0.05s + var(--i) * 0.06s);
+      }
+
+      /* Same type as the project titles */
+      .menu__links a {
+        display: block;
+        padding: 18px 0;
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 1.1;
+        color: var(--white);
+      }
+
+      .menu__links a[aria-current="page"] { color: var(--muted); }
+      .menu__links .menu__cta { color: var(--purple); }
+
+      .menu__foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      html.menu-open { overflow: hidden; }
+    }
+
+    @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+      .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  </style>
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+
+  <header class="nav">
+    <a class="nav__logo" href="#" aria-label="Onwun home">
+      <img src="assets/onwun-logo.png" alt="Onwun">
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav__links">
+        <li><a href="#" aria-current="page">Home</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="about.html">About us</a></li>
+      </ul>
+    </nav>
+    <a class="nav__cta" href="contact.html">Talk to us</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </header>
+
+  <!-- Phone menu, opened by the "Menu" button in the nav -->
+  <nav class="menu" id="menu" aria-label="Menu">
+    <ul class="menu__links">
+        <li style="--i: 0;"><a href="index.html" aria-current="page">Home</a></li>
+        <li style="--i: 1;"><a href="#work">Work</a></li>
+        <li style="--i: 2;"><a href="about.html">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="contact.html">Talk to us</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a href="mailto:contact@onwun.com">contact@onwun.com</a>
+      <a href="tel:+447941625316">+44 7941 625316</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" aria-label="Featured work">
+      <div class="hero__frame">
+        <p class="hero__intro" data-letters>Onwun is a brand strategy and design consultancy based in London and Manchester,  built for businesses ready to lead, not follow.</p>
+        <div class="hero__wordmark" role="img" aria-label="Onwun">
+          <div class="hero__wordmark-glow"></div>
+          <div class="hero__wordmark-base"></div>
+          <div class="hero__wordmark-reveal"></div>
+          <div class="hero__wordmark-sweep"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects" id="work" aria-labelledby="projects-label">
+      <div class="projects__intro">
+        <h2 class="projects__label dm" id="projects-label">Featured projects:</h2>
+        <div class="projects__statement-box">
+          <div class="projects__statement-group">
+            <p class="projects__statement" data-letters>We build premium strategy led brands, that get chosen and build real growth.</p>
+            <a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Get in touch</span></a>
+          </div>
+        </div>
+      </div>
+
+      <article class="project">
+        <div class="rule"></div>
+        <div class="project__card">
+          <div class="project__mockup"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>
+          <div class="project__details">
+            <div class="project__heading">
+              <h3 class="project__title">StuartFox</h3>
+              <p class="project__meta">Specialist Finishes - 2026</p>
+            </div>
+            <div class="project__bottom">
+              <p class="project__desc">StuartFox is an established interior finish company based in Cheshire. We developed a clean, strategy led rebrand and website reflecting the quality and precision of the work behind the business.</p>
+              <p class="project__tags">Brand identity <span class="sep">/</span> Social content <span class="sep">/ </span>Art direction</p>
+              <a class="project__link dm" href="stuartfox.html">View project →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="rule"></div>
+        <div class="project__card">
+          <div class="project__mockup denglish-mark" role="img" aria-label="Denglish logo">
+            <div class="denglish-mark__word"><span style="--x: 0; --w: 161; --i: 0;"></span><span style="--x: 176; --w: 153; --i: 1;"></span><span style="--x: 344; --w: 158; --i: 2;"></span><span style="--x: 522; --w: 164; --i: 3;"></span><span style="--x: 702; --w: 63; --i: 4;"></span><span style="--x: 789; --w: 65; --i: 5;"></span><span style="--x: 868; --w: 117; --i: 6;"></span><span style="--x: 1002; --w: 155; --i: 7;"></span></div>
+          </div>
+          <div class="project__details">
+            <div class="project__heading">
+              <h3 class="project__title">Denglish</h3>
+              <p class="project__meta">Language app - 2026</p>
+            </div>
+            <div class="project__bottom">
+              <p class="project__desc project__desc--15">Denglish is a friendly, accessible language-learning app designed to help users build stronger everyday German &amp; English. We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish.</p>
+              <p class="project__tags">Visual Identity <span class="sep">/ </span>UI<span class="sep"> / </span>App design<span class="sep--deep"> /</span> Social media </p>
+              <a class="project__link dm" href="denglish.html">View project →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="rule"></div>
+        <div class="project__card">
+          <div class="project__mockup"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>
+          <div class="project__details">
+            <div class="project__heading">
+              <h3 class="project__title">ATLAS</h3>
+              <p class="project__meta">Premium menswear - 2026</p>
+            </div>
+            <div class="project__bottom">
+              <p class="project__desc project__desc--15">ATLAS is a premium menswear rental platform built around travel, culture and Manchester's textile history.</p>
+              <p class="project__tags">Brand identity<span class="sep"> /</span> UI <span class="sep--deep">/ </span>App design <span class="sep">/ </span>Social media</p>
+              <a class="project__link dm" href="atlas.html">View project →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="rule"></div>
+        <div class="project__card">
+          <div class="project__mockup"><img src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>
+          <div class="project__details">
+            <div class="project__heading">
+              <h3 class="project__title">ELEV8</h3>
+              <p class="project__meta">Electrolyte craft beer - 2025</p>
+            </div>
+            <div class="project__bottom">
+              <p class="project__desc">Electrolyte infused craft beer aimed to fight the next day hangovers and sway against the traditional stereotypes of the traditional beer culture.</p>
+              <p class="project__tags">Brand identity <span class="sep">/</span> Packaging</p>
+              <a class="project__link dm" href="elev8.html">View project →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="rule"></div>
+        <div class="project__card">
+          <div class="project__mockup"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>
+          <div class="project__details">
+            <div class="project__heading">
+              <h3 class="project__title">rise</h3>
+              <p class="project__meta">Insect granola - 2025</p>
+            </div>
+            <div class="project__bottom">
+              <p class="project__desc">rise is an insect granola brand designed to make entomophagy feel normal and appealing through a sustainable, high-protein breakfast brand that is familiar, trusted, and easy to enjoy.</p>
+              <p class="project__tags">Brand identity <span class="sep">/</span> Visual direction <span class="sep">/</span> Packaging</p>
+              <a class="project__link dm" href="rise.html">View project →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="process" id="process" aria-label="Our process">
+      <!-- The wordmark, invisible black; as you move through the steps a purple pen stroke writes out each letter.
+           Strokes follow the centre line of each letter in the wordmark image (3306 × 706) and are clipped to its shapes. -->
+      <svg class="process__logo" viewBox="0 0 3306 706" aria-hidden="true">
+        <defs>
+          <mask id="process-logo-shape" maskUnits="userSpaceOnUse" x="0" y="0" width="3306" height="706" style="mask-type: alpha">
+            <image href="assets/onwun-wordmark.png" width="3306" height="706"/>
+          </mask>
+        </defs>
+        <g mask="url(#process-logo-shape)">
+          <rect class="process__logo-base" width="3306" height="706"/>
+          <g class="process__logo-ink">
+            <path pathLength="1" stroke-width="200" d="M346.5 90A243.5 262.5 0 1 0 346.5 615A243.5 262.5 0 1 0 346.5 90"/>
+            <path pathLength="1" stroke-width="220" d="M810.5 670V60C870 90 930 95 1013 95C1150 95 1215.5 170 1215.5 300V670"/>
+            <path pathLength="1" stroke-width="200" d="M1409 20L1593 690L1805 20L2026 690L2201 20"/>
+            <path pathLength="1" stroke-width="180" d="M2395.5 20V380C2395.5 560 2470 610 2580 610C2700 610 2796.5 600 2796.5 670V20"/>
+            <path pathLength="1" stroke-width="220" d="M2796.5 300C2796.5 140 2900 95 3000 95C3140 95 3201.5 170 3201.5 300V670"/>
+          </g>
+        </g>
+      </svg>
+
+      <div class="process__track">
+        <div class="process__panel process__panel--intro">
+          <div class="process__statement">
+            <p>Brands are increasingly beginning to look and sound the same. Fast, AI-generated content has made it easy to produce work quickly, but much of it lacks character, clarity, and a point of view. The result is branding that feels polished on the surface but forgettable in practice, generic visuals, vague messaging, and no real reason for people to choose one business over another.</p>
+            <p data-letters>Your competitors are blending in. We make sure you don’t. Our five-step ONWUN process takes you from insight to launch in just five weeks.</p>
+          </div>
+          <p class="process__hint" aria-hidden="true">Scroll to explore →</p>
+        </div>
+
+        <article class="process__panel" aria-label="Step 1: Observe">
+          <div class="process__copy">
+            <h3 class="process__name"><span class="process__initial">O</span><span class="process__rest">bserve.</span></h3>
+            <p class="process__desc">We start by listening. We discover how you want your brand to be perceived and where you want to be positioned. We work face to face with you and your team to uncover pain points, your audience and what genuinely sets you apart from other brands out there.</p>
+          </div>
+        </article>
+
+        <article class="process__panel" aria-label="Step 2: Narrate">
+          <div class="process__copy">
+            <h3 class="process__name"><span class="process__initial">N</span><span class="process__rest">arrate.</span></h3>
+            <p class="process__desc">We shape what we learn into your strategy. Positioning, purpose and personality come together in one clear narrative that the whole brand can stand on and your team can rally behind.</p>
+          </div>
+        </article>
+
+        <article class="process__panel" aria-label="Step 3: Wake">
+          <div class="process__copy">
+            <h3 class="process__name"><span class="process__initial">W</span><span class="process__rest">ake.</span></h3>
+            <p class="process__desc">We build the visual system and bring your strategy to life. Logos, type, colour and strategy led visual concepts that wake your market up and make your audience look twice.</p>
+          </div>
+        </article>
+
+        <article class="process__panel" aria-label="Step 4: Unveil">
+          <div class="process__copy">
+            <h3 class="process__name"><span class="process__initial">U</span><span class="process__rest">nveil.</span></h3>
+            <p class="process__desc">We reveal the finished identity, launching your brand into the real world refined and delivered together as one consistent brand system.</p>
+          </div>
+        </article>
+
+        <article class="process__panel" aria-label="Step 5: Nurture">
+          <div class="process__copy">
+            <h3 class="process__name"><span class="process__initial">N</span><span class="process__rest">urture.</span></h3>
+            <p class="process__desc">The journey doesn't have to end here. We stay by your side for 30 days post launch, and offer our valuable expertise in ongoing retainer support to keep you and your brand ahead upon request, at any time. Relationships are what we value most.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="faq" id="faq" aria-labelledby="faq-label">
+      <h2 class="faq__label dm" id="faq-label">FAQ’s:</h2>
+      <ul class="faq__list">
+        <li class="faq__item" style="--i: 0;">
+          <h3>
+            <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-1" id="faq-question-1">
+              <span class="faq__q-text">How much is this going to cost?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1">
+            <div class="faq__answer-inner"><p>It all depends on what you’re looking for. A visual refresh can start from around 3k, whereas a full brand identity can vary from 5k to 6.5k, depending on the deliverables.</p></div>
+          </div>
+        </li>
+        <li class="faq__item" style="--i: 1;">
+          <h3>
+            <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-2" id="faq-question-2">
+              <span class="faq__q-text">Do you do website builds?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2">
+            <div class="faq__answer-inner"><p>Yes, we do. We can either build you a website around your existing brand or build one aligned to a brand identity we have built. Website costs start from 2.5k for a simple build.</p></div>
+          </div>
+        </li>
+        <li class="faq__item" style="--i: 2;">
+          <h3>
+            <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-3" id="faq-question-3">
+              <span class="faq__q-text">Who will I be working with?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3">
+            <div class="faq__answer-inner"><p>You will be working alongside both Niall and Ro. After the kick off call we will introduce you to our client portal where we can communicate, share projects and schedule meetings. We like keeping everything under one roof to achieve the best possible results.</p></div>
+          </div>
+        </li>
+        <li class="faq__item" style="--i: 3;">
+          <h3>
+            <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-4" id="faq-question-4">
+              <span class="faq__q-text">Do you offer custom quotes?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4">
+            <div class="faq__answer-inner"><p>Yes. If you have any specific request in mind, please get in touch with us and we will be able to help you.</p></div>
+          </div>
+        </li>
+        <li class="faq__item" style="--i: 4;">
+          <h3>
+            <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-5" id="faq-question-5">
+              <span class="faq__q-text">Do you do ongoing design too?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__answer" id="faq-answer-5" role="region" aria-labelledby="faq-question-5">
+            <div class="faq__answer-inner"><p>Yes. After launch we stay by your side for 30 days, and offer ongoing retainer support for campaigns, content and new touchpoints whenever you need it.</p></div>
+          </div>
+        </li>
+        <li class="faq__item" style="--i: 5;">
+          <h3>
+            <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-6" id="faq-question-6">
+              <span class="faq__q-text">How do we get started?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__answer" id="faq-answer-6" role="region" aria-labelledby="faq-question-6">
+            <div class="faq__answer-inner"><p>Get in touch with a little about your business and where you want to take it. We'll set up a short call to see if we're the right fit, then send over a proposal.</p></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <section class="closing" id="contact" aria-label="Start a project">
+      <!-- TODO: point "book a call" at the Calendly link once it exists -->
+      <p class="closing__cta">We look forward to working with you. <a href="contact.html">Start a project</a> or <a href="#">book a call</a> and we can get started straight away.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__frame">
+      <div class="footer__brand">
+        <div class="footer__brand-main">
+          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <div class="footer__links">
+            <ul class="footer__social">
+              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="#">LinkedIn</a></li>
+            </ul>
+            <div class="footer__reach">
+              <a class="footer__link" href="mailto:contact@onwun.com">contact@onwun.com</a>
+              <p>+44 7941 625316</p>
+            </div>
+          </div>
+          <img class="footer__logo" src="assets/onwun-wordmark.png" alt="Onwun">
+        </div>
+        <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
+      </div>
+      <!-- TODO: link these to the terms and privacy pages once they exist -->
+      <div class="footer__legal">
+        <a href="#">T&amp;Cs</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="view-cursor dm" aria-hidden="true"><span>View project</span></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    // Process: on wide screens the section pins and each full-height page slides in sideways
+    // over the one before as you scroll.
+    (() => {
+      if (!window.gsap || !window.ScrollTrigger) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      const section = document.querySelector('.process');
+      const panels = gsap.utils.toArray('.process__panel', section);
+      const steps = panels.length - 1;
+      const inks = section.querySelectorAll('.process__logo-ink path');
+
+      // Letter i is written out as you move from page i to page i + 1, so the letter for the page
+      // you're on is purple and the ones still to come are grey
+      function write(t) {
+        const k = t * steps;
+        inks.forEach((path, i) => {
+          path.style.strokeDashoffset = 1 - Math.min(Math.max(k - i, 0), 1);
+        });
+        // A page's word turns white once the page has fully slid in, and fades back if you scroll back
+        panels.forEach((panel, i) => panel.classList.toggle('is-lit', i > 0 && k >= i - 0.02));
+      }
+
+      gsap.matchMedia().add('(min-width: 900px) and (prefers-reduced-motion: no-preference)', () => {
+        section.classList.add('is-flick');
+        // Each page after the first slides in over the one before, in step with the scroll
+        const slides = gsap.timeline({
+          onUpdate() { write(this.progress()); },
+          scrollTrigger: {
+            trigger: section,
+            pin: true,
+            start: () => 'top top+=' + document.querySelector('.nav').offsetHeight,
+            end: () => '+=' + window.innerHeight * steps,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+        panels.slice(1).forEach((panel) => slides.fromTo(panel, { xPercent: 100 }, { xPercent: 0, ease: 'none' }));
+
+        // Keep the intro's last line level with the last line of the Observe description
+        const intro = panels[0];
+        const observe = panels[1].querySelector('.process__copy');
+        // Keep the gap from the last step's description to the FAQs the same as between the other
+        // sections (138px either side of each boundary), whatever the screen height
+        const faq = document.querySelector('.faq');
+        const lastDesc = panels[panels.length - 1].querySelector('.process__desc');
+        function levelIntro() {
+          intro.style.paddingBottom = panels[1].clientHeight - (observe.offsetTop + observe.offsetHeight) + 'px';
+          const below = panels[panels.length - 1].getBoundingClientRect().bottom - lastDesc.getBoundingClientRect().bottom;
+          faq.style.paddingTop = Math.max(24, 276 - below) + 'px';
+        }
+        levelIntro();
+        ScrollTrigger.addEventListener('refresh', levelIntro);
+
+        write(0);
+        return () => {
+          section.classList.remove('is-flick');
+          ScrollTrigger.removeEventListener('refresh', levelIntro);
+          intro.style.removeProperty('padding-bottom');
+          faq.style.removeProperty('padding-top');
+          panels.forEach((panel) => panel.classList.remove('is-lit'));
+          inks.forEach((path) => path.style.removeProperty('stroke-dashoffset'));
+        };
+      });
+    })();
+
+    // Project images: a "View project" label follows the mouse, easing behind it slightly;
+    // clicking the image opens the project, same as the "View project" link
+    (() => {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      const label = document.querySelector('.view-cursor');
+      let x = 0, y = 0, lx = 0, ly = 0, frame = null;
+
+      function follow() {
+        lx += (x - lx) * 0.25;
+        ly += (y - ly) * 0.25;
+        label.style.setProperty('--cx', lx + 'px');
+        label.style.setProperty('--cy', ly + 'px');
+        frame = Math.abs(x - lx) + Math.abs(y - ly) > 0.5 ? requestAnimationFrame(follow) : null;
+      }
+
+      document.querySelectorAll('.project__mockup').forEach((img) => {
+        const link = img.closest('.project').querySelector('.project__link');
+        img.addEventListener('pointerenter', (e) => {
+          x = lx = e.clientX;
+          y = ly = e.clientY;
+          follow();
+          label.classList.add('is-visible');
+        });
+        img.addEventListener('pointermove', (e) => {
+          x = e.clientX;
+          y = e.clientY;
+          if (!frame) frame = requestAnimationFrame(follow);
+        });
+        img.addEventListener('pointerleave', () => label.classList.remove('is-visible'));
+        img.addEventListener('click', () => link.click());
+      });
+    })();
+
+    // FAQs: one answer open at a time; rows rise in the first time the section comes into view
+    (() => {
+      const faq = document.querySelector('.faq');
+      const items = [...faq.querySelectorAll('.faq__item')];
+
+      items.forEach((item) => {
+        const button = item.querySelector('.faq__question');
+        button.addEventListener('click', () => {
+          const opening = !item.classList.contains('is-open');
+          items.forEach((other) => {
+            other.classList.remove('is-open');
+            other.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
+          });
+          if (opening) {
+            item.classList.add('is-open');
+            button.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          faq.classList.add('is-in');
+          io.disconnect();
+        }
+      }, { threshold: 0.2 });
+      io.observe(faq);
+    })();
+
+    // Denglish logo: animate only while its card is on screen
+    (() => {
+      const mark = document.querySelector('.denglish-mark');
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => mark.classList.toggle('is-playing', e.isIntersecting));
+      }, { threshold: 0.4 }).observe(mark);
+    })();
+
+    // Statements: fade in letter by letter, line by line
+    (() => {
+      const STEP = 0.022;    // seconds between letters
+      const OVERLAP = 0.6;   // the next line starts when this much of the current line has played
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function split(el) {
+        const text = el.textContent;
+        const visual = document.createElement('span');
+        visual.setAttribute('aria-hidden', 'true');
+        text.split(/(\s+)/).forEach((token) => {
+          if (!token) return;
+          if (/^\s+$/.test(token)) {
+            visual.appendChild(document.createTextNode(token));
+            return;
+          }
+          const word = document.createElement('span');
+          word.className = 'w';
+          for (const char of token) {
+            const ch = document.createElement('span');
+            ch.className = 'ch';
+            ch.textContent = char;
+            word.appendChild(ch);
+          }
+          visual.appendChild(word);
+        });
+        const label = document.createElement('span');
+        label.className = 'sr-only';
+        label.textContent = text;
+        el.replaceChildren(label, visual);
+      }
+
+      function play(el, startDelay) {
+        // group words into the lines they actually wrap onto
+        const lines = [];
+        let lastTop = null;
+        el.querySelectorAll('.w').forEach((word) => {
+          const top = Math.round(word.offsetTop);
+          if (top !== lastTop) {
+            lines.push([]);
+            lastTop = top;
+          }
+          lines[lines.length - 1].push(...word.querySelectorAll('.ch'));
+        });
+
+        let lineStart = startDelay;
+        lines.forEach((chars) => {
+          chars.forEach((ch, i) => ch.style.setProperty('--d', (lineStart + i * STEP).toFixed(3) + 's'));
+          lineStart += chars.length * STEP * OVERLAP;
+        });
+        el.classList.add('is-ready', 'is-playing');
+        return lineStart; // when a following paragraph can start, keeping the line-by-line rhythm
+      }
+
+      const hero = document.querySelector('.hero__intro');
+      const statement = document.querySelector('.projects__statement');
+      const processIntro = document.querySelector('.process__statement');
+      const processParas = [...processIntro.querySelectorAll('[data-letters]')];
+
+      if (reduced) {
+        [hero, statement, ...processParas].forEach((el) => el.classList.add('is-ready'));
+        return;
+      }
+
+      document.fonts.ready.then(() => {
+        [hero, statement, ...processParas].forEach(split);
+
+        // hero: plays alongside the logo reveal
+        play(hero, 0.35);
+
+        // featured projects: plays the first time it scrolls into view
+        statement.classList.add('is-ready');
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            play(statement, 0.05);
+            io.disconnect();
+          }
+        }, { threshold: 0.6 });
+        io.observe(statement);
+
+        // process intro: the closing paragraph plays the first time it scrolls into view
+        processParas.forEach((el) => el.classList.add('is-ready'));
+        const ioProcess = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            processParas.reduce((start, el) => play(el, start), 0.05);
+            ioProcess.disconnect();
+          }
+        }, { threshold: 0.6 });
+        ioProcess.observe(processIntro);
+      });
+    })();
+
+    // Nav: the logo shrinks once you scroll past the top of the hero, and grows back when you return
+    (() => {
+      const nav = document.querySelector('.nav');
+      let ticking = false;
+      function update() {
+        nav.classList.toggle('is-compact', window.scrollY > 40);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Featured projects: cards pin directly below the pinned intro, whatever its height
+    (() => {
+      const section = document.querySelector('.projects');
+      const intro = section.querySelector('.projects__intro');
+      new ResizeObserver(() => section.style.setProperty('--projects-pin', intro.offsetHeight + 'px')).observe(intro);
+    })();
+
+    // Hero wordmark: purple spotlight that tracks the cursor (one update per frame, no trailing)
+    (() => {
+      const mark = document.querySelector('.hero__wordmark');
+      let pending = null;
+      let frame = null;
+
+      function setSpot(x, y) {
+        mark.style.setProperty('--spot-x', x + 'px');
+        mark.style.setProperty('--spot-y', y + 'px');
+      }
+
+      mark.addEventListener('pointerenter', (e) => {
+        const box = mark.getBoundingClientRect();
+        setSpot(e.clientX - box.left, e.clientY - box.top);
+        mark.classList.add('is-lit');
+      });
+
+      mark.addEventListener('pointermove', (e) => {
+        const box = mark.getBoundingClientRect();
+        pending = { x: e.clientX - box.left, y: e.clientY - box.top };
+        if (!frame) {
+          frame = requestAnimationFrame(() => {
+            setSpot(pending.x, pending.y);
+            frame = null;
+          });
+        }
+      });
+
+      mark.addEventListener('pointerleave', () => mark.classList.remove('is-lit'));
+    })();
+
+    // Phones: the project cards and the process steps stack as you scroll. Each group is given the height
+    // of its tallest item so every one fully covers the last, and only stacks when that fits on the
+    // screen under the nav. Measured on load and when the width changes (not when the address bar
+    // shows or hides, which would make the page jump mid-scroll).
+    (() => {
+      const phone = window.matchMedia('(max-width: 899px) and (prefers-reduced-motion: no-preference)');
+      const nav = document.querySelector('.nav');
+      const groups = [
+        [document.querySelector('.projects'), '.project'],
+        [document.querySelector('.process'), '.process__panel:not(.process__panel--intro)'],
+      ];
+      // The screen height with the address bar showing, the smallest it gets
+      const probe = document.createElement('div');
+      probe.style.cssText = 'position: fixed; top: 0; width: 0; height: 100svh; visibility: hidden; pointer-events: none;';
+      document.body.appendChild(probe);
+
+      function measure() {
+        groups.forEach(([section, selector]) => {
+          section.classList.remove('is-stacked');
+          section.style.removeProperty('--stack-h');
+          if (!phone.matches) return;
+          const tallest = Math.max(...[...section.querySelectorAll(selector)].map((item) => item.offsetHeight));
+          if (tallest <= probe.offsetHeight - nav.offsetHeight) {
+            section.style.setProperty('--stack-h', tallest + 'px');
+            section.classList.add('is-stacked');
+          }
+        });
+      }
+
+      let width = window.innerWidth;
+      window.addEventListener('resize', () => {
+        if (window.innerWidth === width) return;
+        width = window.innerWidth;
+        measure();
+      });
+      phone.addEventListener('change', measure);
+      document.fonts.ready.then(measure);
+      window.addEventListener('load', measure);
+      measure();
+
+      // Each step's word lights up white once the step is fully in view, as it does on wide screens
+      const steps = document.querySelectorAll('.process__panel:not(.process__panel--intro)');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (phone.matches && e.isIntersecting) e.target.classList.add('is-lit');
+        });
+      }, { threshold: 0.9 });
+      steps.forEach((step) => io.observe(step));
+    })();
+
+    // Phone menu: the "Menu" button opens and closes the list of pages; choosing a page, pressing Escape
+    // or widening the window past the phone layout closes it
+    (() => {
+      const button = document.querySelector('.nav__menu');
+      const menu = document.getElementById('menu');
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Close' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+      }
+
+      button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          setOpen(false);
+          button.focus();
+        }
+      });
+      window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>

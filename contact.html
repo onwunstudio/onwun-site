@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact · Onwun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Contact page, opened from "Talk to us" in the nav.
+       Nav and footer are copied from the home page (index.html); keep them in step. */
+    :root {
+      --nav-h: 41px;
+      --black: #000;
+      --white: #fff;
+      --purple: #6a60f6;
+      --purple-deep: #5d54d7;
+      --purple-cta: #5b3fe4;
+      --muted: #626675;
+      --grey-text: #c9cad0;
+      --line-step: #2e2e2e;
+      --error: #e5484d;
+
+      --sora: "Sora", sans-serif;
+      --inter: "Inter", sans-serif;
+      --dm: "DM Sans", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--black); }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sora);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .dm {
+      font-family: var(--dm);
+      font-weight: 500;
+      font-variation-settings: "opsz" 14;
+    }
+
+    /* ───────── Nav Bar ───────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--nav-h);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+    }
+
+    .nav__logo {
+      display: block;
+      width: 141px;
+      height: 30px;
+      transform-origin: left center;
+      transition: transform 0.45s var(--ease);
+    }
+
+    .nav.is-compact .nav__logo { transform: scale(0.72); }
+
+    .nav__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
+    .nav__links a:hover { opacity: 1; }
+
+    .nav__cta {
+      font-family: var(--inter);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      color: var(--purple-cta);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .nav__cta:hover,
+    .nav__cta[aria-current="page"] { color: var(--purple); }
+
+    /* ───────── Layers ─────────
+       The contact section slides up off the footer at the end, as on the other pages */
+    .contact {
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 0;
+      background: var(--black);
+    }
+
+    /* ───────── Contact ─────────
+       The same two columns as the project cards and pages: 660 | 40 gap | 626, 138px from the top.
+       Heading, intro and direct details on the left; the form on the right. */
+    .contact {
+      min-height: calc(100vh - var(--nav-h));
+      padding: 138px 20px;
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: stretch;
+    }
+
+    .contact__intro {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact__label {
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* Same type as the project titles on the home page (StuartFox, Denglish…) */
+    .contact__title {
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    /* Same type as the home page section statements */
+    .contact__lead {
+      max-width: 480px;
+      margin-top: 32px;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+      color: var(--grey-text);
+    }
+
+    /* Direct details, in the style of a project's key details; pushed to the bottom of the column */
+    .contact__direct {
+      margin-top: auto;
+      padding-top: 64px;
+    }
+
+    .contact__fact {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 6px 0;
+    }
+
+    .contact__fact dt {
+      flex: 0 0 120px;
+      font-size: 11px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .contact__fact dd {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--grey-text);
+    }
+
+    /* Purple links whose underline draws in from the left on hover, as in the closing statement */
+    .u-link {
+      color: var(--purple);
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: background-size 0.4s var(--ease);
+    }
+
+    .u-link:hover,
+    .u-link:focus-visible { background-size: 100% 1px; }
+
+    .contact__fact .plain { transition: color 0.25s; }
+    .contact__fact .plain:hover,
+    .contact__fact .plain:focus-visible { color: var(--white); }
+
+    /* ───────── Form ─────────
+       Quiet underlined fields; the line draws across in purple while you type in one */
+    .form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field {
+      position: relative;
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    .field::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: var(--purple);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s var(--ease);
+    }
+
+    .field:focus-within::after { transform: scaleX(1); }
+    .field.is-invalid { border-bottom-color: var(--error); }
+
+    .field input,
+    .field textarea {
+      display: block;
+      width: 100%;
+      padding: 22px 0;
+      border: 0;
+      border-radius: 0;
+      outline: none;
+      background: transparent;
+      color: var(--white);
+      font: inherit;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .field textarea {
+      resize: none;
+      min-height: calc(20px * 1.4 * 3 + 44px); /* three lines */
+      overflow: hidden;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--muted); opacity: 1; }
+
+    /* Keep browser autofill on brand instead of a pale yellow box */
+    .field input:-webkit-autofill {
+      -webkit-text-fill-color: var(--white);
+      -webkit-box-shadow: 0 0 0 1000px var(--black) inset;
+      caret-color: var(--white);
+    }
+
+    .field__error {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: var(--error);
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .field.is-invalid .field__error { opacity: 1; }
+    .field--message .field__error { top: 34px; transform: none; }
+
+    .form__foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .form__note {
+      max-width: 280px;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    /* A plain text button: on hover the text turns purple and an underline draws in from the left,
+       like the closing statement links, and the arrow nudges up and right */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border: 0;
+      background: transparent;
+      color: var(--white);
+      font: inherit;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .button__label {
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: color 0.3s, background-size 0.4s var(--ease);
+    }
+
+    .button__arrow {
+      color: var(--purple);
+      transition: transform 0.4s var(--ease);
+    }
+
+    .button:focus-visible { outline: none; }
+    .button:hover .button__label,
+    .button:focus-visible .button__label { color: var(--purple); background-size: 100% 1px; }
+    .button:hover .button__arrow,
+    .button:focus-visible .button__arrow { transform: translate(3px, -3px); }
+
+    /* Shown in place of the form once it has been sent */
+    .form__thanks {
+      display: none;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+      max-width: 480px;
+    }
+
+    .form__thanks strong { font-weight: 600; color: var(--purple); }
+
+    .contact.is-sent .form { display: none; }
+    .contact.is-sent .form__thanks { display: block; animation: rise 0.8s var(--ease) both; }
+
+    /* Each block rises in on load */
+    .rise-in { animation: rise 0.9s var(--ease) both; animation-delay: calc(var(--i, 0) * 0.08s); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ───────── Footer ───────── */
+    .footer {
+      padding: 136px 20px 20px;
+      display: flex;
+    }
+
+    .footer__frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer__brand {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .footer__brand-main {
+      flex: 0 0 47%;
+      min-width: 0;
+    }
+
+    .footer__logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-left: calc(-20 / 3306 * 100%);
+      margin-bottom: calc(-36 / 3306 * 100%);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 96px;
+      margin-bottom: calc(40px - 20 / 3306 * 100%);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer__social { list-style: none; }
+
+    .footer__link {
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible { color: var(--purple); }
+
+    .footer__legal {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .footer__legal a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__legal a:hover,
+    .footer__legal a:focus-visible { color: var(--white); }
+
+    .footer__tagline {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--purple);
+      margin-bottom: -0.19em;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rise-in,
+      .contact.is-sent .form__thanks { animation: none; }
+    }
+
+    @media (max-width: 899px) {
+      .nav__links { display: none; }
+
+      .contact {
+        min-height: 0;
+        padding: 56px 20px 64px;
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 48px;
+      }
+      .contact__lead { font-size: 20px; margin-top: 24px; }
+      .contact__direct { order: 3; padding-top: 0; }
+      .contact__intro { display: contents; }
+      .contact__head { order: 1; }
+      .form, .form__thanks { order: 2; }
+      .form__foot { flex-direction: column; align-items: stretch; gap: 24px; }
+      .button { align-self: flex-start; }
+      .contact__fact dt { flex-basis: 96px; }
+
+      .footer { padding-top: 56px; }
+      .footer__brand { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px; }
+      .footer__brand-main { flex: none; width: 100%; }
+      .footer__links { gap: 48px; }
+      /* Scaled down in proportion to the wordmark above it, on one line */
+      .footer__tagline { text-align: left; font-size: 20px; line-height: 1.2; margin-bottom: 0; }
+      .footer__tagline br { display: none; }
+      .footer__legal { margin-top: 24px; }
+    }
+
+    /* Phones: the footer simply scroll with the page; pinning them made them flash back into
+       view when the phone's address bar resized the screen */
+    @media (max-width: 899px) {
+      .footer {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+    }
+
+    /* ───────── Phone menu ─────────
+       Below 900px the nav links and "Talk to us" give way to a "Menu" button, which opens a full-screen
+       list of the pages under the nav. Shared by every page; keep them in step. */
+    .nav__menu { display: none; }
+    .menu { display: none; }
+
+    @media (max-width: 899px) {
+      .nav__cta { display: none; }
+
+      .nav__menu {
+        display: block;
+        padding: 8px 0 8px 16px;
+        background: none;
+        border: 0;
+        color: var(--white);
+        font: inherit;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: normal;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        inset: var(--nav-h) 0 0;
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 20px 20px;
+        background: var(--black);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0s 0.3s;
+      }
+
+      .menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .menu__links { list-style: none; }
+
+      /* Each page rises in, one after another, as the menu opens */
+      .menu__links li {
+        border-bottom: 1px solid var(--line-step);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .menu.is-open .menu__links li {
+        opacity: 1;
+        transform: none;
+        transition-delay: calc(0.05s + var(--i) * 0.06s);
+      }
+
+      /* Same type as the project titles */
+      .menu__links a {
+        display: block;
+        padding: 18px 0;
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 1.1;
+        color: var(--white);
+      }
+
+      .menu__links a[aria-current="page"] { color: var(--muted); }
+      .menu__links .menu__cta { color: var(--purple); }
+
+      .menu__foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      html.menu-open { overflow: hidden; }
+    }
+
+    @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+      .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav__logo" href="index.html" aria-label="Onwun home">
+      <img src="assets/onwun-logo.png" alt="Onwun">
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="about.html">About us</a></li>
+      </ul>
+    </nav>
+    <a class="nav__cta" href="contact.html" aria-current="page">Talk to us</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </header>
+
+  <!-- Phone menu, opened by the "Menu" button in the nav -->
+  <nav class="menu" id="menu" aria-label="Menu">
+    <ul class="menu__links">
+        <li style="--i: 0;"><a href="index.html">Home</a></li>
+        <li style="--i: 1;"><a href="index.html#work">Work</a></li>
+        <li style="--i: 2;"><a href="about.html">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="contact.html" aria-current="page">Talk to us</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a href="mailto:contact@onwun.com">contact@onwun.com</a>
+      <a href="tel:+447941625316">+44 7941 625316</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="contact" aria-labelledby="contact-title">
+      <div class="contact__intro">
+        <div class="contact__head">
+          <p class="contact__label dm rise-in">Contact:</p>
+          <h1 class="contact__title rise-in" id="contact-title" style="--i: 1;">Let’s work together.</h1>
+          <p class="contact__lead rise-in" style="--i: 2;">Ready to take your brand to the next level? Tell us a little about your project and we’ll be in touch.</p>
+        </div>
+
+        <dl class="contact__direct rise-in" style="--i: 4;">
+          <div class="contact__fact"><dt class="dm">Email</dt><dd><a class="plain" href="mailto:contact@onwun.com">contact@onwun.com</a></dd></div>
+          <div class="contact__fact"><dt class="dm">Phone</dt><dd><a class="plain" href="tel:+447941625316">+44 7941 625316</a></dd></div>
+          <!-- TODO: point this at the Calendly link once it exists -->
+          <div class="contact__fact"><dt class="dm">Prefer a call?</dt><dd><a class="u-link" href="#">Book a call</a></dd></div>
+        </dl>
+      </div>
+
+      <!-- TODO: connect the form to a form service (e.g. Formspree) so enquiries arrive by email.
+           For now it checks the fields and shows the thank-you message, but nothing is sent. -->
+      <form class="form rise-in" style="--i: 3;" novalidate>
+        <div class="field">
+          <input type="text" name="name" placeholder="Name" autocomplete="name" required aria-label="Name">
+          <span class="field__error">Please add your name</span>
+        </div>
+        <div class="field">
+          <input type="email" name="email" placeholder="Email" autocomplete="email" required aria-label="Email">
+          <span class="field__error">Please add a valid email</span>
+        </div>
+        <div class="field">
+          <input type="text" name="website" placeholder="Website (if you have one)" autocomplete="url" aria-label="Website (optional)">
+        </div>
+        <div class="field field--message">
+          <textarea name="message" rows="3" placeholder="Tell us about your project" required aria-label="Tell us about your project"></textarea>
+          <span class="field__error">Please add a short message</span>
+        </div>
+
+        <div class="form__foot">
+          <p class="form__note">We’ll review your enquiry and get back to you within one working day.</p>
+          <button class="button" type="submit"><span class="button__label">Send message</span> <span class="button__arrow" aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+
+      <p class="form__thanks" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__frame">
+      <div class="footer__brand">
+        <div class="footer__brand-main">
+          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <div class="footer__links">
+            <ul class="footer__social">
+              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="#">LinkedIn</a></li>
+            </ul>
+            <div class="footer__reach">
+              <a class="footer__link" href="mailto:contact@onwun.com">contact@onwun.com</a>
+              <p>+44 7941 625316</p>
+            </div>
+          </div>
+          <img class="footer__logo" src="assets/onwun-wordmark.png" alt="Onwun">
+        </div>
+        <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
+      </div>
+      <!-- TODO: link these to the terms and privacy pages once they exist -->
+      <div class="footer__legal">
+        <a href="#">T&amp;Cs</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Form: the message box grows as you type; on send, each required field is checked and the
+    // form is swapped for a thank-you note
+    (() => {
+      const section = document.querySelector('.contact');
+      const form = section.querySelector('.form');
+      const thanks = section.querySelector('.form__thanks');
+      const message = form.querySelector('textarea');
+
+      function grow() {
+        message.style.height = 'auto';
+        message.style.height = message.scrollHeight + 'px';
+      }
+      message.addEventListener('input', grow);
+
+      function check(input) {
+        const ok = input.value.trim() !== '' && input.checkValidity();
+        input.closest('.field').classList.toggle('is-invalid', !ok);
+        return ok;
+      }
+
+      form.querySelectorAll('[required]').forEach((input) => {
+        input.addEventListener('input', () => {
+          if (input.closest('.field').classList.contains('is-invalid')) check(input);
+        });
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fields = [...form.querySelectorAll('[required]')];
+        const bad = fields.filter((input) => !check(input));
+        if (bad.length) {
+          bad[0].focus();
+          return;
+        }
+        const first = form.elements.name.value.trim().split(/\s+/)[0];
+        thanks.innerHTML = '';
+        const name = document.createElement('strong');
+        name.textContent = 'Thanks, ' + first + '.';
+        thanks.append(name, ' We’ve got your message and will be in touch shortly.');
+        section.classList.add('is-sent');
+      });
+    })();
+
+    // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
+    (() => {
+      const nav = document.querySelector('.nav');
+      let ticking = false;
+      function update() {
+        nav.classList.toggle('is-compact', window.scrollY > 40);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Phone menu: the "Menu" button opens and closes the list of pages; choosing a page, pressing Escape
+    // or widening the window past the phone layout closes it
+    (() => {
+      const button = document.querySelector('.nav__menu');
+      const menu = document.getElementById('menu');
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Close' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+      }
+
+      button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          setOpen(false);
+          button.focus();
+        }
+      });
+      window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>
