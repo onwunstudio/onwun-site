@@ -97,7 +97,7 @@ PROJECTS = {
         "title": "ELEV8 Craft Beer Branding &amp; Packaging | Onwun Case Study",
         "description": "Brand identity and packaging for ELEV8, an electrolyte-infused craft beer reimagining beer for a healthier generation.",
         "og_alt": "ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours",
-        "poster": '<img class="poster__image" src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours">',
+        "poster": '<img class="poster__image" src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours">',
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A bold identity and packaging system for an electrolyte craft beer brewed for active, health-aware drinkers.",
         "client": "ELEV8",
@@ -200,7 +200,7 @@ CARDS = [
     ("stuartfox", "StuartFox", "Specialist Finishes - 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
     ("denglish", "Denglish", "Language app - 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
     ("atlas", "ATLAS", "Premium menswear - 2026", '<div class="more__image"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>'),
-    ("elev8", "ELEV8", "Electrolyte craft beer - 2025", '<div class="more__image"><img src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
+    ("elev8", "ELEV8", "Electrolyte craft beer - 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
     ("rise", "rise", "Insect granola - 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
 ]
 
