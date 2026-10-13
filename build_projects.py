@@ -29,6 +29,10 @@ def services(*items):
 PROJECTS = {
     "denglish": {
         "name": "Denglish",
+        # Page title, Google description and link-preview image text (image: assets/og/denglish.jpg)
+        "title": "Denglish Language App Identity &amp; UI | Onwun Case Study",
+        "description": "Visual identity, UI and app design for Denglish, a friendly language-learning app helping people build stronger everyday German and English.",
+        "og_alt": "The Denglish logo in coral on burgundy",
         # The animated logo on burgundy
         "poster": DENGLISH_MARK,
         "poster_bg": "#440624",
@@ -50,6 +54,10 @@ PROJECTS = {
     },
     "stuartfox": {
         "name": "StuartFox",
+        # Page title, Google description and link-preview image text (image: assets/og/stuartfox.jpg)
+        "title": "StuartFox Rebrand &amp; Website | Onwun Case Study",
+        "description": "A strategy-led rebrand and website for StuartFox, a Cheshire interior finishes company, reflecting the quality and precision of their work.",
+        "og_alt": "StuartFox logo embossed in gold on white card",
         "poster": '<img class="poster__image" src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card">',
         "intro": "A clean, strategy led rebrand and website for an interior finish company based in Cheshire.",
         "client": "StuartFox",
@@ -62,6 +70,10 @@ PROJECTS = {
     },
     "atlas": {
         "name": "ATLAS",
+        # Page title, Google description and link-preview image text (image: assets/og/atlas.jpg)
+        "title": "ATLAS Menswear Rental Brand &amp; App | Onwun Case Study",
+        "description": "Brand identity, app design and print for ATLAS, a premium menswear rental platform built around travel, culture and Manchester’s textile history.",
+        "og_alt": "ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type",
         "poster": '<img class="poster__image" src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type">',
         "intro": "A premium menswear rental platform built around travel, culture and Manchester’s textile history.",
         "client": "ATLAS",
@@ -81,6 +93,10 @@ PROJECTS = {
     },
     "elev8": {
         "name": "ELEV8",
+        # Page title, Google description and link-preview image text (image: assets/og/elev8.jpg)
+        "title": "ELEV8 Craft Beer Branding &amp; Packaging | Onwun Case Study",
+        "description": "Brand identity and packaging for ELEV8, an electrolyte-infused craft beer reimagining beer for a healthier generation.",
+        "og_alt": "ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours",
         "poster": '<img class="poster__image" src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours">',
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A bold identity and packaging system for an electrolyte craft beer brewed for active, health-aware drinkers.",
@@ -104,6 +120,10 @@ PROJECTS = {
     },
     "rise": {
         "name": "rise",
+        # Page title, Google description and link-preview image text (image: assets/og/rise.jpg)
+        "title": "rise Insect Granola Branding &amp; Packaging | Onwun Case Study",
+        "description": "Brand identity, visual direction and packaging for rise, a sustainable high-protein insect granola made to feel familiar and easy to enjoy.",
+        "og_alt": "Three rise insect granola pouches resting on a mossy tree root",
         "poster": '<img class="poster__image" src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root">',
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A playful, sustainable identity and packaging for an insect protein granola that makes better breakfasts easy.",
@@ -210,6 +230,7 @@ def build():
             "poster_style": f' style="--poster-bg: {poster_bg};"' if poster_bg else "",
         }
         fields.pop("poster_bg", None)
+        fields["slug"] = slug
         fields["more_cards"] = more_cards(slug)
         images = fields.pop("images", None) or [None] * 5
         for i, slot in enumerate(SLOTS):

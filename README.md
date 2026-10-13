@@ -52,7 +52,16 @@ python3 build_projects.py
 ```
 
 A new project also needs a card on the home page (`index.html`) and an entry in the "More projects"
-list near the bottom of `build_projects.py`.
+list near the bottom of `build_projects.py`. Give it a `title`, `description` and `og_alt` (its Google
+title, Google description and link-preview image text) and a 1200 × 630 preview image at
+`assets/og/<slug>.jpg`.
+
+## Search and link previews
+
+Each page's header has its Google title and description, a canonical address on `https://onwun.com`,
+and Open Graph tags so shared links show a preview card. The home, About and Contact pages use
+`assets/og/onwun.jpg`; each project uses its own image in `assets/og/`. Previews only work once the
+site is live on onwun.com.
 
 ## House style
 
@@ -81,4 +90,4 @@ Try not to edit the same page at the same time; if you do, Git will flag the ove
 - Real links for Instagram, LinkedIn, "Book a call" (Calendly), T&Cs and Privacy policy.
 - Team photos and the real list of services on the About page.
 - Intros for ELEV8 and rise; project images for StuartFox and ATLAS.
-- SEO basics: page descriptions, social share image, favicon, sitemap and robots file.
+- SEO basics still to add: favicon, a main heading on the home page, sitemap and robots file, 404 page.
