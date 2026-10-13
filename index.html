@@ -446,8 +446,8 @@
 
     /* ───────── Project cards ─────────
        Each project is a full-width image with a black band of details underneath, in the site's two columns
-       (660 | 40 | 626): the name and meta on the left; the description, tags and link on the right. A thin
-       rule closes each band, with the same 40px above and below it, and the projects simply scroll by. */
+       (660 | 40 | 626): the name and meta on the left; the description and tags on the right. 80px separates
+       one project from the next, and the projects simply scroll by. */
     .rule { display: none; }
 
     .project { background: var(--black); }
@@ -587,13 +587,9 @@
       column-gap: 40px;
       align-items: start;
       padding: 28px 0 40px;
-      border-bottom: 1px solid var(--line);
     }
 
-    .project:last-of-type .project__details {
-      padding-bottom: 0;
-      border-bottom: 0;
-    }
+    .project:last-of-type .project__details { padding-bottom: 0; }
 
     .project__heading {
       display: flex;
