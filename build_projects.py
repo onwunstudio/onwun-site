@@ -73,8 +73,8 @@ PROJECTS = {
         # Page title, Google description and link-preview image text (image: assets/og/atlas.jpg)
         "title": "ATLAS Menswear Rental Brand &amp; App | Onwun Case Study",
         "description": "Brand identity, app design and print for ATLAS, a premium menswear rental platform built around travel, culture and Manchester’s textile history.",
-        "og_alt": "ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type",
-        "poster": '<img class="poster__image" src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type">',
+        "og_alt": "An ATLAS poster on a wall reading Style rented. Journey owned.",
+        "poster": '<img class="poster__image" src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned.">',
         "intro": "A premium menswear rental platform built around travel, culture and Manchester’s textile history.",
         "client": "ATLAS",
         "industry": "Premium menswear",
@@ -88,7 +88,7 @@ PROJECTS = {
             ("assets/atlas/suitcase-stickers.webp", "A navy suitcase covered in ATLAS stickers for Japan, Marrakech and Tokyo", {"position": "50% 70%"}),
             ("assets/atlas/app-icon.webp", "The ATLAS app icon on a phone home screen"),
             ("assets/atlas/app-phone.webp", "The ATLAS app on a phone, showing Spring in Paris with an Explore the city button", {"position": "50% 55%"}),
-            ("assets/atlas/poster.webp", "An ATLAS poster on a wall reading Style rented. Journey owned.", {"ratio": "3 / 2"}),
+            ("assets/atlas-mockup.webp", "ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type", {"ratio": "2000 / 1296"}),
         ],
     },
     "elev8": {
@@ -199,7 +199,7 @@ def media(slot, index, image):
 CARDS = [
     ("stuartfox", "StuartFox", "Specialist finishes · 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
     ("denglish", "Denglish", "Language app · 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
-    ("atlas", "ATLAS", "Premium menswear · 2026", '<div class="more__image"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>'),
+    ("atlas", "ATLAS", "Premium menswear · 2026", '<div class="more__image"><img src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>'),
     ("elev8", "ELEV8", "Electrolyte craft beer · 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
     ("rise", "rise", "Insect granola · 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
 ]
