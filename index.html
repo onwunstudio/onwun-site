@@ -166,17 +166,34 @@
       border: 1px solid var(--black);
     }
 
-    .hero__intro {
+    .hero__lead {
       position: absolute;
       left: calc(175 / 1326 * 100cqw);
       top: calc(184 / 1326 * 100cqw);
       width: calc(680 / 1326 * 100cqw);
+    }
+
+    .hero__intro {
       font-weight: 300;
       font-size: calc(24 / 1326 * 100cqw);
       line-height: normal;
       white-space: pre-wrap;
       word-break: break-word;
     }
+
+    /* "Start a project", styled like "Get in touch" (.projects__cta), fading in as the intro finishes */
+    .hero__cta {
+      margin-top: calc(36 / 1326 * 100cqw);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--cta-d, 0s);
+    }
+
+    .hero__cta .projects__cta {
+      margin-top: 0;
+      font-size: 16px;
+      color: var(--purple); /* purple from the start; the arrow and underline still come in on hover */
+    }
+
+    .js .hero__cta:not(.is-in) { opacity: 0; }
 
     .hero__wordmark {
       position: absolute;
@@ -1140,10 +1157,15 @@
         height: calc(100svh - var(--nav-h) - 40px);
       }
 
-      .hero__intro {
+      .hero__lead {
         left: 0;
         top: 0;
         width: 100%;
+      }
+
+      .hero__cta { margin-top: 24px; }
+
+      .hero__intro {
         font-size: 26px;
         line-height: 1.25;
         white-space: normal; /* drops the extra space the desktop line breaks rely on */
@@ -1318,7 +1340,10 @@
   <main>
     <section class="hero" aria-label="Featured work">
       <div class="hero__frame">
-        <p class="hero__intro" data-letters>Onwun is a brand strategy and design consultancy based in London and Manchester,  built for businesses ready to lead, not follow.</p>
+        <div class="hero__lead">
+          <p class="hero__intro" data-letters>Onwun is a brand strategy and design consultancy based in London and Manchester,  built for businesses ready to lead, not follow.</p>
+          <p class="hero__cta"><a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Start a project</span></a></p>
+        </div>
         <div class="hero__wordmark" role="img" aria-label="Onwun">
           <div class="hero__wordmark-glow"></div>
           <div class="hero__wordmark-base"></div>
@@ -1795,20 +1820,23 @@
       }
 
       const hero = document.querySelector('.hero__intro');
+      const heroCta = document.querySelector('.hero__cta');
       const statement = document.querySelector('.projects__statement');
       const processIntro = document.querySelector('.process__statement');
       const processParas = [...processIntro.querySelectorAll('[data-letters]')];
 
       if (reduced) {
         [hero, statement, ...processParas].forEach((el) => el.classList.add('is-ready'));
+        heroCta.classList.add('is-in');
         return;
       }
 
       document.fonts.ready.then(() => {
         [hero, statement, ...processParas].forEach(split);
 
-        // hero: plays alongside the logo reveal
-        play(hero, 0.35);
+        // hero: plays alongside the logo reveal, then the call to action fades in
+        heroCta.style.setProperty('--cta-d', play(hero, 0.35).toFixed(3) + 's');
+        heroCta.classList.add('is-in');
 
         // featured projects: plays the first time it scrolls into view
         statement.classList.add('is-ready');
