@@ -71,6 +71,13 @@ PROJECTS = {
         "challenges": "Atlas began as a response to a gap in the sustainable fashion market. The live brief also asked for the project to be grounded in Manchester’s textile history, meaning the brand needed a visual identity that could carry real cultural and historical weight, while still solving a genuine, practical problem around how people pack and dress for travel.",
         "solution": "Atlas, a premium menswear rental platform for travel, structured around the 5-4-3-2-1 packing method. The identity system centres on a logomark, which extends into a stamp system referencing passport stamps and Manchester’s historic textile trademark labels. Destination-specific colour palettes, fabric-pattern-led stickers, and printed travel guides bring each location’s culture into the brand.",
         "result": "Atlas was presented to PUBLIC’s design studio at their London studio, receiving strong feedback on the system and overall concept.",
+        "images": [
+            ("assets/atlas/travel-guides.webp", "ATLAS fabric travel guides for Morocco and Japan, open on their Threads of Culture spreads, with destination stickers", {"ratio": "2000 / 1414"}),
+            ("assets/atlas/suitcase-stickers.webp", "A navy suitcase covered in ATLAS stickers for Japan, Marrakech and Tokyo", {"position": "50% 70%"}),
+            ("assets/atlas/app-icon.webp", "The ATLAS app icon on a phone home screen"),
+            ("assets/atlas/app-phone.webp", "The ATLAS app on a phone, showing Spring in Paris with an Explore the city button", {"position": "50% 55%"}),
+            ("assets/atlas/poster.webp", "An ATLAS poster on a wall reading Style rented. Journey owned.", {"ratio": "3 / 2"}),
+        ],
     },
     "elev8": {
         "name": "ELEV8",
