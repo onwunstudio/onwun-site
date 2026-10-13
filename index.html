@@ -351,18 +351,16 @@
     }
 
     /* ───────── Featured Projects (5:166) ───────── */
+    /* Ends 138px below the last project's text, the same as the space either side of every section boundary */
     .projects {
-      padding-bottom: 0;
-      --projects-pin: 180px; /* height of the pinned intro; kept in sync by script */
+      padding-bottom: 138px;
     }
 
-    /* The intro's lower 130px is a spacer, so the pinned part is just the label and statement */
     .projects__intro {
       display: flex;
       align-items: flex-start;
       gap: 48px;
-      padding: 138px 48px 30px;
-      margin-bottom: 130px;
+      padding: 138px 48px 64px;
       background: var(--black);
     }
 
@@ -446,48 +444,26 @@
     .projects__cta:hover .projects__cta-text::after,
     .projects__cta:focus-visible .projects__cta-text::after { transform: scaleX(1); }
 
-    .rule {
-      height: 1px;
-      background: var(--line);
-    }
+    /* ───────── Project cards ─────────
+       Each project is a full-width image with a black band of details underneath, in the site's two columns
+       (660 | 40 | 626): the name and meta on the left; the description, tags and link on the right. A thin
+       rule closes each band, with the same 40px above and below it, and the projects simply scroll by. */
+    .rule { display: none; }
 
     .project { background: var(--black); }
 
-    /* Stacked cards: the intro pins to the top, each card pins just below it,
-       and the next card slides up over the previous one */
-    @media (min-width: 900px) and (min-height: 750px) {
-      /* --card-h: one card incl. its divider. The negative margin ends the section 7px into the last
-         card's (empty) bottom padding, as Figma did before its intro grew, so there's no divider under it. */
-      .projects { --card-h: 461px; margin-bottom: -7px; }
-
-      /* The intro's bottom margin equals one card, so it is released at the same moment as the
-         stacked cards and the whole block scrolls away together. The first card's negative margin
-         gives back the extra space, so nothing moves before you scroll. */
-      .projects__intro {
-        position: sticky;
-        top: var(--nav-h);
-        z-index: 2;
-        margin-bottom: var(--card-h);
-      }
-
-      .project:first-of-type { margin-top: calc(130px - var(--card-h)); }
-
-      .project {
-        position: sticky;
-        top: calc(var(--nav-h) + var(--projects-pin));
-      }
-    }
+    .project + .project { margin-top: 40px; }
 
     .project__card {
       display: flex;
-      align-items: flex-start;
-      gap: 40px;
-      padding: 20px;
+      flex-direction: column;
+      padding: 0 20px;
     }
 
+    /* Full width, 1326 × 600 at the design size, scaling with the screen */
     .project__mockup {
-      flex: 0 0 660px;
-      height: 420px;
+      width: 100%;
+      aspect-ratio: 1326 / 600;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -507,7 +483,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
+
+    /* Hovering the image zooms it in slightly */
+    .project__mockup:hover img { transform: scale(1.03); }
 
     /* Denglish: the "d" pops in at the centre, slides left into place, then the rest of the word springs up
        letter by letter after it. Each letter is cut from the logo image (1157 × 259); --x and --w are its
@@ -520,7 +500,7 @@
 
     .denglish-mark__word {
       position: relative;
-      width: 60%;
+      width: 40%;
       aspect-ratio: 1157 / 259;
     }
 
@@ -602,10 +582,17 @@
     }
 
     .project__details {
-      position: relative;
-      flex: 1 0 0;
-      min-width: 1px;
-      height: 420px;
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+      padding: 28px 0 40px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .project:last-of-type .project__details {
+      padding-bottom: 0;
+      border-bottom: 0;
     }
 
     .project__heading {
@@ -627,10 +614,6 @@
     }
 
     .project__bottom {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -1088,22 +1071,20 @@
     @media (max-width: 1365px) {
       .projects__statement-box { flex: 1 1 auto; }
       .projects__statement-group { width: auto; max-width: 650px; margin-left: auto; }
-      .project__mockup { flex: 0 1 660px; min-width: 0; }
-      .project__details { flex: 1 1 0; }
     }
 
     @media (max-width: 899px) {
       .nav__links { display: none; }
 
-      .projects { padding-bottom: 40px; }
+      .projects { padding-bottom: 64px; }
       .projects__intro { flex-direction: column; gap: 20px; padding: 56px 20px 64px; margin-bottom: 0; }
       .projects__label { flex: none; }
       .projects__statement-group { margin-left: 0; }
 
-      .project__card { flex-direction: column; gap: 24px; }
-      .project__mockup { flex: none; width: 100%; height: auto; aspect-ratio: 660 / 420; }
-      .project__details { flex: none; width: 100%; height: auto; }
-      .project__bottom { position: static; margin-top: 32px; }
+      .project__mockup { aspect-ratio: 660 / 420; }
+      .denglish-mark__word { width: 60%; }
+      .project__details { grid-template-columns: minmax(0, 1fr); row-gap: 20px; padding: 20px 0 32px; }
+      .project + .project { margin-top: 32px; }
       .project__tags { white-space: pre-wrap; }
 
       .footer { height: auto; aspect-ratio: auto; }
@@ -1199,8 +1180,8 @@
     }
 
     /* ───────── Scrolling on phones ─────────
-       Only the projects and the process steps keep a scroll effect: each card or step pins under the nav
-       and the next slides up over it (script sets --stack-h to the tallest one and adds .is-stacked,
+       Only the process steps keep a scroll effect: each step pins under the nav and the next slides up
+       over it (script sets --stack-h to the tallest one and adds .is-stacked,
        only when that fits on the screen). The splash screen and footer simply scroll with the page, as
        pinning them made them flash back into view when the phone's address bar resized the screen. */
     @media (max-width: 899px) {
@@ -1214,7 +1195,6 @@
       /* Clip rather than hide, so the steps inside can still pin to the screen */
       .process { overflow: clip; }
 
-      .projects.is-stacked .project,
       .process.is-stacked .process__panel:not(.process__panel--intro) {
         position: sticky;
         top: var(--nav-h);
@@ -1891,13 +1871,6 @@
       update();
     })();
 
-    // Featured projects: cards pin directly below the pinned intro, whatever its height
-    (() => {
-      const section = document.querySelector('.projects');
-      const intro = section.querySelector('.projects__intro');
-      new ResizeObserver(() => section.style.setProperty('--projects-pin', intro.offsetHeight + 'px')).observe(intro);
-    })();
-
     // Hero wordmark: purple spotlight that tracks the cursor (one update per frame, no trailing)
     (() => {
       const mark = document.querySelector('.hero__wordmark');
@@ -1929,15 +1902,14 @@
       mark.addEventListener('pointerleave', () => mark.classList.remove('is-lit'));
     })();
 
-    // Phones: the project cards and the process steps stack as you scroll. Each group is given the height
-    // of its tallest item so every one fully covers the last, and only stacks when that fits on the
-    // screen under the nav. Measured on load and when the width changes (not when the address bar
-    // shows or hides, which would make the page jump mid-scroll).
+    // Phones: the process steps stack as you scroll. Each step is given the height of the tallest one so
+    // every one fully covers the last, and they only stack when that fits on the screen under the nav.
+    // Measured on load and when the width changes (not when the address bar shows or hides, which would
+    // make the page jump mid-scroll).
     (() => {
       const phone = window.matchMedia('(max-width: 899px) and (prefers-reduced-motion: no-preference)');
       const nav = document.querySelector('.nav');
       const groups = [
-        [document.querySelector('.projects'), '.project'],
         [document.querySelector('.process'), '.process__panel:not(.process__panel--intro)'],
       ];
       // The screen height with the address bar showing, the smallest it gets
