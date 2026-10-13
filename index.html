@@ -613,7 +613,6 @@
       color: var(--muted);
     }
 
-    .project__num { color: var(--white); }
 
     .project__bottom {
       display: flex;
@@ -641,17 +640,11 @@
     .project__tags .sep { color: var(--purple); }
     .project__tags .sep--deep { color: var(--purple-deep); }
 
-    /* Under the project name and meta; the 8px gap above it plus this margin makes 20px */
-    .project__link {
-      align-self: flex-start;
-      margin-top: 12px;
-      font-size: 14px;
-      line-height: normal;
-      color: var(--purple);
-      white-space: nowrap;
-    }
+    /* The project name links to its page (as does the image); it turns purple on hover */
+    .project__link { transition: color 0.25s; }
 
-    .project__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .project__link:hover,
+    .project__link:focus-visible { color: var(--purple); }
 
     /* ───────── Our Process (5:240) ─────────
        An intro page, then one page per ONWUN step. On wide screens (script adds .is-flick) the section
@@ -1369,9 +1362,8 @@
           <div class="project__mockup"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">StuartFox</h3>
-              <p class="project__meta"><span class="project__num">01</span> — Specialist finishes · 2026</p>
-              <a class="project__link dm" href="stuartfox.html">View project →</a>
+              <h3 class="project__title"><a class="project__link" href="stuartfox.html">StuartFox</a></h3>
+              <p class="project__meta">Specialist finishes · 2026</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc">StuartFox is an established interior finish company based in Cheshire. We developed a clean, strategy led rebrand and website reflecting the quality and precision of the work behind the business.</p>
@@ -1389,9 +1381,8 @@
           </div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">Denglish</h3>
-              <p class="project__meta"><span class="project__num">02</span> — Language app · 2026</p>
-              <a class="project__link dm" href="denglish.html">View project →</a>
+              <h3 class="project__title"><a class="project__link" href="denglish.html">Denglish</a></h3>
+              <p class="project__meta">Language app · 2026</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc project__desc--15">Denglish is a friendly, accessible language-learning app designed to help users build stronger everyday German &amp; English. We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish.</p>
@@ -1407,9 +1398,8 @@
           <div class="project__mockup"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">ATLAS</h3>
-              <p class="project__meta"><span class="project__num">03</span> — Premium menswear · 2026</p>
-              <a class="project__link dm" href="atlas.html">View project →</a>
+              <h3 class="project__title"><a class="project__link" href="atlas.html">ATLAS</a></h3>
+              <p class="project__meta">Premium menswear · 2026</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc project__desc--15">ATLAS is a premium menswear rental platform built around travel, culture and Manchester's textile history.</p>
@@ -1424,9 +1414,8 @@
           <div class="project__mockup"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">ELEV8</h3>
-              <p class="project__meta"><span class="project__num">04</span> — Electrolyte craft beer · 2025</p>
-              <a class="project__link dm" href="elev8.html">View project →</a>
+              <h3 class="project__title"><a class="project__link" href="elev8.html">ELEV8</a></h3>
+              <p class="project__meta">Electrolyte craft beer · 2025</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc">Electrolyte infused craft beer aimed to fight the next day hangovers and sway against the traditional stereotypes of the traditional beer culture.</p>
@@ -1441,9 +1430,8 @@
           <div class="project__mockup"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">rise</h3>
-              <p class="project__meta"><span class="project__num">05</span> — Insect granola · 2025</p>
-              <a class="project__link dm" href="rise.html">View project →</a>
+              <h3 class="project__title"><a class="project__link" href="rise.html">rise</a></h3>
+              <p class="project__meta">Insect granola · 2025</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc">rise is an insect granola brand designed to make entomophagy feel normal and appealing through a sustainable, high-protein breakfast brand that is familiar, trusted, and easy to enjoy.</p>
@@ -1694,9 +1682,14 @@
       });
     })();
 
-    // Project images: a "View project" label follows the mouse, easing behind it slightly;
-    // clicking the image opens the project, same as the "View project" link
+    // Project images: clicking (or tapping) one opens its project, same as the project name's link;
+    // with a mouse, a "View project" label also follows the pointer over it, easing behind slightly
     (() => {
+      document.querySelectorAll('.project__mockup').forEach((img) => {
+        const link = img.closest('.project').querySelector('.project__link');
+        img.addEventListener('click', () => link.click());
+      });
+
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       const label = document.querySelector('.view-cursor');
       let x = 0, y = 0, lx = 0, ly = 0, frame = null;
@@ -1710,7 +1703,6 @@
       }
 
       document.querySelectorAll('.project__mockup').forEach((img) => {
-        const link = img.closest('.project').querySelector('.project__link');
         img.addEventListener('pointerenter', (e) => {
           x = lx = e.clientX;
           y = ly = e.clientY;
@@ -1723,7 +1715,6 @@
           if (!frame) frame = requestAnimationFrame(follow);
         });
         img.addEventListener('pointerleave', () => label.classList.remove('is-visible'));
-        img.addEventListener('click', () => link.click());
       });
     })();
 
