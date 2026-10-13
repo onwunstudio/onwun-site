@@ -197,11 +197,11 @@ def media(slot, index, image):
 
 # Cards in each page's "More projects" strip: every project except the one you're on, in home page order
 CARDS = [
-    ("stuartfox", "StuartFox", "Specialist Finishes - 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
-    ("denglish", "Denglish", "Language app - 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
-    ("atlas", "ATLAS", "Premium menswear - 2026", '<div class="more__image"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>'),
-    ("elev8", "ELEV8", "Electrolyte craft beer - 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
-    ("rise", "rise", "Insect granola - 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
+    ("stuartfox", "StuartFox", "Specialist finishes · 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
+    ("denglish", "Denglish", "Language app · 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
+    ("atlas", "ATLAS", "Premium menswear · 2026", '<div class="more__image"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>'),
+    ("elev8", "ELEV8", "Electrolyte craft beer · 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
+    ("rise", "rise", "Insect granola · 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
 ]
 
 
