@@ -29,6 +29,10 @@ def services(*items):
 PROJECTS = {
     "denglish": {
         "name": "Denglish",
+        # Page title, Google description and link-preview image text (image: assets/og/denglish.jpg)
+        "title": "Denglish Language App Identity &amp; UI | Onwun Case Study",
+        "description": "Visual identity, UI and app design for Denglish, a friendly language-learning app helping people build stronger everyday German and English.",
+        "og_alt": "The Denglish logo in coral on burgundy",
         # The animated logo on burgundy
         "poster": DENGLISH_MARK,
         "poster_bg": "#440624",
@@ -50,6 +54,10 @@ PROJECTS = {
     },
     "stuartfox": {
         "name": "StuartFox",
+        # Page title, Google description and link-preview image text (image: assets/og/stuartfox.jpg)
+        "title": "StuartFox Rebrand &amp; Website | Onwun Case Study",
+        "description": "A strategy-led rebrand and website for StuartFox, a Cheshire interior finishes company, reflecting the quality and precision of their work.",
+        "og_alt": "StuartFox logo embossed in gold on white card",
         "poster": '<img class="poster__image" src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card">',
         "intro": "A clean, strategy led rebrand and website for an interior finish company based in Cheshire.",
         "client": "StuartFox",
@@ -62,7 +70,11 @@ PROJECTS = {
     },
     "atlas": {
         "name": "ATLAS",
-        "poster": '<img class="poster__image" src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type">',
+        # Page title, Google description and link-preview image text (image: assets/og/atlas.jpg)
+        "title": "ATLAS Menswear Rental Brand &amp; App | Onwun Case Study",
+        "description": "Brand identity, app design and print for ATLAS, a premium menswear rental platform built around travel, culture and Manchester’s textile history.",
+        "og_alt": "An ATLAS poster on a wall reading Style rented. Journey owned.",
+        "poster": '<img class="poster__image" src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned.">',
         "intro": "A premium menswear rental platform built around travel, culture and Manchester’s textile history.",
         "client": "ATLAS",
         "industry": "Premium menswear",
@@ -76,12 +88,16 @@ PROJECTS = {
             ("assets/atlas/suitcase-stickers.webp", "A navy suitcase covered in ATLAS stickers for Japan, Marrakech and Tokyo", {"position": "50% 70%"}),
             ("assets/atlas/app-icon.webp", "The ATLAS app icon on a phone home screen"),
             ("assets/atlas/app-phone.webp", "The ATLAS app on a phone, showing Spring in Paris with an Explore the city button", {"position": "50% 55%"}),
-            ("assets/atlas/poster.webp", "An ATLAS poster on a wall reading Style rented. Journey owned.", {"ratio": "3 / 2"}),
+            ("assets/atlas-mockup.webp", "ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type", {"ratio": "2000 / 1296"}),
         ],
     },
     "elev8": {
         "name": "ELEV8",
-        "poster": '<img class="poster__image" src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours">',
+        # Page title, Google description and link-preview image text (image: assets/og/elev8.jpg)
+        "title": "ELEV8 Craft Beer Branding &amp; Packaging | Onwun Case Study",
+        "description": "Brand identity and packaging for ELEV8, an electrolyte-infused craft beer reimagining beer for a healthier generation.",
+        "og_alt": "ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours",
+        "poster": '<img class="poster__image" src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours">',
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A bold identity and packaging system for an electrolyte craft beer brewed for active, health-aware drinkers.",
         "client": "ELEV8",
@@ -104,6 +120,10 @@ PROJECTS = {
     },
     "rise": {
         "name": "rise",
+        # Page title, Google description and link-preview image text (image: assets/og/rise.jpg)
+        "title": "rise Insect Granola Branding &amp; Packaging | Onwun Case Study",
+        "description": "Brand identity, visual direction and packaging for rise, a sustainable high-protein insect granola made to feel familiar and easy to enjoy.",
+        "og_alt": "Three rise insect granola pouches resting on a mossy tree root",
         "poster": '<img class="poster__image" src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root">',
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A playful, sustainable identity and packaging for an insect protein granola that makes better breakfasts easy.",
@@ -177,11 +197,11 @@ def media(slot, index, image):
 
 # Cards in each page's "More projects" strip: every project except the one you're on, in home page order
 CARDS = [
-    ("stuartfox", "StuartFox", "Specialist Finishes - 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
-    ("denglish", "Denglish", "Language app - 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
-    ("atlas", "ATLAS", "Premium menswear - 2026", '<div class="more__image"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>'),
-    ("elev8", "ELEV8", "Electrolyte craft beer - 2025", '<div class="more__image"><img src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
-    ("rise", "rise", "Insect granola - 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
+    ("stuartfox", "StuartFox", "Specialist finishes · 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
+    ("denglish", "Denglish", "Language app · 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
+    ("atlas", "ATLAS", "Premium menswear · 2026", '<div class="more__image"><img src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>'),
+    ("elev8", "ELEV8", "Electrolyte craft beer · 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
+    ("rise", "rise", "Insect granola · 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
 ]
 
 
@@ -210,6 +230,7 @@ def build():
             "poster_style": f' style="--poster-bg: {poster_bg};"' if poster_bg else "",
         }
         fields.pop("poster_bg", None)
+        fields["slug"] = slug
         fields["more_cards"] = more_cards(slug)
         images = fields.pop("images", None) or [None] * 5
         for i, slot in enumerate(SLOTS):

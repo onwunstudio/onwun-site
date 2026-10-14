@@ -3,7 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Onwun</title>
+  <title>Onwun | Brand Strategy &amp; Design Studio, Manchester &amp; London</title>
+  <meta name="description" content="Onwun is a brand strategy and design studio in Manchester and London, building identities, websites and digital experiences for businesses ready to lead.">
+  <link rel="canonical" href="https://onwun.com/">
+  <!-- Link previews (LinkedIn, WhatsApp, iMessage, Slack…): 1200 × 630 images in assets/og -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Onwun">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Onwun | Brand Strategy &amp; Design Studio, Manchester &amp; London">
+  <meta property="og:description" content="Onwun is a brand strategy and design studio in Manchester and London, building identities, websites and digital experiences for businesses ready to lead.">
+  <meta property="og:url" content="https://onwun.com/">
+  <meta property="og:image" content="https://onwun.com/assets/og/onwun.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The onwun wordmark in purple on black with the tagline Designed to Lead. Not Follow.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
@@ -340,18 +354,16 @@
     }
 
     /* ───────── Featured Projects (5:166) ───────── */
+    /* Ends 138px below the last project's text, the same as the space either side of every section boundary */
     .projects {
-      padding-bottom: 0;
-      --projects-pin: 180px; /* height of the pinned intro; kept in sync by script */
+      padding-bottom: 138px;
     }
 
-    /* The intro's lower 130px is a spacer, so the pinned part is just the label and statement */
     .projects__intro {
       display: flex;
       align-items: flex-start;
       gap: 48px;
-      padding: 138px 48px 30px;
-      margin-bottom: 130px;
+      padding: 138px 48px 64px;
       background: var(--black);
     }
 
@@ -435,48 +447,26 @@
     .projects__cta:hover .projects__cta-text::after,
     .projects__cta:focus-visible .projects__cta-text::after { transform: scaleX(1); }
 
-    .rule {
-      height: 1px;
-      background: var(--line);
-    }
+    /* ───────── Project cards ─────────
+       Each project is a full-width image with a black band of details underneath, in the site's two columns
+       (660 | 40 | 626): the name and meta on the left; the description and tags on the right. 80px separates
+       one project from the next, and the projects simply scroll by. */
+    .rule { display: none; }
 
     .project { background: var(--black); }
 
-    /* Stacked cards: the intro pins to the top, each card pins just below it,
-       and the next card slides up over the previous one */
-    @media (min-width: 900px) and (min-height: 750px) {
-      /* --card-h: one card incl. its divider. The negative margin ends the section 7px into the last
-         card's (empty) bottom padding, as Figma did before its intro grew, so there's no divider under it. */
-      .projects { --card-h: 461px; margin-bottom: -7px; }
-
-      /* The intro's bottom margin equals one card, so it is released at the same moment as the
-         stacked cards and the whole block scrolls away together. The first card's negative margin
-         gives back the extra space, so nothing moves before you scroll. */
-      .projects__intro {
-        position: sticky;
-        top: var(--nav-h);
-        z-index: 2;
-        margin-bottom: var(--card-h);
-      }
-
-      .project:first-of-type { margin-top: calc(130px - var(--card-h)); }
-
-      .project {
-        position: sticky;
-        top: calc(var(--nav-h) + var(--projects-pin));
-      }
-    }
+    .project + .project { margin-top: 40px; }
 
     .project__card {
       display: flex;
-      align-items: flex-start;
-      gap: 40px;
-      padding: 20px;
+      flex-direction: column;
+      padding: 0 20px;
     }
 
+    /* Full width, 1326 × 728 at the design size (the same shape as the splash screen), scaling with the screen */
     .project__mockup {
-      flex: 0 0 660px;
-      height: 420px;
+      width: 100%;
+      aspect-ratio: 1326 / 728;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -496,7 +486,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
+
+    /* Hovering the image zooms it in slightly */
+    .project__mockup:hover img { transform: scale(1.03); }
 
     /* Denglish: the "d" pops in at the centre, slides left into place, then the rest of the word springs up
        letter by letter after it. Each letter is cut from the logo image (1157 × 259); --x and --w are its
@@ -509,7 +503,7 @@
 
     .denglish-mark__word {
       position: relative;
-      width: 60%;
+      width: 40%;
       aspect-ratio: 1157 / 259;
     }
 
@@ -591,11 +585,14 @@
     }
 
     .project__details {
-      position: relative;
-      flex: 1 0 0;
-      min-width: 1px;
-      height: 420px;
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+      padding: 28px 0 40px;
     }
+
+    .project:last-of-type .project__details { padding-bottom: 0; }
 
     .project__heading {
       display: flex;
@@ -615,11 +612,8 @@
       color: var(--muted);
     }
 
+
     .project__bottom {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -635,7 +629,7 @@
     .project__desc--15 { font-size: 15px; }
 
     .project__tags {
-      padding: 12px 0;
+      padding-top: 12px;
       font-weight: 300;
       font-size: 12px;
       line-height: normal;
@@ -645,14 +639,11 @@
     .project__tags .sep { color: var(--purple); }
     .project__tags .sep--deep { color: var(--purple-deep); }
 
-    .project__link {
-      font-size: 14px;
-      line-height: normal;
-      color: var(--purple);
-      white-space: nowrap;
-    }
+    /* The project name links to its page (as does the image); it turns purple on hover */
+    .project__link { transition: color 0.25s; }
 
-    .project__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .project__link:hover,
+    .project__link:focus-visible { color: var(--purple); }
 
     /* ───────── Our Process (5:240) ─────────
        An intro page, then one page per ONWUN step. On wide screens (script adds .is-flick) the section
@@ -1077,22 +1068,20 @@
     @media (max-width: 1365px) {
       .projects__statement-box { flex: 1 1 auto; }
       .projects__statement-group { width: auto; max-width: 650px; margin-left: auto; }
-      .project__mockup { flex: 0 1 660px; min-width: 0; }
-      .project__details { flex: 1 1 0; }
     }
 
     @media (max-width: 899px) {
       .nav__links { display: none; }
 
-      .projects { padding-bottom: 40px; }
+      .projects { padding-bottom: 64px; }
       .projects__intro { flex-direction: column; gap: 20px; padding: 56px 20px 64px; margin-bottom: 0; }
       .projects__label { flex: none; }
       .projects__statement-group { margin-left: 0; }
 
-      .project__card { flex-direction: column; gap: 24px; }
-      .project__mockup { flex: none; width: 100%; height: auto; aspect-ratio: 660 / 420; }
-      .project__details { flex: none; width: 100%; height: auto; }
-      .project__bottom { position: static; margin-top: 32px; }
+      .project__mockup { aspect-ratio: 4 / 3; }
+      .denglish-mark__word { width: 60%; }
+      .project__details { grid-template-columns: minmax(0, 1fr); row-gap: 20px; padding: 20px 0 32px; }
+      .project + .project { margin-top: 32px; }
       .project__tags { white-space: pre-wrap; }
 
       .footer { height: auto; aspect-ratio: auto; }
@@ -1188,8 +1177,8 @@
     }
 
     /* ───────── Scrolling on phones ─────────
-       Only the projects and the process steps keep a scroll effect: each card or step pins under the nav
-       and the next slides up over it (script sets --stack-h to the tallest one and adds .is-stacked,
+       Only the process steps keep a scroll effect: each step pins under the nav and the next slides up
+       over it (script sets --stack-h to the tallest one and adds .is-stacked,
        only when that fits on the screen). The splash screen and footer simply scroll with the page, as
        pinning them made them flash back into view when the phone's address bar resized the screen. */
     @media (max-width: 899px) {
@@ -1203,7 +1192,6 @@
       /* Clip rather than hide, so the steps inside can still pin to the screen */
       .process { overflow: clip; }
 
-      .projects.is-stacked .project,
       .process.is-stacked .process__panel:not(.process__panel--intro) {
         position: sticky;
         top: var(--nav-h);
@@ -1344,7 +1332,7 @@
     <section class="hero" aria-label="Featured work">
       <div class="hero__frame">
         <div class="hero__lead">
-          <p class="hero__intro" data-letters>Onwun is a brand strategy and design consultancy based in London and Manchester,  built for businesses ready to lead, not follow.</p>
+          <p class="hero__intro" data-letters>A brand strategy and design consultancy based in London and Manchester, built for businesses ready to lead, not follow.</p>
           <p class="hero__cta"><a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Start a project</span></a></p>
         </div>
         <div class="hero__wordmark" role="img" aria-label="Onwun">
@@ -1358,10 +1346,10 @@
 
     <section class="projects" id="work" aria-labelledby="projects-label">
       <div class="projects__intro">
-        <h2 class="projects__label dm" id="projects-label">Featured projects:</h2>
+        <h2 class="projects__label dm" id="projects-label">Selected work:</h2>
         <div class="projects__statement-box">
           <div class="projects__statement-group">
-            <p class="projects__statement" data-letters>We build premium strategy led brands, that get chosen and build real growth.</p>
+            <p class="projects__statement" data-letters>Premium, strategy-led brands that get chosen and drive real growth.</p>
             <a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Get in touch</span></a>
           </div>
         </div>
@@ -1373,13 +1361,12 @@
           <div class="project__mockup"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">StuartFox</h3>
-              <p class="project__meta">Specialist Finishes - 2026</p>
+              <h3 class="project__title"><a class="project__link" href="stuartfox.html">StuartFox</a></h3>
+              <p class="project__meta">Specialist finishes · 2026</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc">StuartFox is an established interior finish company based in Cheshire. We developed a clean, strategy led rebrand and website reflecting the quality and precision of the work behind the business.</p>
               <p class="project__tags">Brand identity <span class="sep">/</span> Social content <span class="sep">/ </span>Art direction</p>
-              <a class="project__link dm" href="stuartfox.html">View project →</a>
             </div>
           </div>
         </div>
@@ -1393,13 +1380,12 @@
           </div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">Denglish</h3>
-              <p class="project__meta">Language app - 2026</p>
+              <h3 class="project__title"><a class="project__link" href="denglish.html">Denglish</a></h3>
+              <p class="project__meta">Language app · 2026</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc project__desc--15">Denglish is a friendly, accessible language-learning app designed to help users build stronger everyday German &amp; English. We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish.</p>
               <p class="project__tags">Visual Identity <span class="sep">/ </span>UI<span class="sep"> / </span>App design<span class="sep--deep"> /</span> Social media </p>
-              <a class="project__link dm" href="denglish.html">View project →</a>
             </div>
           </div>
         </div>
@@ -1408,16 +1394,15 @@
       <article class="project">
         <div class="rule"></div>
         <div class="project__card">
-          <div class="project__mockup"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type"></div>
+          <div class="project__mockup"><img src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">ATLAS</h3>
-              <p class="project__meta">Premium menswear - 2026</p>
+              <h3 class="project__title"><a class="project__link" href="atlas.html">ATLAS</a></h3>
+              <p class="project__meta">Premium menswear · 2026</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc project__desc--15">ATLAS is a premium menswear rental platform built around travel, culture and Manchester's textile history.</p>
               <p class="project__tags">Brand identity<span class="sep"> /</span> UI <span class="sep--deep">/ </span>App design <span class="sep">/ </span>Social media</p>
-              <a class="project__link dm" href="atlas.html">View project →</a>
             </div>
           </div>
         </div>
@@ -1425,16 +1410,15 @@
       <article class="project">
         <div class="rule"></div>
         <div class="project__card">
-          <div class="project__mockup"><img src="assets/elev8-mockup.jpg" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>
+          <div class="project__mockup"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">ELEV8</h3>
-              <p class="project__meta">Electrolyte craft beer - 2025</p>
+              <h3 class="project__title"><a class="project__link" href="elev8.html">ELEV8</a></h3>
+              <p class="project__meta">Electrolyte craft beer · 2025</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc">Electrolyte infused craft beer aimed to fight the next day hangovers and sway against the traditional stereotypes of the traditional beer culture.</p>
               <p class="project__tags">Brand identity <span class="sep">/</span> Packaging</p>
-              <a class="project__link dm" href="elev8.html">View project →</a>
             </div>
           </div>
         </div>
@@ -1445,13 +1429,12 @@
           <div class="project__mockup"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>
           <div class="project__details">
             <div class="project__heading">
-              <h3 class="project__title">rise</h3>
-              <p class="project__meta">Insect granola - 2025</p>
+              <h3 class="project__title"><a class="project__link" href="rise.html">rise</a></h3>
+              <p class="project__meta">Insect granola · 2025</p>
             </div>
             <div class="project__bottom">
               <p class="project__desc">rise is an insect granola brand designed to make entomophagy feel normal and appealing through a sustainable, high-protein breakfast brand that is familiar, trusted, and easy to enjoy.</p>
               <p class="project__tags">Brand identity <span class="sep">/</span> Visual direction <span class="sep">/</span> Packaging</p>
-              <a class="project__link dm" href="rise.html">View project →</a>
             </div>
           </div>
         </div>
@@ -1483,7 +1466,7 @@
         <div class="process__panel process__panel--intro">
           <div class="process__statement">
             <p>Brands are increasingly beginning to look and sound the same. Fast, AI-generated content has made it easy to produce work quickly, but much of it lacks character, clarity, and a point of view. The result is branding that feels polished on the surface but forgettable in practice, generic visuals, vague messaging, and no real reason for people to choose one business over another.</p>
-            <p data-letters>Your competitors are blending in. We make sure you don’t. Our five-step ONWUN process takes you from insight to launch in just five weeks.</p>
+            <p data-letters>Your competitors are blending in. We make sure you don’t. Observe, Narrate, Wake, Unveil, Nurture: five steps that take you from first insight to launch in five weeks.</p>
           </div>
           <p class="process__hint" aria-hidden="true">Scroll to explore →</p>
         </div>
@@ -1525,72 +1508,72 @@
       </div>
     </section>
     <section class="faq" id="faq" aria-labelledby="faq-label">
-      <h2 class="faq__label dm" id="faq-label">FAQ’s:</h2>
+      <h2 class="faq__label dm" id="faq-label">Good to know:</h2>
       <ul class="faq__list">
         <li class="faq__item" style="--i: 0;">
           <h3>
             <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-1" id="faq-question-1">
-              <span class="faq__q-text">How much is this going to cost?</span>
+              <span class="faq__q-text">Where do your prices start?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div class="faq__answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1">
-            <div class="faq__answer-inner"><p>It all depends on what you’re looking for. A visual refresh can start from around 3k, whereas a full brand identity can vary from 5k to 6.5k, depending on the deliverables.</p></div>
+            <div class="faq__answer-inner"><p>Every project is quoted to its scope. As a guide, a visual refresh starts at around £3k, a full brand identity runs from £5k to £6.5k, and websites start at £2.5k. If you need something specific, we’ll put together a custom quote.</p></div>
           </div>
         </li>
         <li class="faq__item" style="--i: 1;">
           <h3>
             <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-2" id="faq-question-2">
-              <span class="faq__q-text">Do you do website builds?</span>
+              <span class="faq__q-text">Can you build our website too?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div class="faq__answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2">
-            <div class="faq__answer-inner"><p>Yes, we do. We can either build you a website around your existing brand or build one aligned to a brand identity we have built. Website costs start from 2.5k for a simple build.</p></div>
+            <div class="faq__answer-inner"><p>Yes. We design and build websites, either around the brand you already have or as part of a new identity we create with you.</p></div>
           </div>
         </li>
         <li class="faq__item" style="--i: 2;">
           <h3>
             <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-3" id="faq-question-3">
-              <span class="faq__q-text">Who will I be working with?</span>
+              <span class="faq__q-text">Is it really just the two of you?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div class="faq__answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3">
-            <div class="faq__answer-inner"><p>You will be working alongside both Niall and Ro. After the kick off call we will introduce you to our client portal where we can communicate, share projects and schedule meetings. We like keeping everything under one roof to achieve the best possible results.</p></div>
+            <div class="faq__answer-inner"><p>Yes, by design. Niall and Ro lead every project from the first call to launch. You’ll have a shared client portal for messages, files and meetings, so everything stays in one place.</p></div>
           </div>
         </li>
         <li class="faq__item" style="--i: 3;">
           <h3>
             <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-4" id="faq-question-4">
-              <span class="faq__q-text">Do you offer custom quotes?</span>
+              <span class="faq__q-text">Do you work with startups or established businesses?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div class="faq__answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4">
-            <div class="faq__answer-inner"><p>Yes. If you have any specific request in mind, please get in touch with us and we will be able to help you.</p></div>
+            <div class="faq__answer-inner"><p>Both. We help new businesses launch with a brand that looks established from day one, and help established ones that have outgrown how they look.</p></div>
           </div>
         </li>
         <li class="faq__item" style="--i: 4;">
           <h3>
             <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-5" id="faq-question-5">
-              <span class="faq__q-text">Do you do ongoing design too?</span>
+              <span class="faq__q-text">What do you need from us to begin?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div class="faq__answer" id="faq-answer-5" role="region" aria-labelledby="faq-question-5">
-            <div class="faq__answer-inner"><p>Yes. After launch we stay by your side for 30 days, and offer ongoing retainer support for campaigns, content and new touchpoints whenever you need it.</p></div>
+            <div class="faq__answer-inner"><p>Just a conversation. Tell us about your business and where you want it to go, and we’ll arrange a short call. If we’re the right fit, we’ll send a proposal with a clear timeline and price.</p></div>
           </div>
         </li>
         <li class="faq__item" style="--i: 5;">
           <h3>
             <button class="faq__question" type="button" aria-expanded="false" aria-controls="faq-answer-6" id="faq-question-6">
-              <span class="faq__q-text">How do we get started?</span>
+              <span class="faq__q-text">What happens after launch?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
           </h3>
           <div class="faq__answer" id="faq-answer-6" role="region" aria-labelledby="faq-question-6">
-            <div class="faq__answer-inner"><p>Get in touch with a little about your business and where you want to take it. We'll set up a short call to see if we're the right fit, then send over a proposal.</p></div>
+            <div class="faq__answer-inner"><p>We stay with you for 30 days after launch to make sure everything lands well. After that, we offer ongoing retainer support for campaigns, content and new touchpoints whenever you need it.</p></div>
           </div>
         </li>
       </ul>
@@ -1698,9 +1681,14 @@
       });
     })();
 
-    // Project images: a "View project" label follows the mouse, easing behind it slightly;
-    // clicking the image opens the project, same as the "View project" link
+    // Project images: clicking (or tapping) one opens its project, same as the project name's link;
+    // with a mouse, a "View project" label also follows the pointer over it, easing behind slightly
     (() => {
+      document.querySelectorAll('.project__mockup').forEach((img) => {
+        const link = img.closest('.project').querySelector('.project__link');
+        img.addEventListener('click', () => link.click());
+      });
+
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       const label = document.querySelector('.view-cursor');
       let x = 0, y = 0, lx = 0, ly = 0, frame = null;
@@ -1714,7 +1702,6 @@
       }
 
       document.querySelectorAll('.project__mockup').forEach((img) => {
-        const link = img.closest('.project').querySelector('.project__link');
         img.addEventListener('pointerenter', (e) => {
           x = lx = e.clientX;
           y = ly = e.clientY;
@@ -1727,7 +1714,6 @@
           if (!frame) frame = requestAnimationFrame(follow);
         });
         img.addEventListener('pointerleave', () => label.classList.remove('is-visible'));
-        img.addEventListener('click', () => link.click());
       });
     })();
 
@@ -1880,13 +1866,6 @@
       update();
     })();
 
-    // Featured projects: cards pin directly below the pinned intro, whatever its height
-    (() => {
-      const section = document.querySelector('.projects');
-      const intro = section.querySelector('.projects__intro');
-      new ResizeObserver(() => section.style.setProperty('--projects-pin', intro.offsetHeight + 'px')).observe(intro);
-    })();
-
     // Hero wordmark: purple spotlight that tracks the cursor (one update per frame, no trailing)
     (() => {
       const mark = document.querySelector('.hero__wordmark');
@@ -1918,15 +1897,14 @@
       mark.addEventListener('pointerleave', () => mark.classList.remove('is-lit'));
     })();
 
-    // Phones: the project cards and the process steps stack as you scroll. Each group is given the height
-    // of its tallest item so every one fully covers the last, and only stacks when that fits on the
-    // screen under the nav. Measured on load and when the width changes (not when the address bar
-    // shows or hides, which would make the page jump mid-scroll).
+    // Phones: the process steps stack as you scroll. Each step is given the height of the tallest one so
+    // every one fully covers the last, and they only stack when that fits on the screen under the nav.
+    // Measured on load and when the width changes (not when the address bar shows or hides, which would
+    // make the page jump mid-scroll).
     (() => {
       const phone = window.matchMedia('(max-width: 899px) and (prefers-reduced-motion: no-preference)');
       const nav = document.querySelector('.nav');
       const groups = [
-        [document.querySelector('.projects'), '.project'],
         [document.querySelector('.process'), '.process__panel:not(.process__panel--intro)'],
       ];
       // The screen height with the address bar showing, the smallest it gets
