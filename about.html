@@ -394,20 +394,19 @@
     .service:hover::after,
     .service.is-open::after { transform: scaleX(1); }
 
-    /* Large Sora SemiBold, 64px at the design size */
+    /* Sora SemiBold 36px, the same as the value titles */
     .service__toggle {
       display: flex;
       align-items: center;
       gap: 24px;
       width: 100%;
-      padding: 40px 0;
+      padding: 32px 0;
       background: none;
       border: 0;
       font: inherit;
       font-weight: 600;
-      font-size: clamp(40px, 4.7vw, 64px);
-      line-height: 1.05;
-      letter-spacing: -0.01em;
+      font-size: 36px;
+      line-height: 1.1;
       text-align: left;
       color: var(--grey-text);
       cursor: pointer;
@@ -430,9 +429,9 @@
     /* A circled "+" drawn in CSS; the whole circle turns so the "+" becomes a purple "×" when open */
     .service__icon {
       position: relative;
-      flex: 0 0 56px;
-      height: 56px;
-      border: 1.5px solid currentColor;
+      flex: 0 0 32px;
+      height: 32px;
+      border: 1px solid currentColor;
       border-radius: 50%;
       color: var(--muted);
       transition: transform 0.5s var(--ease), color 0.3s;
@@ -444,9 +443,9 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 20px;
-      height: 1.5px;
-      margin: -0.75px 0 0 -10px;
+      width: 12px;
+      height: 1px;
+      margin: -0.5px 0 0 -6px;
       background: currentColor;
     }
 
@@ -686,10 +685,10 @@
       .team { padding-top: 56px; }
       .services { padding-top: 56px; }
       .services__label { margin-bottom: 24px; }
-      .service__toggle { padding: 24px 0; font-size: 32px; }
-      .service__icon { flex-basis: 40px; height: 40px; }
+      .service__toggle { padding: 22px 0; font-size: 28px; }
+      .service__icon { flex-basis: 28px; height: 28px; }
       .service__icon::before,
-      .service__icon::after { width: 14px; margin-left: -7px; }
+      .service__icon::after { width: 10px; margin-left: -5px; }
       .service__items { flex-direction: column; gap: 8px; padding-bottom: 28px; }
       .service__items li { font-size: 18px; }
       .team__grid { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
