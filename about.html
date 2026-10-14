@@ -546,11 +546,12 @@
 
     .mindmap__branches { list-style: none; }
 
+    /* The outline turns purple as the purple arrives along its line (--q from 0 to 1) */
     .mindmap__node {
       left: var(--x, 50%);
       top: var(--y, 50%);
       padding: 12px 22px;
-      border: 1px solid var(--line-step);
+      border: 1px solid color-mix(in srgb, var(--purple) calc(var(--q, 0) * 100%), var(--line-step));
       font-weight: 300;
       font-size: 20px;
       line-height: 1.2;
@@ -559,7 +560,8 @@
       transform: translate(-50%, -50%) scale(calc(0.85 + 0.15 * var(--p, 0)));
     }
 
-    /* A line from the centre to its topic, drawn outwards as --p goes from 0 to 1 */
+    /* A line from the centre to its topic, drawn outwards in grey as --p goes from 0 to 1; then purple runs
+       along it from the centre into the topic's outline as --q goes from 0 to 1 */
     .mindmap__line {
       position: absolute;
       left: 50%;
@@ -569,6 +571,15 @@
       background: var(--muted);
       transform-origin: 0 50%;
       transform: rotate(var(--angle, 0deg)) scaleX(var(--p, 0));
+    }
+
+    .mindmap__line::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--purple);
+      transform-origin: 0 50%;
+      transform: scaleX(var(--q, 0));
     }
 
     .js .service {
@@ -1286,11 +1297,15 @@
           const scrolled = screen.getBoundingClientRect().bottom - hold.getBoundingClientRect().top;
           p = Math.min(Math.max(scrolled / hold.offsetHeight, 0), 1);
         }
-        // Each branch takes a sixth of the way: its line draws, then its topic fades in at the end of it
+        // Each branch takes a sixth of the way: its line draws in grey, its topic fades in at the end of it,
+        // then purple runs along the line and into the topic's outline
+        const step = (t, from, to) => Math.min(Math.max((t - from) / (to - from), 0), 1).toFixed(3);
         nodes.forEach((node, i) => {
           const t = Math.min(Math.max(p * 6 - i, 0), 1);
-          lines[i].style.setProperty('--p', Math.min(t / 0.6, 1).toFixed(3));
-          node.style.setProperty('--p', Math.max((t - 0.5) / 0.5, 0).toFixed(3));
+          lines[i].style.setProperty('--p', step(t, 0, 0.4));
+          node.style.setProperty('--p', step(t, 0.3, 0.6));
+          lines[i].style.setProperty('--q', step(t, 0.5, 0.85));
+          node.style.setProperty('--q', step(t, 0.85, 1));
         });
       }
 
