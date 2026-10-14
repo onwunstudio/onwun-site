@@ -39,7 +39,9 @@
       --muted: #626675;
       --grey-text: #c9cad0;
       --line-step: #2e2e2e;
-      --error: #e5484d;
+      --error: #f2645c; /* used only for errors */
+      --field-line: #3a3d47;
+      --field-placeholder: #3d404a;
 
       --sora: "Sora", sans-serif;
       --inter: "Inter", sans-serif;
@@ -225,19 +227,45 @@
     .contact__fact .plain:hover,
     .contact__fact .plain:focus-visible { color: var(--white); }
 
-    /* ───────── Form ─────────
-       Quiet underlined fields; the line draws across in purple while you type in one */
+    /* ───────── Form (Figma: Website › Form States) ─────────
+       Underlined fields with a label above. The line draws across in purple while you're in a field.
+       Fields are checked when you leave them, not while typing; an error turns the line coral with an
+       icon and a message, and clears (with a purple tick) as soon as it's fixed. */
     .form {
       display: flex;
       flex-direction: column;
+      gap: 40px;
     }
+
+    .form [hidden] { display: none; }
 
     .field {
-      position: relative;
-      border-bottom: 1px solid var(--line-step);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .field::after {
+    .field__label {
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .field:focus-within .field__label { color: var(--purple); }
+
+    .field__control {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--field-line);
+      transition: border-color 0.3s;
+    }
+
+    .field__control::after {
       content: "";
       position: absolute;
       left: 0;
@@ -250,14 +278,16 @@
       transition: transform 0.5s var(--ease);
     }
 
-    .field:focus-within::after { transform: scaleX(1); }
-    .field.is-invalid { border-bottom-color: var(--error); }
+    .field:focus-within .field__control::after { transform: scaleX(1); }
+    .field.is-invalid .field__control { border-bottom-color: var(--error); }
+    .field.is-invalid .field__control::after { background: var(--error); }
 
     .field input,
     .field textarea {
       display: block;
-      width: 100%;
-      padding: 22px 0;
+      flex: 1;
+      min-width: 0;
+      padding: 0;
       border: 0;
       border-radius: 0;
       outline: none;
@@ -265,18 +295,18 @@
       color: var(--white);
       font: inherit;
       font-weight: 300;
-      font-size: 20px;
-      line-height: 1.4;
+      font-size: 24px;
+      line-height: 1.25;
     }
 
     .field textarea {
       resize: none;
-      min-height: calc(20px * 1.4 * 3 + 44px); /* three lines */
+      min-height: calc(24px * 1.25 * 3); /* three lines */
       overflow: hidden;
     }
 
     .field input::placeholder,
-    .field textarea::placeholder { color: var(--muted); opacity: 1; }
+    .field textarea::placeholder { color: var(--field-placeholder); opacity: 1; }
 
     /* Keep browser autofill on brand instead of a pale yellow box */
     .field input:-webkit-autofill {
@@ -285,27 +315,73 @@
       caret-color: var(--white);
     }
 
-    .field__error {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 12px;
-      color: var(--error);
+    /* The purple tick once a field has been checked and is fine */
+    .field__valid {
+      flex: none;
       opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
+      transform: scale(0.6);
+      transition: opacity 0.25s, transform 0.35s var(--ease);
     }
 
-    .field.is-invalid .field__error { opacity: 1; }
-    .field--message .field__error { top: 34px; transform: none; }
+    .field.is-valid .field__valid { opacity: 1; transform: none; }
+
+    /* Error messages: coral, always with the icon */
+    .field__error,
+    .form__summary {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--error);
+    }
+
+    /* the icon sits on the first line when a message wraps */
+    .field__error img,
+    .form__summary img { flex: none; margin-top: calc((14px * 1.5 - 14px) / 2); }
+    .form__summary img { margin-top: calc((16px * 1.5 - 14px) / 2); }
+
+    .field.is-invalid .field__error,
+    .form__summary { animation: message-in 0.4s var(--ease) both; }
+
+    @keyframes message-in {
+      from { opacity: 0; transform: translateY(-4px); }
+    }
+
+    /* Appears at the top of the form when it's sent with errors */
+    .form__summary {
+      font-size: 16px;
+      scroll-margin-top: calc(var(--nav-h) + 24px);
+    }
+
+    /* Something broke on our side: say so, and offer another way in. Whatever was typed stays put. */
+    .form__banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 24px 18px 20px;
+      border-left: 2px solid var(--error);
+      background: rgba(242, 100, 92, 0.06);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      animation: rise 0.5s var(--ease) both;
+    }
+
+    .form__banner img { flex: none; }
+
+    .form__banner a {
+      color: var(--purple);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
 
     .form__foot {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 40px;
-      margin-top: 40px;
     }
 
     .form__note {
@@ -513,7 +589,10 @@
 
     @media (prefers-reduced-motion: reduce) {
       .rise-in,
-      .contact.is-sent .form__thanks { animation: none; }
+      .contact.is-sent .form__thanks,
+      .field.is-invalid .field__error,
+      .form__summary,
+      .form__banner { animation: none; }
     }
 
     @media (max-width: 899px) {
@@ -531,6 +610,9 @@
       .contact__head { order: 1; }
       .form, .form__thanks { order: 2; }
       .form__foot { flex-direction: column; align-items: stretch; gap: 24px; }
+      .field input,
+      .field textarea { font-size: 20px; }
+      .field textarea { min-height: calc(20px * 1.25 * 3); }
       .button { align-self: flex-start; }
       .contact__fact dt { flex-basis: 96px; }
 
@@ -693,22 +775,39 @@
       <!-- TODO: connect the form to a form service (e.g. Formspree) so enquiries arrive by email.
            For now it checks the fields and shows the thank-you message, but nothing is sent. -->
       <form class="form rise-in" style="--i: 3;" novalidate>
+        <p class="form__summary" role="alert" tabindex="-1" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><span></span></p>
         <div class="field">
-          <input type="text" name="name" placeholder="Name" autocomplete="name" required aria-label="Name">
-          <span class="field__error">Please add your name</span>
+          <label class="field__label dm" for="f-name">Name</label>
+          <div class="field__control">
+            <input id="f-name" type="text" name="name" placeholder="Your name" autocomplete="name" required>
+            <img class="field__valid" src="assets/icons/valid.svg" alt="" width="18" height="18">
+          </div>
+          <p class="field__error" id="f-name-error" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><span></span></p>
         </div>
         <div class="field">
-          <input type="email" name="email" placeholder="Email" autocomplete="email" required aria-label="Email">
-          <span class="field__error">Please add a valid email</span>
+          <label class="field__label dm" for="f-email">Email</label>
+          <div class="field__control">
+            <input id="f-email" type="email" name="email" placeholder="you@company.com" autocomplete="email" required>
+            <img class="field__valid" src="assets/icons/valid.svg" alt="" width="18" height="18">
+          </div>
+          <p class="field__error" id="f-email-error" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><span></span></p>
         </div>
         <div class="field">
-          <input type="text" name="website" placeholder="Website (if you have one)" autocomplete="url" aria-label="Website (optional)">
+          <label class="field__label dm" for="f-website">Website</label>
+          <div class="field__control">
+            <input id="f-website" type="text" name="website" placeholder="If you have one" autocomplete="url">
+            <img class="field__valid" src="assets/icons/valid.svg" alt="" width="18" height="18">
+          </div>
+          <p class="field__error" id="f-website-error" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><span></span></p>
         </div>
-        <div class="field field--message">
-          <textarea name="message" rows="3" placeholder="Tell us about your project" required aria-label="Tell us about your project"></textarea>
-          <span class="field__error">Please add a short message</span>
+        <div class="field">
+          <label class="field__label dm" for="f-message">Message</label>
+          <div class="field__control">
+            <textarea id="f-message" name="message" rows="3" placeholder="Tell us about your project" required></textarea>
+          </div>
+          <p class="field__error" id="f-message-error" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><span></span></p>
         </div>
-
+        <div class="form__banner" role="alert" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><p>Something went wrong on our end. Try again, or email <a href="mailto:contact@onwun.com">contact@onwun.com</a>.</p></div>
         <div class="form__foot">
           <p class="form__note">We’ll review your enquiry and get back to you within one working day.</p>
           <button class="button" type="submit"><span class="button__label">Send message</span> <span class="button__arrow" aria-hidden="true">↗</span><span class="button__dots" aria-hidden="true"><span>•</span><span>•</span><span>•</span></span></button>
@@ -747,8 +846,10 @@
   </footer>
 
   <script>
-    // Form: the message box grows as you type; on send, each required field is checked, the button
-    // shows it sending, and the form is swapped for a thank-you note
+    // Form: the message box grows as you type. Each field is checked when you leave it (not while typing);
+    // an error clears, with a purple tick, as soon as it's fixed. On send, a summary of what needs a look
+    // appears at the top and focus moves to the first problem; otherwise the button shows it sending and
+    // the form is swapped for a thank-you note. If sending fails, a banner says so and nothing is lost.
     (() => {
       const section = document.querySelector('.contact');
       const form = section.querySelector('.form');
@@ -763,15 +864,70 @@
       }
       message.addEventListener('input', grow);
 
-      function check(input) {
-        const ok = input.value.trim() !== '' && input.checkValidity();
-        input.closest('.field').classList.toggle('is-invalid', !ok);
-        return ok;
+      const summary = form.querySelector('.form__summary');
+      const banner = form.querySelector('.form__banner');
+      const inputs = [...form.querySelectorAll('input, textarea')];
+
+      // What's wrong with a field, in words, or '' if it's fine
+      function problem(input) {
+        const value = input.value.trim();
+        switch (input.name) {
+          case 'name':
+            return value ? '' : 'We’ll need a name to put to the project.';
+          case 'email':
+            if (!value) return 'We’ll need an email to reply to.';
+            // needs something@something.something (the browser alone accepts "rohan@stuartfox")
+            return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value) ? '' : 'That email doesn’t look quite right. Check for a typo?';
+          case 'message':
+            return value ? '' : 'Tell us a little about the project first.';
+          default:
+            return '';
+        }
       }
 
-      form.querySelectorAll('[required]').forEach((input) => {
+      // Shows a field as fine (tick, once it has something in it) or in error (coral line, icon, message);
+      // the message is linked to the field so screen readers read it out
+      function check(input) {
+        const field = input.closest('.field');
+        const error = field.querySelector('.field__error');
+        const message = problem(input);
+        field.classList.toggle('is-invalid', !!message);
+        field.classList.toggle('is-valid', !message && input.value.trim() !== '');
+        error.hidden = !message;
+        error.querySelector('span').textContent = message;
+        if (message) {
+          input.setAttribute('aria-invalid', 'true');
+          input.setAttribute('aria-describedby', error.id);
+        } else {
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-describedby');
+        }
+        return !message;
+      }
+
+      function updateSummary() {
+        const count = form.querySelectorAll('.field.is-invalid').length;
+        summary.hidden = count === 0;
+        summary.querySelector('span').textContent = count === 1
+          ? '1 thing needs a look before we can send this.'
+          : count + ' things need a look before we can send this.';
+      }
+
+      inputs.forEach((input) => {
+        // checked on leaving a field, once something has been typed in it
+        input.addEventListener('change', () => check(input));
+        input.addEventListener('blur', () => {
+          if (input.value !== input.defaultValue) check(input);
+        });
         input.addEventListener('input', () => {
-          if (input.closest('.field').classList.contains('is-invalid')) check(input);
+          const field = input.closest('.field');
+          // an error clears (and the tick shows) the moment it's fixed
+          if (field.classList.contains('is-invalid')) {
+            check(input);
+            if (!summary.hidden) updateSummary();
+          } else if (problem(input) || !input.value.trim()) {
+            field.classList.remove('is-valid');
+          }
         });
       });
 
@@ -786,13 +942,22 @@
         button.style.setProperty('--fill', value);
       }
 
+      function resetButton() {
+        button.disabled = false;
+        button.classList.remove('is-sending', 'is-sent');
+        buttonLabel.textContent = 'Send message';
+        setFill(0, 0);
+      }
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (button.disabled) return;
-        const fields = [...form.querySelectorAll('[required]')];
-        const bad = fields.filter((input) => !check(input));
+        banner.hidden = true;
+        const bad = inputs.filter((input) => !check(input));
+        updateSummary();
         if (bad.length) {
-          bad[0].focus();
+          summary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          bad[0].focus({ preventScroll: true });
           return;
         }
 
@@ -802,7 +967,14 @@
         button.classList.add('is-sending');
         setFill(0, 0);
         requestAnimationFrame(() => requestAnimationFrame(() => setFill(0.85, 1.6)));
-        await send();
+        try {
+          await send();
+        } catch (err) {
+          // whatever they typed stays in the form, so nobody has to start again
+          resetButton();
+          banner.hidden = false;
+          return;
+        }
         setFill(1, 0.3);
         await new Promise((resolve) => setTimeout(resolve, 300));
         button.classList.replace('is-sending', 'is-sent');
