@@ -21,6 +21,8 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="assets/loading.css">
+  <script src="assets/loading.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
@@ -350,6 +352,63 @@
     .button:hover .button__arrow,
     .button:focus-visible .button__arrow { transform: translate(3px, -3px); }
 
+    /* Sending (Figma: Loading States › Link / CTA): the arrow becomes three dots that pulse in turn,
+       and the underline fills with purple left to right as the request completes (--fill, set by the
+       script). Once sent, the label turns white: "Sent. Speak soon." */
+    .button__dots { display: none; }
+
+    .button.is-sending,
+    .button.is-sent {
+      position: relative;
+      cursor: default;
+    }
+
+    .button.is-sending::before,
+    .button.is-sending::after,
+    .button.is-sent::before,
+    .button.is-sent::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 4px;
+      height: 1px;
+      background: var(--line, #1f1f1f);
+    }
+
+    .button.is-sending::after,
+    .button.is-sent::after {
+      background: var(--purple);
+      transform: scaleX(var(--fill, 0));
+      transform-origin: left;
+      transition: transform var(--fill-t, 0.3s) var(--ease);
+    }
+
+    .button.is-sending .button__label,
+    .button.is-sent .button__label { background-size: 0 1px; }
+
+    .button.is-sending .button__label { color: var(--purple); }
+    .button.is-sent .button__label { color: var(--white); }
+
+    .button.is-sending .button__arrow,
+    .button.is-sent .button__arrow { display: none; }
+
+    .button.is-sending .button__dots {
+      display: inline-flex;
+      gap: 2px;
+      margin-left: -4px;
+      color: var(--muted);
+    }
+
+    .button__dots span { animation: dot-pulse 1.2s ease-in-out infinite; }
+    .button__dots span:nth-child(2) { animation-delay: 0.2s; }
+    .button__dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dot-pulse {
+      0%, 60%, 100% { color: var(--muted); }
+      20% { color: var(--purple); }
+    }
+
     /* Shown in place of the form once it has been sent */
     .form__thanks {
       display: none;
@@ -652,7 +711,7 @@
 
         <div class="form__foot">
           <p class="form__note">We’ll review your enquiry and get back to you within one working day.</p>
-          <button class="button" type="submit"><span class="button__label">Send message</span> <span class="button__arrow" aria-hidden="true">↗</span></button>
+          <button class="button" type="submit"><span class="button__label">Send message</span> <span class="button__arrow" aria-hidden="true">↗</span><span class="button__dots" aria-hidden="true"><span>•</span><span>•</span><span>•</span></span></button>
         </div>
       </form>
 
@@ -688,13 +747,15 @@
   </footer>
 
   <script>
-    // Form: the message box grows as you type; on send, each required field is checked and the
-    // form is swapped for a thank-you note
+    // Form: the message box grows as you type; on send, each required field is checked, the button
+    // shows it sending, and the form is swapped for a thank-you note
     (() => {
       const section = document.querySelector('.contact');
       const form = section.querySelector('.form');
       const thanks = section.querySelector('.form__thanks');
       const message = form.querySelector('textarea');
+      const button = form.querySelector('.button');
+      const buttonLabel = button.querySelector('.button__label');
 
       function grow() {
         message.style.height = 'auto';
@@ -714,14 +775,40 @@
         });
       });
 
-      form.addEventListener('submit', (e) => {
+      // TODO: send the enquiry to the form service here (e.g. fetch to Formspree) and resolve once it's
+      // accepted. For now it just waits, so the sending state can be seen.
+      function send() {
+        return new Promise((resolve) => setTimeout(resolve, 1400));
+      }
+
+      function setFill(value, seconds) {
+        button.style.setProperty('--fill-t', seconds + 's');
+        button.style.setProperty('--fill', value);
+      }
+
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (button.disabled) return;
         const fields = [...form.querySelectorAll('[required]')];
         const bad = fields.filter((input) => !check(input));
         if (bad.length) {
           bad[0].focus();
           return;
         }
+
+        // Sending: the underline creeps most of the way while waiting, then completes
+        button.disabled = true;
+        buttonLabel.textContent = 'Sending';
+        button.classList.add('is-sending');
+        setFill(0, 0);
+        requestAnimationFrame(() => requestAnimationFrame(() => setFill(0.85, 1.6)));
+        await send();
+        setFill(1, 0.3);
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        button.classList.replace('is-sending', 'is-sent');
+        buttonLabel.textContent = 'Sent. Speak soon.';
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+
         const first = form.elements.name.value.trim().split(/\s+/)[0];
         thanks.innerHTML = '';
         const name = document.createElement('strong');

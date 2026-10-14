@@ -1,0 +1,83 @@
+/* ───────── Loading states (Figma: Website › Loading States) ─────────
+   Shared by every page, alongside assets/loading.js. The contact form's "Sending…" state lives on
+   the contact page, next to the form it belongs to. */
+
+/* ───────── 02 Spinner ─────────
+   The favicon "o", turning: a grey #1F1F1F track with a purple arc, one turn every 0.9s.
+   For buttons, forms and anywhere a bigger loading state would be too much. Use 16px inline and 32–48px on
+   its own:  <span class="spinner spinner--16" role="status" aria-label="Loading"></span> */
+.spinner {
+  display: inline-block;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  background: url("spinner.svg") center / contain no-repeat;
+  animation: spinner-turn 0.9s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+.spinner--32 { width: 32px; height: 32px; }
+.spinner--24 { width: 24px; height: 24px; }
+.spinner--16 { width: 16px; height: 16px; }
+
+@keyframes spinner-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* ───────── 04 Skeleton ─────────
+   Image frames hold their shape while their image loads: a #111111 block with a soft highlight
+   sweeping across it every 1.4s. The script adds .is-loading until the image arrives, then it fades in. */
+:is(.project__mockup, .poster__frame, .media, .more__image).is-loading {
+  background: linear-gradient(90deg, rgba(17, 17, 17, 0), #1f1f1f 50%, rgba(17, 17, 17, 0)) no-repeat #111;
+  background-size: 35% 100%;
+  animation: skeleton-sweep 1.4s linear infinite;
+}
+
+:is(.project__mockup, .poster__frame, .media, .more__image).is-loading img { opacity: 0; }
+
+:is(.project__mockup, .poster__frame, .media, .more__image).is-loaded img {
+  animation: skeleton-image-in 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes skeleton-sweep {
+  from { background-position: -55% 0; }
+  to { background-position: 155% 0; }
+}
+
+@keyframes skeleton-image-in {
+  from { opacity: 0; }
+}
+
+/* ───────── 05 Page transition ─────────
+   A 1px purple line under the nav when moving between pages, fading in from its left edge. It moves
+   quickly to about 60%, waits for the next page, then finishes there and fades out. */
+.route-progress {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  width: 100%;
+  height: 1px;
+  z-index: 11;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s 0.15s;
+}
+
+.route-progress.is-active {
+  opacity: 1;
+  transition: none;
+}
+
+.route-progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(106, 96, 246, 0), var(--purple) 30%, var(--purple));
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  transition: transform var(--progress-t, 0.3s) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2.4s; animation-timing-function: linear; }
+  :is(.project__mockup, .poster__frame, .media, .more__image).is-loading { animation: none; }
+  :is(.project__mockup, .poster__frame, .media, .more__image).is-loaded img { animation: none; }
+}
