@@ -352,9 +352,9 @@
     }
 
     /* ───────── Services ─────────
-       Full width: the label above, then the three categories in large type, each across the whole page
-       between thin rules, with a circled "+" on the right. Hovering a category draws a purple rule along
-       its line; clicking it turns the "+" into a purple "×" and slides open its list of services.
+       Full width: the label above, then the three categories, each across the whole page between thin
+       rules, with a circled "+" on the right. Hovering a category draws a purple rule along its line;
+       clicking it turns the "+" into a purple "×" and expands it into three full-screen panels.
        Rows rise in the first time the section is seen. */
     .services {
       padding: 138px 20px 0;
@@ -454,51 +454,61 @@
     .service:hover .service__icon { color: var(--white); }
     .service.is-open .service__icon { color: var(--purple); transform: rotate(135deg); }
 
-    /* The list slides open by animating its row from 0 to its natural height */
+    /* Opening a category expands it downwards into three full-screen panels (animating its row from 0 to
+       its natural height). While it's open, the category's name pins under the nav, and each panel pins
+       below it so the next one slides up over the last as you scroll, as the values do. Clip rather than
+       hide, so the panels can still pin to the screen. --service-head is the name row's height (script). */
     .service__panel {
       display: grid;
       grid-template-rows: 0fr;
-      transition: grid-template-rows 0.5s var(--ease);
+      transition: grid-template-rows 0.6s var(--ease);
     }
 
     .service.is-open .service__panel { grid-template-rows: 1fr; }
 
-    .service__panel-inner { overflow: hidden; }
+    .service__panel-inner { overflow: clip; min-height: 0; }
 
-    /* The services in a row that wraps, each with a small purple square bullet; each one rises in just after
-       the last */
-    .service__items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 48px;
-      list-style: none;
-      padding: 0 0 40px;
+    .service.is-open > h3 {
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 3;
+      background: var(--black);
     }
 
-    .service__items li {
+    .service__screen {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--service-head, 104px));
+      height: calc(100svh - var(--nav-h) - var(--service-head, 104px));
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--line-step);
+      background: var(--black);
+    }
+
+    .service__screen-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .service__screen-label span { color: var(--purple); }
+
+    /* Placeholder until the screen's content is in, in the same style as the other image placeholders */
+    .service__screen-body {
+      flex: 1;
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-weight: 300;
-      font-size: 20px;
-      line-height: 1.4;
-      color: var(--grey-text);
-      opacity: 0;
-      transform: translateY(-6px);
-      transition: opacity 0.3s, transform 0.4s var(--ease);
-    }
-
-    .service__items li::before {
-      content: "";
-      flex: 0 0 6px;
-      height: 6px;
-      background: var(--purple);
-    }
-
-    .service.is-open .service__items li {
-      opacity: 1;
-      transform: none;
-      transition-delay: calc(0.12s + var(--n) * 0.04s);
+      justify-content: center;
+      background: var(--placeholder-bg);
+      border: 1px solid var(--line);
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
     }
 
     .js .service {
@@ -512,7 +522,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .js .service { opacity: 1; transform: none; transition: none; }
-      .service__panel, .service__items li, .service__icon, .service__name, .service::after { transition: none; }
+      .service__panel, .service__icon, .service__name, .service::after { transition: none; }
     }
 
     /* Stacked values, as the home page projects: the label pins to the top, each value pins just below
@@ -689,8 +699,7 @@
       .service__icon { flex-basis: 28px; height: 28px; }
       .service__icon::before,
       .service__icon::after { width: 10px; margin-left: -5px; }
-      .service__items { flex-direction: column; gap: 8px; padding-bottom: 28px; }
-      .service__items li { font-size: 18px; }
+      .service__screen { padding: 24px 0 28px; }
       .team__grid { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
 
       .footer { padding-top: 56px; }
@@ -911,7 +920,7 @@
 
     <section class="services" aria-labelledby="services-label">
       <h2 class="services__label dm" id="services-label">Services:</h2>
-      <!-- TODO: the services in each category are filler; swap in the real lists -->
+      <!-- TODO: each category's three screens are placeholders; add their content -->
       <ul class="services__list">
         <li class="service" style="--i: 0;">
           <h3>
@@ -922,13 +931,20 @@
           </h3>
           <div class="service__panel" id="service-branding" role="region" aria-labelledby="service-branding-toggle">
             <div class="service__panel-inner">
-              <ul class="service__items">
-                <li style="--n: 0;">Brand strategy</li>
-                <li style="--n: 1;">Logo &amp; identity design</li>
-                <li style="--n: 2;">Visual systems</li>
-                <li style="--n: 3;">Brand guidelines</li>
-                <li style="--n: 4;">Packaging</li>
-              </ul>
+              <div class="service__screens">
+                <article class="service__screen" aria-label="Branding, screen 1 of 3">
+                  <p class="service__screen-label dm">Branding <span>01 / 03</span></p>
+                  <div class="service__screen-body dm">Branding screen 1: content to come</div>
+                </article>
+                <article class="service__screen" aria-label="Branding, screen 2 of 3">
+                  <p class="service__screen-label dm">Branding <span>02 / 03</span></p>
+                  <div class="service__screen-body dm">Branding screen 2: content to come</div>
+                </article>
+                <article class="service__screen" aria-label="Branding, screen 3 of 3">
+                  <p class="service__screen-label dm">Branding <span>03 / 03</span></p>
+                  <div class="service__screen-body dm">Branding screen 3: content to come</div>
+                </article>
+              </div>
             </div>
           </div>
         </li>
@@ -941,13 +957,20 @@
           </h3>
           <div class="service__panel" id="service-content" role="region" aria-labelledby="service-content-toggle">
             <div class="service__panel-inner">
-              <ul class="service__items">
-                <li style="--n: 0;">Art direction</li>
-                <li style="--n: 1;">Social media content</li>
-                <li style="--n: 2;">Photography direction</li>
-                <li style="--n: 3;">Campaign design</li>
-                <li style="--n: 4;">Copywriting</li>
-              </ul>
+              <div class="service__screens">
+                <article class="service__screen" aria-label="Content, screen 1 of 3">
+                  <p class="service__screen-label dm">Content <span>01 / 03</span></p>
+                  <div class="service__screen-body dm">Content screen 1: content to come</div>
+                </article>
+                <article class="service__screen" aria-label="Content, screen 2 of 3">
+                  <p class="service__screen-label dm">Content <span>02 / 03</span></p>
+                  <div class="service__screen-body dm">Content screen 2: content to come</div>
+                </article>
+                <article class="service__screen" aria-label="Content, screen 3 of 3">
+                  <p class="service__screen-label dm">Content <span>03 / 03</span></p>
+                  <div class="service__screen-body dm">Content screen 3: content to come</div>
+                </article>
+              </div>
             </div>
           </div>
         </li>
@@ -960,13 +983,20 @@
           </h3>
           <div class="service__panel" id="service-web" role="region" aria-labelledby="service-web-toggle">
             <div class="service__panel-inner">
-              <ul class="service__items">
-                <li style="--n: 0;">Website design</li>
-                <li style="--n: 1;">Web development</li>
-                <li style="--n: 2;">UI &amp; UX design</li>
-                <li style="--n: 3;">E-commerce</li>
-                <li style="--n: 4;">Ongoing support</li>
-              </ul>
+              <div class="service__screens">
+                <article class="service__screen" aria-label="Web, screen 1 of 3">
+                  <p class="service__screen-label dm">Web <span>01 / 03</span></p>
+                  <div class="service__screen-body dm">Web screen 1: content to come</div>
+                </article>
+                <article class="service__screen" aria-label="Web, screen 2 of 3">
+                  <p class="service__screen-label dm">Web <span>02 / 03</span></p>
+                  <div class="service__screen-body dm">Web screen 2: content to come</div>
+                </article>
+                <article class="service__screen" aria-label="Web, screen 3 of 3">
+                  <p class="service__screen-label dm">Web <span>03 / 03</span></p>
+                  <div class="service__screen-body dm">Web screen 3: content to come</div>
+                </article>
+              </div>
             </div>
           </div>
         </li>
@@ -1084,23 +1114,49 @@
       new ResizeObserver(() => section.style.setProperty('--why-pin', intro.offsetHeight + 'px')).observe(intro);
     })();
 
-    // Services: one category open at a time; rows rise in the first time the section comes into view
+    // Services: one category open at a time, expanding into its three screens; rows rise in the first time
+    // the section comes into view
     (() => {
       const section = document.querySelector('.services');
       const items = [...section.querySelectorAll('.service')];
 
+      const nav = document.querySelector('.nav');
+      const head = items[0].querySelector('h3');
+      const setHead = () => section.style.setProperty('--service-head', head.offsetHeight + 'px');
+      setHead();
+      document.fonts.ready.then(setHead);
+      new ResizeObserver(setHead).observe(head);
+
+      // Scroll so the category's name sits just under the nav
+      function toTop(item, behavior) {
+        const y = item.getBoundingClientRect().top + window.scrollY - nav.offsetHeight;
+        window.scrollTo({ top: y, behavior });
+      }
+
+      // Close without animating, so the page doesn't shift while we scroll to the next one
+      function closeNow(item) {
+        const panel = item.querySelector('.service__panel');
+        panel.style.transition = 'none';
+        item.classList.remove('is-open');
+        item.querySelector('.service__toggle').setAttribute('aria-expanded', 'false');
+        panel.offsetHeight; // apply the change before turning the transition back on
+        panel.style.transition = '';
+      }
+
       items.forEach((item) => {
         const button = item.querySelector('.service__toggle');
         button.addEventListener('click', () => {
-          const opening = !item.classList.contains('is-open');
-          items.forEach((other) => {
-            other.classList.remove('is-open');
-            other.querySelector('.service__toggle').setAttribute('aria-expanded', 'false');
-          });
-          if (opening) {
-            item.classList.add('is-open');
-            button.setAttribute('aria-expanded', 'true');
+          if (item.classList.contains('is-open')) {
+            // Closing from inside the panels: go back to the name first, then fold it away
+            if (item.getBoundingClientRect().top < nav.offsetHeight) toTop(item, 'auto');
+            item.classList.remove('is-open');
+            button.setAttribute('aria-expanded', 'false');
+            return;
           }
+          items.filter((other) => other !== item && other.classList.contains('is-open')).forEach(closeNow);
+          item.classList.add('is-open');
+          button.setAttribute('aria-expanded', 'true');
+          toTop(item, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
         });
       });
 
