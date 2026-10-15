@@ -216,13 +216,13 @@
 
     .js .hero__cta:not(.is-in) { opacity: 0; }
 
-    /* The same size as the footer logo (47% of the page width), in the bottom-right corner. The image has
-       transparent margins (21px right, 36px below the baseline, of 3306 × 706); pulled back so the letters
-       sit exactly 20px from the page edge and on the bottom line, as in the footer. */
+    /* Full bleed: the letters run exactly from one edge of the screen to the other and sit on the bottom
+       line, the whole word always in view. The image has transparent margins (20px left, 21px right, 36px
+       below the baseline, of 3306 × 706), so it is sized and pulled back to put the letters on the edges. */
     .hero__wordmark {
       position: absolute;
-      --mark-w: 47cqw;
-      right: calc(-21 / 3306 * var(--mark-w));
+      --mark-w: calc((100cqw + 40px) * 3306 / 3265);
+      left: calc(-20px - 20 / 3306 * var(--mark-w));
       bottom: calc(-36 / 3306 * var(--mark-w));
       width: var(--mark-w);
       height: calc(var(--mark-w) * 706 / 3306);
@@ -280,7 +280,7 @@
       100% { --glow-bx: 12%; --glow-by: 40%; }
     }
 
-    /* On load, step 1: the wordmark slides in from the left of the screen to its corner, revealed from the
+    /* On load, step 1: the wordmark slides in from the left of the screen, revealed from the
        left by a soft, feathered edge as it goes. The mask only exists during the animation ("backwards" fill). */
     .hero__wordmark {
       animation: wordmark-reveal 1.8s cubic-bezier(0.55, 0, 0.25, 1) 0.2s backwards;
@@ -296,7 +296,7 @@
         mask-repeat: no-repeat;
         -webkit-mask-position: 100% 0;
         mask-position: 100% 0;
-        transform: translateX(calc(-100cqw - 20px));
+        transform: translateX(-100%);
       }
       to {
         -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
@@ -1147,8 +1147,6 @@
         white-space: normal; /* drops the extra space the desktop line breaks rely on */
       }
 
-      /* The same size as the footer logo on phones: the full width between the 20px page edges */
-      .hero__wordmark { --mark-w: 100cqw; }
     }
 
     /* ───────── Scrolling on phones ─────────
