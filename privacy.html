@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy | Onwun</title>
+  <meta name="description" content="What Onwun collects, why we collect it, and what you can ask us to do with it. No surprises.">
+  <link rel="canonical" href="https://onwun.com/privacy.html">
+  <!-- Link previews (LinkedIn, WhatsApp, iMessage, Slack…): 1200 × 630 images in assets/og -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Onwun">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Privacy Policy | Onwun">
+  <meta property="og:description" content="What Onwun collects, why we collect it, and what you can ask us to do with it. No surprises.">
+  <meta property="og:url" content="https://onwun.com/privacy.html">
+  <meta property="og:image" content="https://onwun.com/assets/og/onwun.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The onwun wordmark in purple on black with the tagline Designed to Lead. Not Follow.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="assets/loading.css">
+  <script src="assets/loading.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Privacy Policy, opened from "Privacy policy" in the footer. Built from the terms page.
+       Nav and footer are copied from the home page (index.html); keep them in step. */
+    :root {
+      --nav-h: 41px;
+      --black: #000;
+      --white: #fff;
+      --purple: #6a60f6;
+      --purple-deep: #5d54d7;
+      --purple-cta: #5b3fe4;
+      --muted: #626675;
+      --grey-text: #c9cad0;
+      --line-step: #2e2e2e;
+      --line: #1f1f1f;
+
+      --sora: "Sora", sans-serif;
+      --inter: "Inter", sans-serif;
+      --dm: "DM Sans", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--black); }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sora);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .dm {
+      font-family: var(--dm);
+      font-weight: 500;
+      font-variation-settings: "opsz" 14;
+    }
+
+    /* ───────── Nav Bar ───────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--nav-h);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+    }
+
+    .nav__logo {
+      display: block;
+      width: 141px;
+      height: 30px;
+      transform-origin: left center;
+      transition: transform 0.45s var(--ease);
+    }
+
+    .nav.is-compact .nav__logo { transform: scale(0.72); }
+
+    .nav__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
+    .nav__links a:hover { opacity: 1; }
+
+    .nav__cta {
+      font-family: var(--inter);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      color: var(--purple-cta);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .nav__cta:hover,
+    .nav__cta[aria-current="page"] { color: var(--purple); }
+
+    /* ───────── Layers ─────────
+       The page slides up off the footer at the end, as on the other pages */
+    .legal {
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 0;
+      background: var(--black);
+    }
+
+    /* ───────── Privacy (Figma: Website › Privacy Policy) ─────────
+       Two columns, 660 | 666 at 1366px wide: labels and the contents list on the left (28px in),
+       the title and the numbered sections on the right */
+    .legal__head,
+    .legal__body {
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 666fr);
+      align-items: start;
+      padding: 0 20px;
+    }
+
+    .legal__head {
+      padding-top: 138px;
+      padding-bottom: 96px;
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    .legal__body {
+      padding-top: 84px;
+      padding-bottom: 138px;
+    }
+
+    .legal__label {
+      padding-left: 28px;
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .legal__intro {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      font-weight: 300;
+    }
+
+    .legal__title {
+      font-weight: 300;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    .legal__updated {
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .legal__lead {
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Contents: stays in view while the sections scroll past. The section you're reading is white with a
+       purple number; the rest are grey and turn white on hover. */
+    .toc {
+      position: sticky;
+      top: calc(var(--nav-h) + 40px);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .toc__list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-left: 28px;
+      list-style: none;
+      font-weight: 300;
+      font-size: 14px;
+    }
+
+    .toc__list a {
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .toc__num {
+      display: inline-block;
+      min-width: 2.1em;
+      transition: color 0.3s;
+    }
+
+    .toc__list a:hover,
+    .toc__list a:focus-visible,
+    .toc__list a[aria-current="true"] { color: var(--white); }
+    .toc__list a[aria-current="true"] .toc__num { color: var(--purple); }
+
+    /* The numbered sections, each between fine rules */
+    .clause {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 40px 0;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: var(--nav-h);
+    }
+
+    .clause:first-child { border-top: 1px solid var(--line); }
+
+    .clause__num {
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      color: var(--purple);
+    }
+
+    .clause__title {
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .clause__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--grey-text);
+    }
+
+    .clause__body a {
+      color: var(--purple);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Details still to be filled in, shown in purple until they are */
+    .todo { color: var(--purple); }
+
+    /* ───────── Footer ───────── */
+    .footer {
+      padding: 136px 20px 20px;
+      display: flex;
+    }
+
+    .footer__frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer__brand {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .footer__brand-main {
+      flex: 0 0 47%;
+      min-width: 0;
+    }
+
+    .footer__logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-left: calc(-20 / 3306 * 100%);
+      margin-bottom: calc(-36 / 3306 * 100%);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 96px;
+      margin-bottom: calc(40px - 20 / 3306 * 100%);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer__social { list-style: none; }
+
+    .footer__link {
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible { color: var(--purple); }
+
+    .footer__legal {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .footer__legal a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__legal a:hover,
+    .footer__legal a:focus-visible { color: var(--white); }
+
+    .footer__tagline {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--purple);
+      margin-bottom: -0.19em;
+    }
+
+    @media (max-width: 899px) {
+      .nav__links { display: none; }
+
+      /* Phones: one column, the contents list above the sections (not pinned) */
+      .legal__head,
+      .legal__body { grid-template-columns: minmax(0, 1fr); }
+      .legal__head { padding-top: 56px; padding-bottom: 48px; row-gap: 24px; }
+      .legal__body { padding-top: 48px; padding-bottom: 64px; row-gap: 48px; }
+      .legal__label,
+      .toc__list { padding-left: 0; }
+      .legal__title { font-size: 28px; }
+      .legal__lead { font-size: 20px; line-height: 1.3; }
+      .toc { position: static; }
+      .clause__title { font-size: 20px; }
+
+      .footer { padding-top: 56px; }
+      .footer__brand { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px; }
+      .footer__brand-main { flex: none; width: 100%; }
+      .footer__links { gap: 48px; }
+      /* Scaled down in proportion to the wordmark above it, on one line */
+      .footer__tagline { text-align: left; font-size: 20px; line-height: 1.2; margin-bottom: 0; }
+      .footer__tagline br { display: none; }
+      .footer__legal { margin-top: 24px; }
+    }
+
+    /* Phones: the footer simply scroll with the page; pinning them made them flash back into
+       view when the phone's address bar resized the screen */
+    @media (max-width: 899px) {
+      .footer {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+    }
+
+    /* ───────── Phone menu ─────────
+       Below 900px the nav links and "Talk to us" give way to a "Menu" button, which opens a full-screen
+       list of the pages under the nav. Shared by every page; keep them in step. */
+    .nav__menu { display: none; }
+    .menu { display: none; }
+
+    @media (max-width: 899px) {
+      .nav__cta { display: none; }
+
+      .nav__menu {
+        display: block;
+        padding: 8px 0 8px 16px;
+        background: none;
+        border: 0;
+        color: var(--white);
+        font: inherit;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: normal;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        inset: var(--nav-h) 0 0;
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 20px 20px;
+        background: var(--black);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0s 0.3s;
+      }
+
+      .menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .menu__links { list-style: none; }
+
+      /* Each page rises in, one after another, as the menu opens */
+      .menu__links li {
+        border-bottom: 1px solid var(--line-step);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .menu.is-open .menu__links li {
+        opacity: 1;
+        transform: none;
+        transition-delay: calc(0.05s + var(--i) * 0.06s);
+      }
+
+      /* Same type as the project titles */
+      .menu__links a {
+        display: block;
+        padding: 18px 0;
+        font-weight: 400;
+        font-size: 36px;
+        line-height: 1.1;
+        color: var(--white);
+      }
+
+      .menu__links a[aria-current="page"] { color: var(--muted); }
+      .menu__links .menu__cta { color: var(--purple); }
+
+      .menu__foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      html.menu-open { overflow: hidden; }
+    }
+
+    @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+      .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav__logo" href="index.html" aria-label="Onwun home">
+      <img src="assets/onwun-logo.png" alt="Onwun">
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#work">Projects</a></li>
+        <li><a href="about.html">About us</a></li>
+      </ul>
+    </nav>
+    <a class="nav__cta" href="contact.html">Talk to us</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </header>
+
+  <!-- Phone menu, opened by the "Menu" button in the nav -->
+  <nav class="menu" id="menu" aria-label="Menu">
+    <ul class="menu__links">
+        <li style="--i: 0;"><a href="index.html">Home</a></li>
+        <li style="--i: 1;"><a href="index.html#work">Projects</a></li>
+        <li style="--i: 2;"><a href="about.html">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="contact.html">Talk to us</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a href="mailto:contact@onwun.com">contact@onwun.com</a>
+      <a href="tel:+447941625316">+44 7941 625316</a>
+    </div>
+  </nav>
+
+  <main class="legal">
+    <!-- TODO: fill in the details in square brackets (shown in purple): the date, business address, providers and how long records are kept -->
+    <header class="legal__head">
+      <p class="legal__label dm">Legal:</p>
+      <div class="legal__intro">
+        <h1 class="legal__title">Privacy Policy</h1>
+        <p class="legal__updated">Last updated <span class="todo">[14 October 2026]</span></p>
+        <p class="legal__lead">What we collect, why we collect it, and what you can ask us to do with it. No surprises.</p>
+      </div>
+    </header>
+
+    <div class="legal__body">
+      <nav class="toc" aria-labelledby="toc-label">
+        <p class="legal__label dm" id="toc-label">Contents:</p>
+        <ol class="toc__list">
+            <li><a href="#who-we-are"><span class="toc__num">01</span>Who we are</a></li>
+            <li><a href="#what-we-collect"><span class="toc__num">02</span>What we collect</a></li>
+            <li><a href="#how-we-use-it"><span class="toc__num">03</span>How we use it</a></li>
+            <li><a href="#legal-basis"><span class="toc__num">04</span>Our legal basis</a></li>
+            <li><a href="#who-we-share-it-with"><span class="toc__num">05</span>Who we share it with</a></li>
+            <li><a href="#how-long-we-keep-it"><span class="toc__num">06</span>How long we keep it</a></li>
+            <li><a href="#cookies"><span class="toc__num">07</span>Cookies</a></li>
+            <li><a href="#your-rights"><span class="toc__num">08</span>Your rights</a></li>
+            <li><a href="#keeping-it-safe"><span class="toc__num">09</span>Keeping it safe</a></li>
+            <li><a href="#complaints"><span class="toc__num">10</span>Complaints</a></li>
+            <li><a href="#changes"><span class="toc__num">11</span>Changes to this policy</a></li>
+            <li><a href="#contact"><span class="toc__num">12</span>Contact</a></li>
+        </ol>
+      </nav>
+
+      <div class="clauses">
+        <section class="clause" id="who-we-are" aria-labelledby="who-we-are-title">
+          <p class="clause__num dm">01</p>
+          <h2 class="clause__title" id="who-we-are-title">Who we are</h2>
+          <div class="clause__body">
+            <p>onwun is the trading name of a partnership between Rohan McCallum and Niall Penny, based in London and Manchester. Our business address is <span class="todo">[business address]</span>. We’re the data controller for the personal information described in this policy.</p>
+            <p>If you have any questions, email <a href="mailto:contact@onwun.com">contact@onwun.com</a>.</p>
+          </div>
+        </section>
+        <section class="clause" id="what-we-collect" aria-labelledby="what-we-collect-title">
+          <p class="clause__num dm">02</p>
+          <h2 class="clause__title" id="what-we-collect-title">What we collect</h2>
+          <div class="clause__body">
+            <p>When you send a message through our contact form or email us, we collect your name, email address and anything else you choose to share, such as your company and project details.</p>
+            <p>When you book a call through Calendly, we receive your name, email address, the time you choose and any answers you give to the booking questions. Calendly also collects some details itself, such as your time zone.</p>
+            <p>When you browse the site, and only if you accept analytics cookies, we collect basic usage data such as the pages you visit, your device and browser type, and your approximate location.</p>
+          </div>
+        </section>
+        <section class="clause" id="how-we-use-it" aria-labelledby="how-we-use-it-title">
+          <p class="clause__num dm">03</p>
+          <h2 class="clause__title" id="how-we-use-it-title">How we use it</h2>
+          <div class="clause__body">
+            <p>We use your information to reply to your messages, schedule and hold discovery calls, prepare proposals, deliver and invoice projects, and improve our website.</p>
+            <p>We never sell your data, and we won’t add you to a mailing list without asking first.</p>
+          </div>
+        </section>
+        <section class="clause" id="legal-basis" aria-labelledby="legal-basis-title">
+          <p class="clause__num dm">04</p>
+          <h2 class="clause__title" id="legal-basis-title">Our legal basis</h2>
+          <div class="clause__body">
+            <p>Under UK GDPR, we rely on legitimate interests to reply to messages and arrange calls you’ve asked for, contract to deliver projects, consent for analytics cookies, and legal obligation to keep financial records.</p>
+          </div>
+        </section>
+        <section class="clause" id="who-we-share-it-with" aria-labelledby="who-we-share-it-with-title">
+          <p class="clause__num dm">05</p>
+          <h2 class="clause__title" id="who-we-share-it-with-title">Who we share it with</h2>
+          <div class="clause__body">
+            <p>We only share data with trusted providers who help us run the studio:</p>
+            <p>— Calendly, to schedule calls. When you book, your details are also handled under <a href="https://calendly.com/privacy" target="_blank" rel="noopener">Calendly’s own privacy policy</a>.</p>
+            <p>— Contact form (<span class="todo">[provider]</span>), to receive the messages you send through the site.</p>
+            <p>— Email (<span class="todo">[provider, e.g. Google Workspace]</span>), to send and receive messages.</p>
+            <p>— Calendar and video calls (<span class="todo">[provider, e.g. Google Calendar and Meet]</span>), to hold the calls you book.</p>
+            <p>— Website hosting (<span class="todo">[provider]</span>) and analytics (<span class="todo">[provider]</span>).</p>
+            <p>They can only use your data to provide their service to us. Some, including Calendly, are based in the US. When data leaves the UK, we rely on appropriate safeguards, such as the UK Extension to the EU–US Data Privacy Framework or the UK International Data Transfer Addendum.</p>
+          </div>
+        </section>
+        <section class="clause" id="how-long-we-keep-it" aria-labelledby="how-long-we-keep-it-title">
+          <p class="clause__num dm">06</p>
+          <h2 class="clause__title" id="how-long-we-keep-it-title">How long we keep it</h2>
+          <div class="clause__body">
+            <p>Messages and call bookings that don’t become projects are deleted after 12 months. Client and project records are kept for <span class="todo">[6 years]</span> to meet our tax and accounting obligations.</p>
+            <p>You can cancel or reschedule a call at any time using the link in your Calendly confirmation email.</p>
+          </div>
+        </section>
+        <section class="clause" id="cookies" aria-labelledby="cookies-title">
+          <p class="clause__num dm">07</p>
+          <h2 class="clause__title" id="cookies-title">Cookies</h2>
+          <div class="clause__body">
+            <p><!-- TODO: point "Cookie settings" at the cookie banner / settings once the site has one -->We use essential cookies to make the site work. Analytics cookies are only set if you agree, and you can change your choice at any time in <a href="#">Cookie settings</a>.</p>
+            <p>Our booking calendar is provided by Calendly. It only loads when you choose to book a call, and Calendly may then set its own cookies. See <a href="https://calendly.com/privacy" target="_blank" rel="noopener">Calendly’s privacy and cookie policies</a> for details.</p>
+          </div>
+        </section>
+        <section class="clause" id="your-rights" aria-labelledby="your-rights-title">
+          <p class="clause__num dm">08</p>
+          <h2 class="clause__title" id="your-rights-title">Your rights</h2>
+          <div class="clause__body">
+            <p>You can ask us to access, correct or delete your data, restrict or object to how we use it, or move it elsewhere. Where we rely on consent, you can withdraw it at any time.</p>
+            <p>Just email <a href="mailto:contact@onwun.com">contact@onwun.com</a>. We’ll reply within one month. For booking data held by Calendly, you can also contact Calendly directly.</p>
+          </div>
+        </section>
+        <section class="clause" id="keeping-it-safe" aria-labelledby="keeping-it-safe-title">
+          <p class="clause__num dm">09</p>
+          <h2 class="clause__title" id="keeping-it-safe-title">Keeping it safe</h2>
+          <div class="clause__body">
+            <p>We use secure, reputable tools, limit access to the people who need it, and review how we store information regularly.</p>
+          </div>
+        </section>
+        <section class="clause" id="complaints" aria-labelledby="complaints-title">
+          <p class="clause__num dm">10</p>
+          <h2 class="clause__title" id="complaints-title">Complaints</h2>
+          <div class="clause__body">
+            <p>If you’re unhappy with how we’ve handled your data, please tell us first so we can put it right. You can also complain to the Information Commissioner’s Office at <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a> or on <a href="tel:03031231113">0303 123 1113</a>.</p>
+          </div>
+        </section>
+        <section class="clause" id="changes" aria-labelledby="changes-title">
+          <p class="clause__num dm">11</p>
+          <h2 class="clause__title" id="changes-title">Changes to this policy</h2>
+          <div class="clause__body">
+            <p>We’ll update this page if anything changes. The date at the top shows when it was last revised.</p>
+          </div>
+        </section>
+        <section class="clause" id="contact" aria-labelledby="contact-title">
+          <p class="clause__num dm">12</p>
+          <h2 class="clause__title" id="contact-title">Contact</h2>
+          <div class="clause__body">
+            <p>Questions about your data? Email <a href="mailto:contact@onwun.com">contact@onwun.com</a> or call <a href="tel:+447941625316">+44 7941 625316</a>.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__frame">
+      <div class="footer__brand">
+        <div class="footer__brand-main">
+          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <div class="footer__links">
+            <ul class="footer__social">
+              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="#">LinkedIn</a></li>
+            </ul>
+            <div class="footer__reach">
+              <a class="footer__link" href="mailto:contact@onwun.com">contact@onwun.com</a>
+              <p>+44 7941 625316</p>
+            </div>
+          </div>
+          <img class="footer__logo" src="assets/onwun-wordmark.png" alt="Onwun">
+        </div>
+        <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
+      </div>
+      <div class="footer__legal">
+        <a href="terms.html">T&amp;Cs</a>
+        <a href="privacy.html" aria-current="page">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Contents: the section you're reading is highlighted (the last one whose top has passed a line just
+    // under the nav; the last section can still reach it when you scroll to the bottom)
+    (() => {
+      const links = [...document.querySelectorAll('.toc__list a')];
+      const nav = document.querySelector('.nav');
+      const sections = links.map((link) => document.querySelector(link.getAttribute('href')));
+      let ticking = false;
+      function update() {
+        const line = nav.offsetHeight + 180;
+        let current = 0;
+        sections.forEach((section, i) => {
+          if (section.getBoundingClientRect().top <= line) current = i;
+        });
+        links.forEach((link, i) => link.setAttribute('aria-current', String(i === current)));
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
+    (() => {
+      const nav = document.querySelector('.nav');
+      let ticking = false;
+      function update() {
+        nav.classList.toggle('is-compact', window.scrollY > 40);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Phone menu: the "Menu" button opens and closes the list of pages; choosing a page, pressing Escape
+    // or widening the window past the phone layout closes it
+    (() => {
+      const button = document.querySelector('.nav__menu');
+      const menu = document.getElementById('menu');
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Close' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+      }
+
+      button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          setOpen(false);
+          button.focus();
+        }
+      });
+      window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>
