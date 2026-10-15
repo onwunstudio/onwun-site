@@ -352,7 +352,8 @@
 
     .media--square { aspect-ratio: 1; }
 
-    .media img {
+    .media img,
+    .media video {
       display: block;
       width: 100%;
       height: 100%;
@@ -372,6 +373,32 @@
       min-width: 0;
       aspect-ratio: var(--ratio);
     }
+
+    /* Chapters (ATLAS): blocks of images and videos after the info and each case row, 20px apart on the
+       20px-gutter grid; 138px between chapters comes from the case grid */
+    .chapter {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .chapter__row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    /* A small caption at the foot of the half beside an image */
+    .chapter__caption {
+      align-self: end;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+    }
+
+    .media--video { border: 1px solid var(--line); }
 
     /* Images shown whole (nothing cropped), centred on a background matching their own */
     .media--whole { background: var(--media-bg); }
@@ -636,6 +663,9 @@
       .case__text { font-size: 20px; }
       .case__squares { grid-template-columns: minmax(0, 1fr); }
       .media-pair { flex-direction: column; }
+      .chapter__row { grid-template-columns: minmax(0, 1fr); }
+      .chapter__row--right .chapter__caption { order: 1; } /* captions sit under their image */
+      .chapter__caption { margin-top: -8px; }
       .media--pair-item { flex: none; width: 100%; }
       .more { padding-bottom: 64px; }
       .more__card { width: 80vw; }
@@ -808,14 +838,14 @@
           </dl>
         </div>
 
-        <!-- A big full-width landscape image under the info -->
+        <!-- A big full-width landscape image under the info (or a chapter of images and videos) -->
         <div class="media media--landscape reveal" style="aspect-ratio: 3 / 2;"><img src="assets/denglish/brand-presentation.webp" alt="Denglish brand presentation spreads: app screens, wordmark breakdown, stickers and colour palette" loading="lazy"></div>
 
         <!-- Challenges: label on the left, text in the right column -->
         <h2 class="case__label dm reveal">Challenges:</h2>
         <p class="case__text">The challenge was to turn a functional English-learning tool into a clearer, more engaging learning experience, using intuitive interactions, visible progress and a consistent visual system to make Denglish easier to use and return to every day.</p>
 
-        <!-- Three square images across the full width -->
+        <!-- Three square images across the full width (or a chapter) -->
         <div class="case__squares">
           <div class="media media--square reveal"><img src="assets/denglish/website-ipad.webp" alt="The Denglish website on an iPad" loading="lazy"></div>
           <div class="media media--square reveal" style="--i: 1;"><img src="assets/denglish/app-screens.webp" alt="Three Denglish app screens: coach, vocabulary drill and word trainer" loading="lazy"></div>
@@ -826,7 +856,7 @@
         <h2 class="case__label dm reveal">Solution:</h2>
         <p class="case__text">We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish. A consistent colour palette, type hierarchy, icon set and progress-focused interface bring structure to the learning journey, helping users understand what to do, track improvement and stay engaged day after day.</p>
 
-        <!-- A second full-width landscape image -->
+        <!-- A second full-width landscape image (or a chapter) -->
         <div class="media media--landscape media--whole reveal" style="--media-bg: #ffffff;"><img src="assets/denglish/app-store.webp" alt="Denglish splash screen on a phone, app store listing and app icon" loading="lazy"></div>
 
         <!-- Result: same layout as the challenges and solution -->
@@ -904,6 +934,20 @@
   <div class="view-cursor dm" aria-hidden="true"><span>View project</span></div>
 
   <script>
+    // Videos in the image slots play like moving images while they're on screen, loading only once they're
+    // near; with reduced motion they stay on their still frame
+    (() => {
+      const videos = document.querySelectorAll('.media video');
+      if (!videos.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.play().catch(() => {});
+          else e.target.pause();
+        });
+      }, { rootMargin: '200px 0px' });
+      videos.forEach((video) => io.observe(video));
+    })();
+
     // Blocks rise in the first time they come into view
     (() => {
       const io = new IntersectionObserver((entries) => {

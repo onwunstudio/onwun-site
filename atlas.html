@@ -352,7 +352,8 @@
 
     .media--square { aspect-ratio: 1; }
 
-    .media img {
+    .media img,
+    .media video {
       display: block;
       width: 100%;
       height: 100%;
@@ -372,6 +373,32 @@
       min-width: 0;
       aspect-ratio: var(--ratio);
     }
+
+    /* Chapters (ATLAS): blocks of images and videos after the info and each case row, 20px apart on the
+       20px-gutter grid; 138px between chapters comes from the case grid */
+    .chapter {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .chapter__row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    /* A small caption at the foot of the half beside an image */
+    .chapter__caption {
+      align-self: end;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+    }
+
+    .media--video { border: 1px solid var(--line); }
 
     /* Images shown whole (nothing cropped), centred on a background matching their own */
     .media--whole { background: var(--media-bg); }
@@ -636,6 +663,9 @@
       .case__text { font-size: 20px; }
       .case__squares { grid-template-columns: minmax(0, 1fr); }
       .media-pair { flex-direction: column; }
+      .chapter__row { grid-template-columns: minmax(0, 1fr); }
+      .chapter__row--right .chapter__caption { order: 1; } /* captions sit under their image */
+      .chapter__caption { margin-top: -8px; }
       .media--pair-item { flex: none; width: 100%; }
       .more { padding-bottom: 64px; }
       .more__card { width: 80vw; }
@@ -808,26 +838,31 @@
           </dl>
         </div>
 
-        <!-- A big full-width landscape image under the info -->
-        <div class="media media--landscape reveal" style="aspect-ratio: 2000 / 1414;"><img src="assets/atlas/travel-guides.webp" alt="Seven ATLAS fabric travel guides fanned out on a dark surface: Hong Kong, Brazil, Japan, Morocco, Santorini, Paris and Milan, each in its own colour" loading="lazy"></div>
+        <!-- A big full-width landscape image under the info (or a chapter of images and videos) -->
+        <div class="chapter">
+          <div class="chapter__row"><div class="media media--video reveal" style="aspect-ratio: 1;"><video src="assets/atlas/logo-animation.mp4" poster="assets/atlas/logo-animation-poster.webp" muted loop playsinline preload="none" aria-label="The ATLAS logo being drawn over its construction grid, on dark green"></video></div><div class="media media--video reveal" style="--i: 1; aspect-ratio: 1;"><video src="assets/atlas/palette.mp4" poster="assets/atlas/palette-poster.webp" muted loop playsinline preload="none" aria-label="The ATLAS colour palette: Meridian #3B4D4A, Horizon #DBDED1, and destination colours for Japan #221A1A, Morocco #5F1B14 and Santorini #172235"></video></div></div>
+          <div class="media media--video reveal" style="aspect-ratio: 1326 / 746;"><video src="assets/atlas/loop.mp4" poster="assets/atlas/loop-poster.webp" muted loop playsinline preload="none" aria-label="An animated ATLAS location stamp: Morocco, in terracotta on deep red"></video></div>
+        </div>
 
         <!-- Challenges: label on the left, text in the right column -->
         <h2 class="case__label dm reveal">Challenges:</h2>
         <p class="case__text">Atlas began as a response to a gap in the sustainable fashion market. The live brief also asked for the project to be grounded in Manchester’s textile history, meaning the brand needed a visual identity that could carry real cultural and historical weight, while still solving a genuine, practical problem around how people pack and dress for travel.</p>
 
-        <!-- Three square images across the full width -->
-        <div class="case__squares">
-          <div class="media media--square reveal"><img src="assets/atlas/suitcase-stickers.webp" alt="A navy suitcase covered in ATLAS stickers for Japan, Marrakech and Tokyo" loading="lazy" style="object-position: 50% 70%;"></div>
-          <div class="media media--square reveal" style="--i: 1;"><img src="assets/atlas/app-icon.webp" alt="The ATLAS app icon on a phone home screen" loading="lazy"></div>
-          <div class="media media--square reveal" style="--i: 2;"><img src="assets/atlas/app-phone.webp" alt="The ATLAS app on a phone, showing Spring in Paris with an Explore the city button" loading="lazy" style="object-position: 50% 55%;"></div>
+        <!-- Three square images across the full width (or a chapter) -->
+        <div class="chapter">
+          <div class="media reveal" style="aspect-ratio: 1326 / 937;"><img src="assets/atlas/guides.webp" alt="ATLAS fabric travel guides for Morocco and Japan, open on their Threads of Culture spreads, with destination stickers" loading="lazy"></div>
+          <div class="chapter__row chapter__row--left"><div class="media reveal" style="aspect-ratio: 1;"><img src="assets/atlas/app-phone.webp" alt="The ATLAS app on a phone, showing Spring in Paris with an Explore the city button" loading="lazy" style="object-position: 50% 54.85%;"></div><p class="chapter__caption reveal">The ATLAS app — rent, pack, return.</p></div>
         </div>
 
         <!-- Solution: same layout as the challenges -->
         <h2 class="case__label dm reveal">Solution:</h2>
         <p class="case__text">Atlas, a premium menswear rental platform for travel, structured around the 5-4-3-2-1 packing method. The identity system centres on a logomark, which extends into a stamp system referencing passport stamps and Manchester’s historic textile trademark labels. Destination-specific colour palettes, fabric-pattern-led stickers, and printed travel guides bring each location’s culture into the brand.</p>
 
-        <!-- A second full-width landscape image -->
-        <div class="media media--landscape reveal" style="aspect-ratio: 2000 / 1296;"><img src="assets/atlas-mockup.webp" alt="ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type" loading="lazy"></div>
+        <!-- A second full-width landscape image (or a chapter) -->
+        <div class="chapter">
+          <div class="chapter__row chapter__row--right"><p class="chapter__caption reveal">Campaign — Pack less. Travel more.</p><div class="media media--video reveal" style="aspect-ratio: 3 / 4;"><video src="assets/atlas/flash.mp4" poster="assets/atlas/flash-poster.webp" muted loop playsinline preload="none" aria-label="ATLAS campaign: a man under a striped beach umbrella, with the ATLAS wordmark and Pack less. Travel more."></video></div></div>
+          <div class="media media--video reveal" style="aspect-ratio: 1326 / 746;"><video src="assets/atlas/hero.mp4" poster="assets/atlas/hero-poster.webp" muted loop playsinline preload="none" aria-label="ATLAS brand film on Meridian green"></video></div>
+        </div>
 
         <!-- Result: same layout as the challenges and solution -->
         <h2 class="case__label dm reveal">Result:</h2>
@@ -904,6 +939,20 @@
   <div class="view-cursor dm" aria-hidden="true"><span>View project</span></div>
 
   <script>
+    // Videos in the image slots play like moving images while they're on screen, loading only once they're
+    // near; with reduced motion they stay on their still frame
+    (() => {
+      const videos = document.querySelectorAll('.media video');
+      if (!videos.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.play().catch(() => {});
+          else e.target.pause();
+        });
+      }, { rootMargin: '200px 0px' });
+      videos.forEach((video) => io.observe(video));
+    })();
+
     // Blocks rise in the first time they come into view
     (() => {
       const io = new IntersectionObserver((entries) => {

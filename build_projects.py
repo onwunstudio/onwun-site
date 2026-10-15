@@ -83,13 +83,27 @@ PROJECTS = {
         "challenges": "Atlas began as a response to a gap in the sustainable fashion market. The live brief also asked for the project to be grounded in Manchester’s textile history, meaning the brand needed a visual identity that could carry real cultural and historical weight, while still solving a genuine, practical problem around how people pack and dress for travel.",
         "solution": "Atlas, a premium menswear rental platform for travel, structured around the 5-4-3-2-1 packing method. The identity system centres on a logomark, which extends into a stamp system referencing passport stamps and Manchester’s historic textile trademark labels. Destination-specific colour palettes, fabric-pattern-led stickers, and printed travel guides bring each location’s culture into the brand.",
         "result": "Atlas was presented to PUBLIC’s design studio at their London studio, receiving strong feedback on the system and overall concept.",
-        "images": [
-            ("assets/atlas/travel-guides.webp", "Seven ATLAS fabric travel guides fanned out on a dark surface: Hong Kong, Brazil, Japan, Morocco, Santorini, Paris and Milan, each in its own colour", {"ratio": "2000 / 1414"}),
-            ("assets/atlas/suitcase-stickers.webp", "A navy suitcase covered in ATLAS stickers for Japan, Marrakech and Tokyo", {"position": "50% 70%"}),
-            ("assets/atlas/app-icon.webp", "The ATLAS app icon on a phone home screen"),
-            ("assets/atlas/app-phone.webp", "The ATLAS app on a phone, showing Spring in Paris with an Explore the city button", {"position": "50% 55%"}),
-            ("assets/atlas-mockup.webp", "ATLAS brand guidelines spreads: wordmark, logo, colour pairings, stamps and type", {"ratio": "2000 / 1296"}),
-        ],
+        # Chapters of images and videos after the info, the challenges, the solution and the result
+        # (see "Chapters" below the projects)
+        "chapters": {
+            "intro": [
+                {"row": [
+                    ("assets/atlas/logo-animation.mp4", "The ATLAS logo being drawn over its construction grid, on dark green", {"poster": "assets/atlas/logo-animation-poster.webp"}),
+                    ("assets/atlas/palette.mp4", "The ATLAS colour palette: Meridian #3B4D4A, Horizon #DBDED1, and destination colours for Japan #221A1A, Morocco #5F1B14 and Santorini #172235", {"poster": "assets/atlas/palette-poster.webp"}),
+                ]},
+                {"full": ("assets/atlas/loop.mp4", "An animated ATLAS location stamp: Morocco, in terracotta on deep red", {"ratio": "1326 / 746", "poster": "assets/atlas/loop-poster.webp"})},
+            ],
+            "challenges": [
+                {"full": ("assets/atlas/guides.webp", "ATLAS fabric travel guides for Morocco and Japan, open on their Threads of Culture spreads, with destination stickers", {"ratio": "1326 / 937"})},
+                {"media": ("assets/atlas/app-phone.webp", "The ATLAS app on a phone, showing Spring in Paris with an Explore the city button", {"position": "50% 54.85%"}),
+                 "caption": "The ATLAS app — rent, pack, return.", "media_side": "left"},
+            ],
+            "solution": [
+                {"media": ("assets/atlas/flash.mp4", "ATLAS campaign: a man under a striped beach umbrella, with the ATLAS wordmark and Pack less. Travel more.", {"ratio": "3 / 4", "poster": "assets/atlas/flash-poster.webp"}),
+                 "caption": "Campaign — Pack less. Travel more.", "media_side": "right"},
+                {"full": ("assets/atlas/hero.mp4", "ATLAS brand film on Meridian green", {"ratio": "1326 / 746", "poster": "assets/atlas/hero-poster.webp"})},
+            ],
+        },
     },
     "elev8": {
         "name": "ELEV8",
@@ -158,6 +172,9 @@ PROJECTS = {
 #   {"bg": "#ffffff"}  show the whole image instead (centred, nothing cropped) on a matching background
 #   {"ratio": "3 / 2"} give this slot a different shape (e.g. taller, to show more of the image), still edge to edge
 #   {"position": "40% 50%"} choose which part of a cropped image stays in view (left/right %, top/bottom %)
+# A slot can also hold a video (an .mp4): it plays silently on a loop, like a moving image, while it's on
+# screen (it only loads once it's near, so it costs nothing to people who don't scroll that far). Give it
+#   {"poster": "assets/....webp"} a still frame to show until it starts
 # An optional sixth item adds an image (or pair) under the Result; leave it out and nothing shows there.
 # A landscape slot can also hold a pair of images side by side at the same height, filling the full width:
 # give a list of two (path, alt text, {"ratio": "width / height"}) entries; each takes its share of the width.
@@ -173,26 +190,70 @@ def media_pair(images):
     return '<div class="media-pair">' + "".join(items) + "</div>"
 
 
+def media_block(image, classes, stagger=0):
+    """One image or video in its frame: image = (path, alt text) or (path, alt text, settings)."""
+    src, alt, *rest = image
+    opts = rest[0] if rest else {}
+    props = [f"--i: {stagger}"] if stagger else []
+    if "bg" in opts:
+        classes += " media--whole"
+        props.append(f"--media-bg: {opts['bg']}")
+    if "ratio" in opts:
+        props.append(f"aspect-ratio: {opts['ratio']}")
+    style = f' style="{"; ".join(props)};"' if props else ""
+    img_style = f' style="object-position: {opts["position"]};"' if "position" in opts else ""
+    if src.endswith(".mp4"):
+        poster = f' poster="{opts["poster"]}"' if "poster" in opts else ""
+        return (f'<div class="{classes} reveal"{style}><video src="{src}"{poster} muted loop playsinline '
+                f'preload="none" aria-label="{alt}"{img_style}></video></div>')
+    return f'<div class="{classes} reveal"{style}><img src="{src}" alt="{alt}" loading="lazy"{img_style}></div>'
+
+
 def media(slot, index, image):
     if isinstance(image, list):
         return media_pair(image)
     stagger = [0, 0, 1, 2, 0][index]
     style = f' style="--i: {stagger};"' if stagger else ""
     if image:
-        src, alt, *rest = image
-        opts = rest[0] if rest else {}
-        classes = f"media media--{slot}"
-        props = [f"--i: {stagger}"] if stagger else []
-        if "bg" in opts:
-            classes += " media--whole"
-            props.append(f"--media-bg: {opts['bg']}")
-        if "ratio" in opts:
-            props.append(f"aspect-ratio: {opts['ratio']}")
-        style = f' style="{"; ".join(props)};"' if props else ""
-        img_style = f' style="object-position: {opts["position"]};"' if "position" in opts else ""
-        return f'<div class="{classes} reveal"{style}><img src="{src}" alt="{alt}" loading="lazy"{img_style}></div>'
+        return media_block(image, f"media media--{slot}", stagger)
     caption = "Landscape image" if slot == "landscape" else "1080 × 1080"
     return f'<div class="filler filler--{slot} dm reveal"{style}>{caption}</div>'
+
+
+# Chapters: a project can list "chapters" instead of "images", for a freer layout (ATLAS does). Each of
+# "intro" (after the project info), "challenges", "solution" and "result" (after that text) is a list of
+# blocks, stacked 20px apart, on the 20px-gutter grid:
+#   {"full": image}                  one image or video across the full width (give it a "ratio")
+#   {"row": [image, image]}          two side by side, half width each (square unless given a "ratio")
+#   {"media": image, "caption": "…", "media_side": "left" or "right"}
+#                                    half-width image or video, with a small caption at the foot of the other half
+# Videos get a fine border, as in the design.
+def chapter_item(image, stagger=0):
+    classes = "media media--video" if image[0].endswith(".mp4") else "media"
+    opts = image[2] if len(image) > 2 else {}
+    if "ratio" not in opts:
+        image = (image[0], image[1], {**opts, "ratio": "1"})
+    return media_block(image, classes, stagger)
+
+
+def chapter(blocks):
+    if not blocks:
+        return ""
+    parts = []
+    for block in blocks:
+        if "full" in block:
+            parts.append(chapter_item(block["full"]))
+        elif "row" in block:
+            items = "".join(chapter_item(image, i) for i, image in enumerate(block["row"]))
+            parts.append(f'<div class="chapter__row">{items}</div>')
+        else:
+            caption = f'<p class="chapter__caption reveal">{block["caption"]}</p>'
+            item = chapter_item(block["media"])
+            side = block.get("media_side", "left")
+            pair = item + caption if side == "left" else caption + item
+            parts.append(f'<div class="chapter__row chapter__row--{side}">{pair}</div>')
+    inner = "\n          ".join(parts)
+    return f'<div class="chapter">\n          {inner}\n        </div>'
 
 
 # Cards in each page's "More projects" strip: every project except the one you're on, in home page order
@@ -232,12 +293,23 @@ def build():
         fields.pop("poster_bg", None)
         fields["slug"] = slug
         fields["more_cards"] = more_cards(slug)
+        chapters = fields.pop("chapters", None)
         images = fields.pop("images", None) or [None] * 5
-        for i, slot in enumerate(SLOTS):
-            fields[f"media_{i + 1}"] = media(slot, i, images[i])
-        # Optional sixth slot, under the Result: only shown when the project has an image (or pair) for it
-        extra = images[5] if len(images) > 5 else None
-        fields["media_6"] = ("        " + media("landscape", 4, extra)) if extra else ""
+        if chapters:
+            fields["after_info"] = chapter(chapters.get("intro"))
+            fields["after_challenges"] = chapter(chapters.get("challenges"))
+            fields["after_solution"] = chapter(chapters.get("solution"))
+            result = chapter(chapters.get("result"))
+            fields["after_result"] = ("        " + result) if result else ""
+        else:
+            slots = [media(slot, i, images[i]) for i, slot in enumerate(SLOTS)]
+            fields["after_info"] = slots[0]
+            fields["after_challenges"] = ('<div class="case__squares">\n          ' + slots[1] + "\n          "
+                                          + slots[2] + "\n          " + slots[3] + "\n        </div>")
+            fields["after_solution"] = slots[4]
+            # Optional sixth slot, under the Result: only shown when the project has an image (or pair) for it
+            extra = images[5] if len(images) > 5 else None
+            fields["after_result"] = ("        " + media("landscape", 4, extra)) if extra else ""
         for key, value in fields.items():
             page = page.replace("{{" + key + "}}", value)
         leftover = [part.split("}}")[0] for part in page.split("{{")[1:]]
