@@ -511,12 +511,13 @@
       text-transform: uppercase;
     }
 
-    /* ── Brand strategy ──
+    /* ── Brand strategy and Brand identity: a pinned mind map ──
        One screen pinned for a long scroll (.strategy sets the scroll length). The script sets three things as
        you go: --p on each branch as the mind map grows out from the centre; --m from 0 to 1 as the map shrinks
        into the right-hand half and the points appear on the left; and .is-active on the point you're on and
        its branch, which turns purple on the map. */
-    .strategy { height: calc(100svh - var(--nav-h) - var(--service-head, 104px) + 900vh); }
+    /* Scroll length: 135vh for the map to grow, 90vh to shrink, then 112.5vh per point (--n points) */
+    .strategy { height: calc(100svh - var(--nav-h) - var(--service-head, 104px) + 225vh + var(--n, 6) * 112.5vh); }
 
     .strategy__body {
       position: relative;
@@ -1057,7 +1058,7 @@
             <div class="service__panel-inner">
               <!-- Brand strategy: one pinned screen. The mind map grows out, shrinks into the right-hand side, then
                    the six points come up on the left one by one, each lit up on the map (script sets the stages) -->
-              <div class="strategy">
+              <div class="strategy" style="--n: 6;">
                 <div class="service__screen strategy__stage" aria-label="Brand strategy">
                   <p class="service__screen-label dm">Brand strategy <span class="strategy__count">01 / 06</span></p>
                   <div class="strategy__body">
@@ -1113,19 +1114,46 @@
           </h3>
           <div class="service__panel" id="service-content" role="region" aria-labelledby="service-content-toggle">
             <div class="service__panel-inner">
-              <div class="service__screens">
-                <article class="service__screen" aria-label="Brand identity, screen 1 of 3">
-                  <p class="service__screen-label dm">Brand identity <span>01 / 03</span></p>
-                  <div class="service__screen-body dm">Brand identity screen 1: content to come</div>
-                </article>
-                <article class="service__screen" aria-label="Brand identity, screen 2 of 3">
-                  <p class="service__screen-label dm">Brand identity <span>02 / 03</span></p>
-                  <div class="service__screen-body dm">Brand identity screen 2: content to come</div>
-                </article>
-                <article class="service__screen" aria-label="Brand identity, screen 3 of 3">
-                  <p class="service__screen-label dm">Brand identity <span>03 / 03</span></p>
-                  <div class="service__screen-body dm">Brand identity screen 3: content to come</div>
-                </article>
+              <!-- Brand identity: the same pinned mind map layout as Brand strategy -->
+              <div class="strategy" style="--n: 5;">
+                <div class="service__screen strategy__stage" aria-label="Brand identity">
+                  <p class="service__screen-label dm">Brand identity <span class="strategy__count">01 / 05</span></p>
+                  <div class="strategy__body">
+                    <!-- TODO: replace the filler text for each point -->
+                    <div class="strategy__points">
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Tone of voice</h4>
+                        <p class="strategy__text">Filler text for now. A short description of what this part of the brand identity covers and why it matters to the brand goes here, in around three to four lines.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Visual identity</h4>
+                        <p class="strategy__text">Filler text for now. A short description of what this part of the brand identity covers and why it matters to the brand goes here, in around three to four lines.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Storytelling</h4>
+                        <p class="strategy__text">Filler text for now. A short description of what this part of the brand identity covers and why it matters to the brand goes here, in around three to four lines.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Motion design</h4>
+                        <p class="strategy__text">Filler text for now. A short description of what this part of the brand identity covers and why it matters to the brand goes here, in around three to four lines.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Brand guidelines</h4>
+                        <p class="strategy__text">Filler text for now. A short description of what this part of the brand identity covers and why it matters to the brand goes here, in around three to four lines.</p>
+                      </article>
+                    </div>
+                    <div class="mindmap">
+                      <p class="mindmap__centre">Brand identity</p>
+                      <ul class="mindmap__branches">
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Tone of voice</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Visual identity</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Storytelling</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Motion design</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Brand guidelines</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1325,12 +1353,10 @@
       io.observe(section);
     })();
 
-    // Brand strategy: as you scroll through the pinned screen, (1) the mind map's six branches grow out from
-    // the centre, (2) the map shrinks into the right-hand side as the points appear on the left, then (3) each
-    // point comes up in turn and its branch lights up on the map
-    (() => {
-      const strategy = document.querySelector('.strategy');
-      if (!strategy) return;
+    // Mind maps (Brand strategy, Brand identity): as you scroll through the pinned screen, (1) the branches grow
+    // out from the centre, (2) the map shrinks into the right-hand side as the points appear on the left, then
+    // (3) each point comes up in turn and its branch lights up on the map
+    document.querySelectorAll('.strategy').forEach((strategy) => {
       const stage = strategy.querySelector('.strategy__stage');
       const map = strategy.querySelector('.mindmap');
       const branches = [...map.querySelectorAll('.mindmap__branch')];
@@ -1339,10 +1365,13 @@
       const points = [...strategy.querySelectorAll('.strategy__point')];
       const count = strategy.querySelector('.strategy__count');
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-      // Clockwise from the top, so the branches appear in a circle starting with Vision & mission
-      const angles = [-90, -30, 30, 90, 150, -150];
-      // Where each stage ends, as a share of the whole scroll: the map grows, then shrinks, then the points
-      const GROW = 0.15, SHRINK = 0.25;
+      const n = branches.length;
+      // Evenly spaced, clockwise from the top, so the first point sits at twelve o'clock
+      const angles = branches.map((b, i) => -90 + i * 360 / n);
+      // Where each stage ends, as a share of the whole scroll (matching the CSS height): the map grows over
+      // 135vh, shrinks over 90vh, then each point gets 112.5vh
+      const total = 225 + n * 112.5;
+      const GROW = 135 / total, SHRINK = 225 / total;
       const clamp = (v) => Math.min(Math.max(v, 0), 1);
 
       // reach: how far the branches stretch, from 1 (full size) down to 0.75 once the map has moved aside
@@ -1366,10 +1395,10 @@
         const travel = strategy.offsetHeight - stage.offsetHeight;
         const P = travel > 0 ? clamp((stage.getBoundingClientRect().top - strategy.getBoundingClientRect().top) / travel) : 0;
 
-        // 1. Each branch takes a sixth of the growing stage: its line draws, then its topic fades in
+        // 1. Each branch takes an equal share of the growing stage: its line draws, then its topic fades in
         const grow = reduced.matches ? 1 : clamp(P / GROW);
         branches.forEach((b, i) => {
-          const t = clamp(grow * 6 - i);
+          const t = clamp(grow * n - i);
           lines[i].style.setProperty('--p', clamp(t / 0.6).toFixed(3));
           nodes[i].style.setProperty('--p', clamp((t - 0.5) / 0.5).toFixed(3));
         });
@@ -1392,7 +1421,7 @@
       window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
       reduced.addEventListener('change', update);
       update();
-    })();
+    });
 
     // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
     (() => {
