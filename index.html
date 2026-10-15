@@ -28,11 +28,11 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     /* Figma: "Desktop - 1" (2:3), designed at 1366px wide. */
-    @property --spot-r {
-      syntax: "<length>";
-      inherits: true;
-      initial-value: 0px;
-    }
+    /* Centres of the two purple glows drifting through the splash wordmark */
+    @property --glow-ax { syntax: "<percentage>"; inherits: false; initial-value: 20%; }
+    @property --glow-ay { syntax: "<percentage>"; inherits: false; initial-value: 40%; }
+    @property --glow-bx { syntax: "<percentage>"; inherits: false; initial-value: 75%; }
+    @property --glow-by { syntax: "<percentage>"; inherits: false; initial-value: 60%; }
 
     :root {
       --nav-h: 41px;
@@ -224,17 +224,8 @@
       bottom: calc(-36 / 3306 * var(--mark-w));
       width: var(--mark-w);
       height: calc(var(--mark-w) * 706 / 3306);
-      /* Spotlight: grey wordmark, purple revealed in a soft circle around the cursor */
-      --mark-h: calc(var(--mark-w) * 706 / 3306);
-      --spot-x: 50%;
-      --spot-y: 50%;
-      --spot-r: 0px;
-      transition: --spot-r 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
 
-    .hero__wordmark.is-lit { --spot-r: calc(250 / 1326 * 100cqw); }
-
-    .hero__wordmark-glow,
     .hero__wordmark-base,
     .hero__wordmark-reveal,
     .hero__wordmark-sweep {
@@ -251,61 +242,44 @@
       mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
     }
 
-    /* Soft purple light spilling onto the black around the cursor, as if the cursor were a light source.
-       It fades in from the top of the hero and out before the bottom, so it never ends in a hard line. */
-    .hero__wordmark-glow {
-      top: calc(var(--mark-h) * -1.25);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 80%, transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 80%, transparent 100%);
-      background: radial-gradient(circle at var(--spot-x) calc(var(--spot-y) + var(--mark-h) * 1.25),
-        rgba(106, 96, 246, 0.3) 0,
-        rgba(106, 96, 246, 0.1) calc(var(--spot-r) * 0.9),
-        transparent calc(var(--spot-r) * 1.8));
-    }
-
-    /* Resting state: clean flat grey with a gentle top-to-bottom fall-off. The grey is cut away wherever
-       the purple is fully shown, so no grey fringe appears at the letter edges. */
+    /* Resting state: clean flat grey with a gentle top-to-bottom fall-off */
     .hero__wordmark-base {
       background: linear-gradient(to bottom, #72768a 0%, var(--muted) 45%, #4e5160 100%);
-      -webkit-mask:
-        url("assets/onwun-wordmark.png") center / cover no-repeat,
-        radial-gradient(circle at var(--spot-x) var(--spot-y), transparent calc(var(--spot-r) * 0.8 - 1px), #000 calc(var(--spot-r) * 0.8));
-      -webkit-mask-composite: source-in;
-      mask:
-        url("assets/onwun-wordmark.png") center / cover no-repeat,
-        radial-gradient(circle at var(--spot-x) var(--spot-y), transparent calc(var(--spot-r) * 0.8 - 1px), #000 calc(var(--spot-r) * 0.8));
-      mask-composite: intersect;
     }
 
-    /* Hover: the letters turn flat purple around the cursor */
+    /* Alive: two soft purple glows wander slowly through the letters, on their own paths and timings so
+       the pattern never quite repeats. Fades in once the load sweep has passed. */
     .hero__wordmark-reveal {
-      background: var(--purple);
-      -webkit-mask:
-        url("assets/onwun-wordmark.png") center / cover no-repeat,
-        radial-gradient(circle at var(--spot-x) var(--spot-y), #000 calc(var(--spot-r) * 0.8), transparent var(--spot-r));
-      -webkit-mask-composite: source-in;
-      mask:
-        url("assets/onwun-wordmark.png") center / cover no-repeat,
-        radial-gradient(circle at var(--spot-x) var(--spot-y), #000 calc(var(--spot-r) * 0.8), transparent var(--spot-r));
-      mask-composite: intersect;
+      background:
+        radial-gradient(ellipse 22% 80% at var(--glow-ax) var(--glow-ay), rgba(106, 96, 246, 0.7), rgba(106, 96, 246, 0.25) 50%, transparent 100%),
+        radial-gradient(ellipse 18% 70% at var(--glow-bx) var(--glow-by), rgba(106, 96, 246, 0.55), rgba(106, 96, 246, 0.2) 50%, transparent 100%);
+      animation:
+        wordmark-alive-in 2.5s ease 3s both,
+        wordmark-glow-a 21s ease-in-out infinite alternate,
+        wordmark-glow-b 27s ease-in-out infinite alternate;
     }
 
-    /* Touch screens have no cursor to light the letters, so the grey layer takes the plain logo shape.
-       (iPhone Safari drops the combined logo-and-spotlight mask above, which left the grey letters
-       invisible after the load animation.) The load reveal and purple sweep play as on desktop. */
-    @media (hover: none) {
-      .hero__wordmark-base {
-        -webkit-mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
-        mask: url("assets/onwun-wordmark.png") center / cover no-repeat;
-      }
+    @keyframes wordmark-alive-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-      .hero__wordmark-glow,
-      .hero__wordmark-reveal { display: none; }
+    @keyframes wordmark-glow-a {
+      0% { --glow-ax: 8%; --glow-ay: 30%; }
+      30% { --glow-ax: 38%; --glow-ay: 75%; }
+      60% { --glow-ax: 62%; --glow-ay: 35%; }
+      100% { --glow-ax: 92%; --glow-ay: 65%; }
+    }
+
+    @keyframes wordmark-glow-b {
+      0% { --glow-bx: 85%; --glow-by: 70%; }
+      35% { --glow-bx: 55%; --glow-by: 25%; }
+      70% { --glow-bx: 25%; --glow-by: 70%; }
+      100% { --glow-bx: 12%; --glow-by: 40%; }
     }
 
     /* On load, step 1: the wordmark slides in from the left of the screen to its corner, revealed from the
-       left by a soft, feathered edge as it goes. The mask only exists during the animation ("backwards" fill), so afterwards nothing
-       clips the hover glow. */
+       left by a soft, feathered edge as it goes. The mask only exists during the animation ("backwards" fill). */
     .hero__wordmark {
       animation: wordmark-reveal 1.8s cubic-bezier(0.55, 0, 0.25, 1) 0.2s backwards;
     }
@@ -357,6 +331,7 @@
     @media (prefers-reduced-motion: reduce) {
       .hero__wordmark { animation: none; }
       .hero__wordmark-sweep { display: none; }
+      .hero__wordmark-reveal { animation: none; }
     }
 
     /* ───────── Featured Projects (5:166) ───────── */
@@ -1342,7 +1317,6 @@
           <p class="hero__cta"><a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Start a project</span></a></p>
         </div>
         <div class="hero__wordmark" role="img" aria-label="Onwun">
-          <div class="hero__wordmark-glow"></div>
           <div class="hero__wordmark-base"></div>
           <div class="hero__wordmark-reveal"></div>
           <div class="hero__wordmark-sweep"></div>
@@ -1869,37 +1843,6 @@
         }
       }, { passive: true });
       update();
-    })();
-
-    // Hero wordmark: purple spotlight that tracks the cursor (one update per frame, no trailing)
-    (() => {
-      const mark = document.querySelector('.hero__wordmark');
-      let pending = null;
-      let frame = null;
-
-      function setSpot(x, y) {
-        mark.style.setProperty('--spot-x', x + 'px');
-        mark.style.setProperty('--spot-y', y + 'px');
-      }
-
-      mark.addEventListener('pointerenter', (e) => {
-        const box = mark.getBoundingClientRect();
-        setSpot(e.clientX - box.left, e.clientY - box.top);
-        mark.classList.add('is-lit');
-      });
-
-      mark.addEventListener('pointermove', (e) => {
-        const box = mark.getBoundingClientRect();
-        pending = { x: e.clientX - box.left, y: e.clientY - box.top };
-        if (!frame) {
-          frame = requestAnimationFrame(() => {
-            setSpot(pending.x, pending.y);
-            frame = null;
-          });
-        }
-      });
-
-      mark.addEventListener('pointerleave', () => mark.classList.remove('is-lit'));
     })();
 
     // Phones: the process steps stack as you scroll. Each step is given the height of the tallest one so
