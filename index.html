@@ -330,6 +330,40 @@
       to { background-position: 0 0; }
     }
 
+    /* Cursor trail: a small landscape frame rides on the cursor across the splash screen, flicking to the
+       next project image every time the cursor travels a little further (laptops and desktops only) */
+    .hero__trail {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: 240px;
+      aspect-ratio: 3 / 2;
+      margin: -80px 0 0 -120px; /* centred on the cursor */
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      will-change: transform;
+    }
+
+    .hero__trail.is-on { opacity: 1; }
+
+    .hero__trail img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      visibility: hidden;
+    }
+
+    .hero__trail img.is-current { visibility: visible; }
+
+    @media not ((hover: hover) and (pointer: fine) and (min-width: 900px)) {
+      .hero__trail { display: none; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .hero__wordmark { animation: none; }
       .hero__wordmark-sweep { display: none; }
@@ -1322,6 +1356,8 @@
           <div class="hero__wordmark-sweep"></div>
         </div>
       </div>
+      <!-- Project images for the cursor trail (small copies in assets/cursor; the script loads them) -->
+      <div class="hero__trail" aria-hidden="true" data-images="atlas-app-phone.jpg atlas-flash-poster.jpg atlas-guides.jpg atlas-mockup.jpg atlas-poster.jpg atlas-suitcase-stickers.jpg atlas-travel-guides.jpg denglish-app-screens.jpg denglish-brand-presentation.jpg denglish-post-73-poster.jpg denglish-post-74-poster.jpg denglish-stickers-poster.jpg denglish-website-ipad.jpg elev8-billboard.jpg elev8-can-labels.jpg elev8-cans-night.jpg elev8-mockup.jpg elev8-poster-drinking.jpg elev8-poster-wall.jpg elev8-six-pack-boxes.jpg rise-apron.jpg rise-billboard.jpg rise-hoarding.jpg rise-mockup.jpg rise-pouch-leaves.jpg rise-pouches-flatlay.jpg rise-pouches-pink.jpg rise-pouches-stump.jpg rise-van.jpg stuartfox-mockup.jpg"></div>
     </section>
 
     <section class="projects" id="work" aria-labelledby="projects-label">
@@ -1842,6 +1878,76 @@
         }
       }, { passive: true });
       update();
+    })();
+
+    // Splash cursor trail: a small frame follows the cursor and flicks to the next project image every
+    // STEP pixels of travel. Images load only once someone with a mouse first moves over the splash.
+    (() => {
+      const hero = document.querySelector('.hero');
+      const trail = document.querySelector('.hero__trail');
+      const mouse = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 900px)');
+      const STEP = 70;
+      let imgs = null;
+      let current = 0;
+      let travelled = 0;
+      let last = null;
+      let pos = null;
+      let frame = null;
+
+      function load() {
+        const names = trail.dataset.images.split(' ');
+        // Shuffled, so the projects mix together
+        for (let i = names.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [names[i], names[j]] = [names[j], names[i]];
+        }
+        imgs = names.map((name) => {
+          const img = document.createElement('img');
+          img.src = 'assets/cursor/' + name;
+          img.alt = '';
+          img.decoding = 'async';
+          trail.appendChild(img);
+          return img;
+        });
+        imgs[0].classList.add('is-current');
+      }
+
+      function next() {
+        imgs[current].classList.remove('is-current');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('is-current');
+      }
+
+      hero.addEventListener('pointermove', (e) => {
+        if (!mouse.matches || e.pointerType !== 'mouse') return;
+        if (!imgs) load();
+        const box = hero.getBoundingClientRect();
+        pos = { x: e.clientX - box.left, y: e.clientY - box.top };
+        if (last) {
+          travelled += Math.hypot(e.clientX - last.x, e.clientY - last.y);
+          if (travelled >= STEP) {
+            travelled %= STEP;
+            next();
+          }
+        }
+        last = { x: e.clientX, y: e.clientY };
+        if (!trail.classList.contains('is-on')) {
+          // Appearing: jump straight to the cursor rather than gliding in from the last spot
+          trail.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+          trail.classList.add('is-on');
+        }
+        if (!frame) {
+          frame = requestAnimationFrame(() => {
+            trail.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+            frame = null;
+          });
+        }
+      });
+
+      hero.addEventListener('pointerleave', () => {
+        trail.classList.remove('is-on');
+        last = null;
+      });
     })();
 
     // Phones: the process steps stack as you scroll. Each step is given the height of the tallest one so
