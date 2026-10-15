@@ -112,13 +112,12 @@ PROJECTS = {
             ],
             "challenges": [
                 {"full": ("assets/atlas/guides.webp", "ATLAS fabric travel guides for Morocco and Japan, open on their Threads of Culture spreads, with destination stickers", {"ratio": "1326 / 937"})},
-                {"media": ("assets/atlas/app-phone.webp", "The ATLAS app on a phone, showing Spring in Paris with an Explore the city button", {"position": "50% 54.85%"}),
-                 "caption": "The ATLAS app — rent, pack, return.", "media_side": "left"},
             ],
             "solution": [
-                {"media": ("assets/atlas/flash.mp4", "ATLAS campaign: a man under a striped beach umbrella, with the ATLAS wordmark and Pack less. Travel more.", {"ratio": "3 / 4", "poster": "assets/atlas/flash-poster.webp"}),
-                 "caption": "Campaign — Pack less. Travel more.", "media_side": "right"},
-                {"full": ("assets/atlas/hero.mp4", "ATLAS brand film on Meridian green", {"ratio": "1326 / 746", "poster": "assets/atlas/hero-poster.webp"})},
+                {"row": [
+                    ("assets/atlas/flash.mp4", "ATLAS campaign: a man under a striped beach umbrella, with the ATLAS wordmark and Pack less. Travel more.", {"ratio": "3 / 4", "poster": "assets/atlas/flash-poster.webp"}),
+                    ("assets/atlas/hero.mp4", "ATLAS campaign film: Pack less. Travel more. on Meridian green", {"ratio": "16 / 9", "poster": "assets/atlas/hero-poster.webp"}),
+                 ], "caption": "Campaign — Pack less. Travel more."},
             ],
         },
     },
