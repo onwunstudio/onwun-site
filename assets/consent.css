@@ -1,0 +1,294 @@
+/* ───────── Cookie consent (Figma: Website › Cookie Consent) ─────────
+   Shared by every page, alongside assets/consent.js, which adds the banner and the settings panel. */
+
+/* Outline buttons for every consent choice. Accept and reject always look the same, so neither is
+   pushed; hover turns the border and label purple. */
+.consent-button {
+  padding: 7px 14px;
+  border: 1px solid var(--consent-line);
+  background: transparent;
+  color: var(--white);
+  font-family: var(--sora);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: normal;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.consent-button:hover,
+.consent-button:focus-visible {
+  border-color: var(--purple);
+  color: var(--purple);
+  outline: none;
+}
+
+/* "Save choices" saves exactly what's picked, so it's the one purple button */
+.consent-button--save {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+:root { --consent-line: #3a3d47; }
+
+/* ───────── Banner ─────────
+   Bottom-left, 20px from the edges. It slides up once the page has loaded and doesn't block the page. */
+.consent {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 380px;
+  max-width: calc(100vw - 40px);
+  padding: 16px 20px;
+  border: 1px solid #1f1f1f;
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.consent[hidden] { display: none; }
+
+.consent.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.consent__text {
+  font-family: var(--sora);
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--grey-text);
+}
+
+.consent__text a,
+.consent-panel a {
+  color: var(--purple);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.consent__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.consent__choices {
+  display: flex;
+  gap: 12px;
+}
+
+.consent__settings {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: var(--sora);
+  font-weight: 400;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.consent__settings:hover,
+.consent__settings:focus-visible {
+  color: var(--white);
+  outline: none;
+}
+
+/* ───────── Settings panel ─────────
+   Every choice in one place, with nothing non-essential switched on in advance */
+.consent-panel {
+  width: 560px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  margin: auto;
+  padding: 32px;
+  border: 1px solid #1f1f1f;
+  background: #0b0b0b;
+  color: var(--white);
+  font-family: var(--sora);
+}
+
+.consent-panel::backdrop { background: rgba(0, 0, 0, 0.6); }
+
+.consent-panel[open] { animation: consent-panel-in 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+
+@keyframes consent-panel-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+.consent-panel__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.consent-panel__label {
+  font-family: var(--dm);
+  font-weight: 500;
+  font-variation-settings: "opsz" 14;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.consent-panel__close {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.consent-panel__close:hover,
+.consent-panel__close:focus-visible { opacity: 0.6; outline: none; }
+
+.consent-panel__close img { display: block; }
+
+.consent-panel__title {
+  margin-bottom: 24px;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.consent-panel__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid #1f1f1f;
+}
+
+.consent-panel__name {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.consent-panel__desc {
+  max-width: 380px;
+  margin-top: 6px;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.consent-panel__control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.consent-panel__always {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.consent-panel__actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid #1f1f1f;
+}
+
+.consent-panel__actions .consent-button {
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+/* Switches: off is an outlined track with a grey knob on the left; on is purple with a black knob on the
+   right; locked (always on) is a filled grey track with the knob on the right */
+.switch {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 22px;
+  margin: 0;
+  border: 1px solid var(--consent-line);
+  border-radius: 11px;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+
+.switch::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s;
+}
+
+.switch:checked {
+  border-color: var(--purple);
+  background: var(--purple);
+}
+
+.switch:checked::before {
+  transform: translateX(18px);
+  background: var(--black);
+}
+
+.switch:focus-visible { outline: 1px solid var(--purple); outline-offset: 3px; }
+
+.switch:disabled {
+  border-color: var(--consent-line);
+  background: var(--consent-line);
+  cursor: default;
+}
+
+.switch:disabled::before {
+  transform: translateX(18px);
+  background: var(--muted);
+}
+
+/* Footer: "Cookie settings" sits with "Privacy policy" on the right */
+.footer__legal-group {
+  display: flex;
+  gap: 24px;
+}
+
+@media (max-width: 599px) {
+  .consent { right: 20px; width: auto; }
+  .consent-panel { padding: 24px 20px; }
+  .consent-panel__row { flex-direction: column; gap: 14px; }
+  .consent-panel__actions { flex-direction: column; }
+  .consent-panel__actions .consent-button { flex: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .consent { transform: none; transition: opacity 0.2s; }
+  .consent-panel[open] { animation: none; }
+  .switch,
+  .switch::before { transition: none; }
+}

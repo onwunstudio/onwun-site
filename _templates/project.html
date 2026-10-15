@@ -23,6 +23,8 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="assets/loading.css">
   <script src="assets/loading.js"></script>
+  <link rel="stylesheet" href="assets/consent.css">
+  <script src="assets/consent.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
@@ -928,7 +930,10 @@
       </div>
       <div class="footer__legal">
         <a href="terms.html">T&amp;Cs</a>
-        <a href="privacy.html">Privacy policy</a>
+        <div class="footer__legal-group">
+          <a href="#cookie-settings" data-cookie-settings>Cookie settings</a>
+          <a href="privacy.html">Privacy policy</a>
+        </div>
       </div>
     </div>
   </footer>
