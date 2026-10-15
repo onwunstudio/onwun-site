@@ -478,7 +478,10 @@
     .service__screen {
       position: sticky;
       top: calc(var(--nav-h) + var(--service-head, 104px));
-      height: calc(100svh - var(--nav-h) - var(--service-head, 104px));
+      /* The visible screen height right now (dvh), so on phones the panel always fills the screen whether
+         or not the browser's address bar is showing, and its contents stay in the same place */
+      height: calc(100vh - var(--nav-h) - var(--service-head, 104px));
+      height: calc(100dvh - var(--nav-h) - var(--service-head, 104px));
       display: flex;
       flex-direction: column;
       gap: 24px;
