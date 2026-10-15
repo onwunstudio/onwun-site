@@ -817,9 +817,17 @@
       .service__icon::after { width: 10px; margin-left: -5px; }
       .service__screen { padding: 24px 0 28px; }
       .mindmap__centre { padding: 12px 20px; font-size: 20px; }
-      .mindmap__node { padding: 4px 8px; font-size: 14px; }
-      /* Phones: the map shrinks into the top half instead, with the point you're on underneath */
-      .mindmap { transform: translateY(calc(var(--m, 0) * -24%)) scale(calc(1 - var(--m, 0) * 0.4)); }
+      /* Phones: longer topic names wrap onto two lines rather than reaching the screen edges */
+      .mindmap__node {
+        max-width: 112px;
+        padding: 4px 6px;
+        font-size: 14px;
+        white-space: normal;
+        text-align: center;
+      }
+      /* Phones: the map moves up to fill the top of the screen, only a little smaller, with the point
+         you're on underneath */
+      .mindmap { transform: translateY(calc(var(--m, 0) * -17%)) scale(calc(1 - var(--m, 0) * 0.15)); }
       .strategy__points { top: auto; bottom: 0; width: 100%; transform: none; }
       .strategy__point { top: auto; bottom: 0; transform: none; }
       .strategy__point:not(.is-active) { transform: translateY(16px); }
@@ -1374,9 +1382,12 @@
       const clamp = (v) => Math.min(Math.max(v, 0), 1);
 
       // reach: how far the branches stretch, from 1 (full size) down to 0.75 once the map has moved aside
+      // (on phones they stay full length, as the map hardly shrinks there)
       function layout(reach = 1) {
         const w = map.clientWidth, h = map.clientHeight;
-        const rx = w * (w < 600 ? 0.3 : 0.36) * reach, ry = h * (w < 600 ? 0.32 : 0.36) * reach;
+        const phone = w < 600;
+        if (phone) reach = 1;
+        const rx = w * (phone ? 0.33 : 0.36) * reach, ry = h * (phone ? 0.3 : 0.36) * reach;
         nodes.forEach((node, i) => {
           const a = angles[i] * Math.PI / 180;
           const dx = Math.cos(a) * rx, dy = Math.sin(a) * ry;
