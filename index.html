@@ -214,14 +214,18 @@
 
     .js .hero__cta:not(.is-in) { opacity: 0; }
 
+    /* The same size as the footer logo (47% of the page width), in the bottom-right corner. The image has
+       transparent margins (21px right, 36px below the baseline, of 3306 × 706); pulled back so the letters
+       sit exactly 20px from the page edge and on the bottom line, as in the footer. */
     .hero__wordmark {
       position: absolute;
-      left: calc(-168 / 1326 * 100cqw);
-      top: calc(414 / 1326 * 100cqw);
-      width: calc(1557 / 1326 * 100cqw);
-      height: calc(331 / 1326 * 100cqw);
+      --mark-w: 47cqw;
+      right: calc(-21 / 3306 * var(--mark-w));
+      bottom: calc(-36 / 3306 * var(--mark-w));
+      width: var(--mark-w);
+      height: calc(var(--mark-w) * 706 / 3306);
       /* Spotlight: grey wordmark, purple revealed in a soft circle around the cursor */
-      --mark-h: calc(331 / 1326 * 100cqw);
+      --mark-h: calc(var(--mark-w) * 706 / 3306);
       --spot-x: 50%;
       --spot-y: 50%;
       --spot-r: 0px;
@@ -299,8 +303,8 @@
       .hero__wordmark-reveal { display: none; }
     }
 
-    /* On load, step 1: the wordmark is revealed from the left by a soft, feathered edge while drifting
-       in slightly. The mask only exists during the animation ("backwards" fill), so afterwards nothing
+    /* On load, step 1: the wordmark slides in from the left of the screen to its corner, revealed from the
+       left by a soft, feathered edge as it goes. The mask only exists during the animation ("backwards" fill), so afterwards nothing
        clips the hover glow. */
     .hero__wordmark {
       animation: wordmark-reveal 1.8s cubic-bezier(0.55, 0, 0.25, 1) 0.2s backwards;
@@ -316,7 +320,7 @@
         mask-repeat: no-repeat;
         -webkit-mask-position: 100% 0;
         mask-position: 100% 0;
-        transform: translateX(-3%);
+        transform: translateX(calc(-100cqw - 20px));
       }
       to {
         -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
@@ -1166,17 +1170,8 @@
         white-space: normal; /* drops the extra space the desktop line breaks rely on */
       }
 
-      /* Edge to edge, sitting on the bottom of the screen (the image's margin below the letters takes
-         up the last few pixels) */
-      .hero__wordmark {
-        top: auto;
-        left: -20px;
-        bottom: -20px;
-        width: calc(100% + 40px);
-        height: auto;
-        aspect-ratio: 3306 / 706;
-        --mark-h: calc(100vw * 706 / 3306);
-      }
+      /* The same size as the footer logo on phones: the full width between the 20px page edges */
+      .hero__wordmark { --mark-w: 100cqw; }
     }
 
     /* ───────── Scrolling on phones ─────────
