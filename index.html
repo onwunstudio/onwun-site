@@ -330,17 +330,14 @@
       to { background-position: 0 0; }
     }
 
-    /* Cursor trail: a small landscape frame rides on the cursor across the splash screen, flicking to the
-       next project image every time the cursor travels a little further (laptops and desktops only) */
+    /* Cursor trail: project images ride on the cursor across the splash screen, flicking to the next
+       every time the cursor travels a little further (laptops and desktops only). Nothing is cropped: each
+       slide is one whole image, or two from the same project side by side at the same height. */
     .hero__trail {
       position: absolute;
       left: 0;
       top: 0;
       z-index: 2;
-      width: 240px;
-      aspect-ratio: 3 / 2;
-      margin: -80px 0 0 -120px; /* centred on the cursor */
-      overflow: hidden;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.25s ease;
@@ -349,16 +346,23 @@
 
     .hero__trail.is-on { opacity: 1; }
 
-    .hero__trail img {
+    /* Centred on the cursor */
+    .hero__slide {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      display: flex;
+      gap: 6px;
+      height: 160px;
+      transform: translate(-50%, -50%);
       visibility: hidden;
     }
 
-    .hero__trail img.is-current { visibility: visible; }
+    .hero__slide.is-current { visibility: visible; }
+
+    .hero__slide img {
+      display: block;
+      height: 100%;
+      width: auto;
+    }
 
     @media not ((hover: hover) and (pointer: fine) and (min-width: 900px)) {
       .hero__trail { display: none; }
@@ -1356,8 +1360,9 @@
           <div class="hero__wordmark-sweep"></div>
         </div>
       </div>
-      <!-- Project images for the cursor trail (small copies in assets/cursor; the script loads them) -->
-      <div class="hero__trail" aria-hidden="true" data-images="atlas-app-phone.jpg atlas-flash-poster.jpg atlas-guides.jpg atlas-mockup.jpg atlas-poster.jpg atlas-suitcase-stickers.jpg atlas-travel-guides.jpg denglish-app-screens.jpg denglish-brand-presentation.jpg denglish-post-73-poster.jpg denglish-post-74-poster.jpg denglish-stickers-poster.jpg denglish-website-ipad.jpg elev8-billboard.jpg elev8-can-labels.jpg elev8-cans-night.jpg elev8-mockup.jpg elev8-poster-drinking.jpg elev8-poster-wall.jpg elev8-six-pack-boxes.jpg rise-apron.jpg rise-billboard.jpg rise-hoarding.jpg rise-mockup.jpg rise-pouch-leaves.jpg rise-pouches-flatlay.jpg rise-pouches-pink.jpg rise-pouches-stump.jpg rise-van.jpg stuartfox-mockup.jpg"></div>
+      <!-- Project images for the cursor trail: small copies in assets/cursor, grouped into slides of one image
+           or two from the same project, with each image's width / height (the script loads them) -->
+      <div class="hero__trail" aria-hidden="true" data-slides='[[["atlas-app-phone.jpg",0.727],["atlas-flash-poster.jpg",0.748]],[["atlas-guides.jpg",1.414],["atlas-suitcase-stickers.jpg",0.805]],[["atlas-mockup.jpg",1.543]],[["atlas-poster.jpg",1.501]],[["atlas-travel-guides.jpg",1.414]],[["denglish-post-73-poster.jpg",0.798],["denglish-post-74-poster.jpg",0.798]],[["denglish-website-ipad.jpg",1.333],["denglish-app-screens.jpg",0.971]],[["denglish-brand-presentation.jpg",1.356]],[["denglish-stickers-poster.jpg",1.783]],[["elev8-poster-drinking.jpg",0.707],["elev8-can-labels.jpg",0.841]],[["elev8-billboard.jpg",1.44]],[["elev8-cans-night.jpg",1.414]],[["elev8-mockup.jpg",1.501]],[["elev8-poster-wall.jpg",1.369]],[["elev8-six-pack-boxes.jpg",1.501]],[["rise-apron.jpg",0.589],["rise-billboard.jpg",0.659]],[["rise-pouches-stump.jpg",0.662],["rise-pouch-leaves.jpg",0.705]],[["rise-hoarding.jpg",1.564]],[["rise-mockup.jpg",1.509]],[["rise-pouches-flatlay.jpg",1.414]],[["rise-pouches-pink.jpg",1.501]],[["rise-van.jpg",1.505]],[["stuartfox-mockup.jpg",1.411]]]'></div>
     </section>
 
     <section class="projects" id="work" aria-labelledby="projects-label">
@@ -1887,7 +1892,7 @@
       const trail = document.querySelector('.hero__trail');
       const mouse = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 900px)');
       const STEP = 70;
-      let imgs = null;
+      let slides = null;
       let current = 0;
       let travelled = 0;
       let last = null;
@@ -1895,32 +1900,38 @@
       let frame = null;
 
       function load() {
-        const names = trail.dataset.images.split(' ');
+        const data = JSON.parse(trail.dataset.slides);
         // Shuffled, so the projects mix together
-        for (let i = names.length - 1; i > 0; i--) {
+        for (let i = data.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
-          [names[i], names[j]] = [names[j], names[i]];
+          [data[i], data[j]] = [data[j], data[i]];
         }
-        imgs = names.map((name) => {
-          const img = document.createElement('img');
-          img.src = 'assets/cursor/' + name;
-          img.alt = '';
-          img.decoding = 'async';
-          trail.appendChild(img);
-          return img;
+        slides = data.map((images) => {
+          const slide = document.createElement('div');
+          slide.className = 'hero__slide';
+          images.forEach(([name, ratio]) => {
+            const img = document.createElement('img');
+            img.src = 'assets/cursor/' + name;
+            img.alt = '';
+            img.decoding = 'async';
+            img.style.aspectRatio = ratio; // holds its width before it loads
+            slide.appendChild(img);
+          });
+          trail.appendChild(slide);
+          return slide;
         });
-        imgs[0].classList.add('is-current');
+        slides[0].classList.add('is-current');
       }
 
       function next() {
-        imgs[current].classList.remove('is-current');
-        current = (current + 1) % imgs.length;
-        imgs[current].classList.add('is-current');
+        slides[current].classList.remove('is-current');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('is-current');
       }
 
       hero.addEventListener('pointermove', (e) => {
         if (!mouse.matches || e.pointerType !== 'mouse') return;
-        if (!imgs) load();
+        if (!slides) load();
         const box = hero.getBoundingClientRect();
         pos = { x: e.clientX - box.left, y: e.clientY - box.top };
         if (last) {
