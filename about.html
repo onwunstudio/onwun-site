@@ -240,9 +240,31 @@
     /* ───────── Why choose us ─────────
        A compact block in the left-hand column (660px), under the values: the label, then two paragraphs in the
        statement type, the second about what comes after the brand identity */
-    .why { padding: 0 20px; }
+    /* The text in the left-hand column (660px) and a square video in the right-hand one (626px) */
+    .why {
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+      padding: 0 20px;
+    }
 
     .why__inner { max-width: 660px; }
+
+    /* Square, its top level with the label; the video fills it, cropped to fit */
+    .why__media {
+      margin-top: 48px;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--placeholder-bg);
+    }
+
+    .why__media video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     /* Less space above than other sections: the last value already ends in some empty space, and the two
        together make the usual 138px from the last value's text to this label */
@@ -812,6 +834,8 @@
       .value__body { grid-column: 1; min-height: 0; padding: 32px 0 48px; }
       .value__text { font-size: 20px; }
       .why__intro { padding-top: 56px; }
+      .why { grid-template-columns: minmax(0, 1fr); }
+      .why__media { margin-top: 40px; }
       .why__lead { font-size: 20px; }
       .why__more { margin-top: 24px; font-size: 20px; }
       .team { padding-top: 56px; }
@@ -1044,6 +1068,9 @@
       </div>
       <p class="why__lead">You work directly with the two people designing your brand, from the first call to final delivery. Whether you’re a new founder or an established business, we shape a brand grounded in strategy, brought to life through a distinctive identity and built to set you apart from the rest.</p>
       <p class="why__more">Once your brand identity is complete, the journey doesn’t have to stop there. We can take your brand further with a custom website, manage your social media content, or keep everything moving with our premium brand retainers, offering ongoing design support to keep your brand alive.</p>
+      </div>
+      <div class="why__media">
+        <video src="assets/atlas/logo-animation.mp4" poster="assets/atlas/logo-animation-poster.webp" muted loop playsinline preload="none" aria-label="The ATLAS logo being drawn over its construction grid, on dark green"></video>
       </div>
     </section>
 
@@ -1292,6 +1319,18 @@
       const section = document.querySelector('.values');
       const intro = section.querySelector('.values__intro');
       new ResizeObserver(() => section.style.setProperty('--values-pin', intro.offsetHeight + 'px')).observe(intro);
+    })();
+
+    // Why choose us video: plays (muted, looping) only while it's on screen, and not at all with reduced motion
+    (() => {
+      const video = document.querySelector('.why__media video');
+      if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        });
+      }, { threshold: 0.25 }).observe(video);
     })();
 
     // Services: one category open at a time, expanding into its mind map; rows rise in the first time
