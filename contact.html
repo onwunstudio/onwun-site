@@ -241,6 +241,8 @@
 
     .form [hidden] { display: none; }
 
+    .form__trap { display: none; }
+
     .field {
       display: flex;
       flex-direction: column;
@@ -778,9 +780,11 @@
         </dl>
       </div>
 
-      <!-- TODO: connect the form to a form service (e.g. Formspree) so enquiries arrive by email.
-           For now it checks the fields and shows the thank-you message, but nothing is sent. -->
-      <form class="form rise-in" style="--i: 3;" novalidate>
+      <!-- Enquiries are sent by Formspree (formspree.io, form "Onwun website") to the inbox set there.
+           Without JavaScript the form still posts straight to Formspree. -->
+      <form class="form rise-in" style="--i: 3;" action="https://formspree.io/f/mvkzdaok" method="POST" novalidate>
+        <!-- Spam trap: hidden from people, so only bots fill it in and Formspree discards those -->
+        <input class="form__trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="form__summary" role="alert" tabindex="-1" hidden><img src="assets/icons/error.svg" alt="" width="14" height="14"><span></span></p>
         <div class="field">
           <label class="field__label dm" for="f-name">Name</label>
@@ -874,7 +878,7 @@
 
       const summary = form.querySelector('.form__summary');
       const banner = form.querySelector('.form__banner');
-      const inputs = [...form.querySelectorAll('input, textarea')];
+      const inputs = [...form.querySelectorAll('.field input, .field textarea')];
 
       // What's wrong with a field, in words, or '' if it's fine
       function problem(input) {
@@ -939,10 +943,17 @@
         });
       });
 
-      // TODO: send the enquiry to the form service here (e.g. fetch to Formspree) and resolve once it's
-      // accepted. For now it just waits, so the sending state can be seen.
-      function send() {
-        return new Promise((resolve) => setTimeout(resolve, 1400));
+      // Sends the enquiry to Formspree, which emails it to us (replying goes straight to the sender's
+      // email). Fails, so the banner shows, if Formspree can't be reached or doesn't accept it.
+      async function send() {
+        const data = new FormData(form);
+        data.append('_subject', 'New enquiry from ' + form.elements.name.value.trim());
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error('Formspree responded ' + response.status);
       }
 
       function setFill(value, seconds) {
