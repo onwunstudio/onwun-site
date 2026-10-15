@@ -220,10 +220,10 @@
       color: var(--purple);
     }
 
-    /* The project title size, in Sora SemiBold */
+    /* The project title type: Sora Regular 36px */
     .value__title {
       margin-top: 16px;
-      font-weight: 600;
+      font-weight: 400;
       font-size: 36px;
       line-height: 1.1;
     }
@@ -238,22 +238,15 @@
     }
 
     /* ───────── Why choose us ─────────
-       A compact block in the left-hand column (660px), under the values: the label, then the three reasons,
-       set close together so it leads straight into the team below */
-    .why {
-      --why-pin: 179px; /* height of the pinned label block; kept in sync by script */
-      --why-h: 140px;   /* one reason, incl. its rule */
-      padding: 0 20px;
-    }
+       A compact block in the left-hand column (660px), under the values: the label, then two paragraphs in the
+       statement type, the second about what comes after the brand identity */
+    .why { padding: 0 20px; }
 
     .why__inner { max-width: 660px; }
 
     /* Less space above than other sections: the last value already ends in some empty space, and the two
        together make the usual 138px from the last value's text to this label */
-    .why__intro {
-      padding: 48px 0 24px;
-      background: var(--black);
-    }
+    .why__intro { padding: 48px 0 24px; }
 
     .why__label {
       font-size: 13px;
@@ -262,40 +255,25 @@
       text-transform: uppercase;
     }
 
-    .why__list { list-style: none; }
-
     /* Same type as the statements */
-    .why__item {
-      padding: 24px 0;
-      background: var(--black);
+    .why__lead {
       font-weight: 300;
       font-size: 24px;
       line-height: 1.25;
     }
 
-    /* Stacked reasons, as the values above: the label pins, each reason pins just below it and the
-       next slides up over it, then the block scrolls away together */
-    @media (min-width: 900px) and (min-height: 750px) {
-      .why__intro {
-        position: sticky;
-        top: var(--nav-h);
-        z-index: 2;
-        margin-bottom: var(--why-h);
-      }
-
-      .why__list { margin-top: calc(var(--why-h) * -1); }
-
-      .why__item {
-        position: sticky;
-        top: calc(var(--nav-h) + var(--why-pin));
-        height: var(--why-h);
-      }
+    /* The same type as the paragraph above */
+    .why__more {
+      margin-top: 32px;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.25;
     }
 
     /* ───────── Meet the team ─────────
        Two portraits side by side across the full width (20px apart, as the paired project images),
        each with a name and role underneath, in the style of the "More projects" cards */
-    .team { padding: 114px 20px 0; } /* 138px from the last reason's text, with its 24px padding */
+    .team { padding: 138px 20px 0; }
 
     .team__label {
       margin-bottom: 24px;
@@ -338,7 +316,7 @@
 
     .team__name {
       margin-top: 16px;
-      font-weight: 600;
+      font-weight: 400;
       font-size: 24px;
       line-height: 1.2;
     }
@@ -352,18 +330,16 @@
     }
 
     /* ───────── Services ─────────
-       Label on the left, the three categories on the right (660 | 40 | 626), in the style of the home page
-       FAQs: hovering a category draws a purple rule along its line; clicking it turns its "+" into a
-       purple "×" and slides open its list of services. Rows rise in the first time the section is seen. */
+       Full width: the label above, then the three categories, each across the whole page between thin
+       rules, with a circled "+" on the right. Hovering a category draws a purple rule along its line;
+       clicking it turns the "+" into a purple "×" and expands it into its pinned mind map.
+       Rows rise in the first time the section is seen. */
     .services {
-      display: grid;
-      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
-      column-gap: 40px;
-      align-items: start;
       padding: 138px 20px 0;
     }
 
     .services__label {
+      margin-bottom: 40px;
       font-size: 13px;
       line-height: normal;
       color: var(--muted);
@@ -396,17 +372,17 @@
     .service:hover::after,
     .service.is-open::after { transform: scaleX(1); }
 
-    /* The category in the value title type */
+    /* Sora Regular 36px, the same as the value titles */
     .service__toggle {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 24px;
       width: 100%;
-      padding: 28px 0;
+      padding: 32px 0;
       background: none;
       border: 0;
       font: inherit;
-      font-weight: 600;
+      font-weight: 400;
       font-size: 36px;
       line-height: 1.1;
       text-align: left;
@@ -421,18 +397,57 @@
 
     .service__toggle:focus-visible { outline: 1px solid var(--purple); outline-offset: 4px; }
 
-    .service__name {
+    .service__heading {
       flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service__name {
+      align-self: flex-start;
       transition: transform 0.4s var(--ease);
     }
 
     .service:hover .service__name { transform: translateX(8px); }
 
-    /* "+" drawn from two lines; rotates into a purple "×" when open */
+    /* A short introduction under the title, in the statement type. It folds away when the service opens,
+       so only the title stays pinned above the mind map */
+    .service__intro {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 0.5s var(--ease), opacity 0.3s;
+    }
+
+    .service.is-open .service__intro {
+      grid-template-rows: 0fr;
+      opacity: 0;
+    }
+
+    .service__intro-text {
+      display: block;
+      overflow: hidden;
+      max-width: 660px;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--grey-text);
+    }
+
+    /* The space above the introduction sits inside it, so it folds away with it */
+    .service__intro-text::before {
+      content: "";
+      display: block;
+      height: 16px;
+    }
+
+    /* A circled "+" drawn in CSS; the whole circle turns so the "+" becomes a purple "×" when open */
     .service__icon {
       position: relative;
-      flex: 0 0 18px;
-      height: 18px;
+      flex: 0 0 32px;
+      height: 32px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      margin-top: 4px; /* centred on the title's line */
       color: var(--muted);
       transition: transform 0.5s var(--ease), color 0.3s;
     }
@@ -441,11 +456,11 @@
     .service__icon::after {
       content: "";
       position: absolute;
-      left: 0;
+      left: 50%;
       top: 50%;
-      width: 100%;
+      width: 12px;
       height: 1px;
-      margin-top: -0.5px;
+      margin: -0.5px 0 0 -6px;
       background: currentColor;
     }
 
@@ -454,48 +469,167 @@
     .service:hover .service__icon { color: var(--white); }
     .service.is-open .service__icon { color: var(--purple); transform: rotate(135deg); }
 
-    /* The list slides open by animating its row from 0 to its natural height */
+    /* Opening a category expands it downwards (animating its row from 0 to its natural height) into its
+       mind map. While it's open, the category's name pins under the nav and the mind map's screen pins
+       below it. Clip rather than hide, so the screen can still pin. --service-head is the name row's
+       height (script). */
     .service__panel {
       display: grid;
       grid-template-rows: 0fr;
-      transition: grid-template-rows 0.5s var(--ease);
+      transition: grid-template-rows 0.6s var(--ease);
     }
 
     .service.is-open .service__panel { grid-template-rows: 1fr; }
 
-    .service__panel-inner { overflow: hidden; }
+    .service__panel-inner { overflow: clip; min-height: 0; }
 
-    /* Services as a list with small purple square bullets; each one rises in just after the last */
-    .service__items {
-      list-style: none;
-      padding: 0 0 32px 8px;
+    .service.is-open > h3 {
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 3;
+      background: var(--black);
     }
 
-    .service__items li {
+    .service__screen {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--service-head, 104px));
+      /* The visible screen height right now (dvh), so on phones the panel always fills the screen whether
+         or not the browser's address bar is showing, and its contents stay in the same place */
+      height: calc(100vh - var(--nav-h) - var(--service-head, 104px));
+      height: calc(100dvh - var(--nav-h) - var(--service-head, 104px));
       display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 6px 0;
+      flex-direction: column;
+      gap: 24px;
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--line-step);
+      background: var(--black);
+    }
+
+    .service__screen-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .service__screen-label span { color: var(--purple); }
+
+    /* ── Brand strategy and Brand identity: a pinned mind map ──
+       One screen pinned for a long scroll (.strategy sets the scroll length). The script sets three things as
+       you go: --p on each branch as the mind map grows out from the centre; --m from 0 to 1 as the map shrinks
+       into the right-hand half and the points appear on the left; and .is-active on the point you're on and
+       its branch, which turns purple on the map. */
+    /* Scroll length: 135vh for the map to grow, 90vh to shrink, then 112.5vh per point (--n points) */
+    .strategy { height: calc(100svh - var(--nav-h) - var(--service-head, 104px) + 225vh + var(--n, 6) * 112.5vh); }
+
+    .strategy__body {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .mindmap {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      transform: translateX(calc(var(--m, 0) * 25%)) scale(calc(1 - var(--m, 0) * 0.36));
+    }
+
+    .mindmap__centre,
+    .mindmap__node {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      border-radius: 999px;
+      background: var(--black);
+      z-index: 1;
+    }
+
+    .mindmap__centre {
+      padding: 18px 32px;
+      border: 1px solid var(--purple);
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 1.1;
+      color: var(--white);
+    }
+
+    .mindmap__branches { list-style: none; }
+    .mindmap__branch { display: contents; }
+
+    /* Just the topic's name at the end of its line; the black behind it tidies where the line meets it */
+    .mindmap__node {
+      left: var(--x, 50%);
+      top: var(--y, 50%);
+      padding: 6px 12px;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 1.2;
+      color: var(--white);
+      opacity: var(--p, 0);
+      transform: translate(-50%, -50%) scale(calc(0.85 + 0.15 * var(--p, 0)));
+      transition: color 0.4s;
+    }
+
+    /* A line from the centre to its topic, drawn outwards as --p goes from 0 to 1 */
+    .mindmap__line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--len, 0px);
+      height: 1px;
+      background: var(--muted);
+      transform-origin: 0 50%;
+      transform: rotate(var(--angle, 0deg)) scaleX(var(--p, 0));
+      transition: background-color 0.4s;
+    }
+
+    /* While the points are showing, the map dims a little and the point you're on lights up purple */
+    .strategy.is-reading .mindmap__node { color: var(--muted); }
+    .strategy.is-reading .mindmap__branch.is-active .mindmap__node { color: var(--purple); }
+    .strategy.is-reading .mindmap__branch.is-active .mindmap__line { background: var(--purple); }
+
+    /* The points, on the left: the one you're on rises in, the others wait out of sight in the same place */
+    .strategy__points {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: calc(50% - 40px);
+      max-width: 626px;
+      transform: translateY(-50%);
+      opacity: var(--m, 0);
+    }
+
+    .strategy__point {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: opacity 0.4s, transform 0.6s var(--ease);
+    }
+
+    .strategy__point:not(.is-active) { transform: translateY(calc(-50% + 16px)); }
+    .strategy__point.is-active { opacity: 1; }
+
+    /* The value title type, then a statement-type description */
+    .strategy__title {
+      font-weight: 400;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    .strategy__text {
+      margin-top: 16px;
       font-weight: 300;
       font-size: 20px;
       line-height: 1.4;
       color: var(--grey-text);
-      opacity: 0;
-      transform: translateY(-6px);
-      transition: opacity 0.3s, transform 0.4s var(--ease);
-    }
-
-    .service__items li::before {
-      content: "";
-      flex: 0 0 6px;
-      height: 6px;
-      background: var(--purple);
-    }
-
-    .service.is-open .service__items li {
-      opacity: 1;
-      transform: none;
-      transition-delay: calc(0.12s + var(--n) * 0.04s);
     }
 
     .js .service {
@@ -509,7 +643,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .js .service { opacity: 1; transform: none; transition: none; }
-      .service__panel, .service__items li, .service__icon, .service__name, .service::after { transition: none; }
+      .service__panel, .service__icon, .service__name, .service__intro, .service::after { transition: none; }
     }
 
     /* Stacked values, as the home page projects: the label pins to the top, each value pins just below
@@ -678,12 +812,38 @@
       .value__body { grid-column: 1; min-height: 0; padding: 32px 0 48px; }
       .value__text { font-size: 20px; }
       .why__intro { padding-top: 56px; }
-      .why__item { font-size: 20px; }
+      .why__lead { font-size: 20px; }
+      .why__more { margin-top: 24px; font-size: 20px; }
       .team { padding-top: 56px; }
-      .services { grid-template-columns: minmax(0, 1fr); row-gap: 24px; padding-top: 56px; }
+      .services { padding-top: 56px; }
+      .services__label { margin-bottom: 24px; }
       .service__toggle { padding: 22px 0; font-size: 28px; }
-      .service__items { padding-left: 0; }
-      .service__items li { font-size: 18px; }
+      .service__icon { margin-top: 1px; }
+      .service__intro-text { font-size: 16px; }
+      .service__intro-text::before { height: 12px; }
+      .service__icon { flex-basis: 28px; height: 28px; }
+      .service__icon::before,
+      .service__icon::after { width: 10px; margin-left: -5px; }
+      .service__screen { padding: 24px 0 28px; }
+      .mindmap__centre { padding: 10px 16px; font-size: 17px; }
+      /* Phones: longer topic names wrap onto two lines rather than reaching the screen edges */
+      .mindmap__node {
+        max-width: 112px;
+        padding: 4px 6px;
+        font-size: 14px;
+        white-space: normal;
+        text-align: center;
+      }
+      /* Phones: the map moves up to fill the top of the screen, only a little smaller, with the point
+         you're on underneath */
+      .mindmap { transform: translateY(calc(var(--m, 0) * -19%)) scale(calc(1 - var(--m, 0) * 0.15)); }
+      /* ...and the title and description sit lower, close to the bottom of the screen */
+      .strategy__stage { padding-bottom: 8px; }
+      .strategy__points { top: auto; bottom: 0; width: 100%; transform: none; }
+      .strategy__point { top: auto; bottom: 0; transform: none; }
+      .strategy__point:not(.is-active) { transform: translateY(16px); }
+      .strategy__title { font-size: 28px; }
+      .strategy__text { margin-top: 12px; font-size: 16px; }
       .team__grid { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
 
       .footer { padding-top: 56px; }
@@ -705,6 +865,11 @@
         top: auto;
         bottom: auto;
       }
+    }
+
+    @media (max-width: 899px) {
+      /* Phones: the closing statement matches the opening statement (20px) */
+      .closing__cta { font-size: 20px; line-height: 1.3; }
     }
 
     /* ───────── Phone menu ─────────
@@ -769,7 +934,7 @@
       .menu__links a {
         display: block;
         padding: 18px 0;
-        font-weight: 600;
+        font-weight: 400;
         font-size: 36px;
         line-height: 1.1;
         color: var(--white);
@@ -877,12 +1042,136 @@
       <div class="why__intro">
         <h2 class="why__label dm" id="why-label">Why choose us:</h2>
       </div>
-      <ul class="why__list">
-        <li class="why__item">You work directly with the two people actually designing your brand, from the first call to final delivery.</li>
-        <li class="why__item">We take on fewer clients by design, so every project gets the depth of research and craft we’d want for our own studio.</li>
-        <li class="why__item">Strategy, identity and build stay under one roof, so nothing gets diluted or lost moving between separate teams.</li>
-      </ul>
+      <p class="why__lead">You work directly with the two people designing your brand, from the first call to final delivery. Whether you’re a new founder or an established business, we shape a brand grounded in strategy, brought to life through a distinctive identity and built to set you apart from the rest.</p>
+      <p class="why__more">Once your brand identity is complete, the journey doesn’t have to stop there. We can take your brand further with a custom website, manage your social media content, or keep everything moving with our premium brand retainers, offering ongoing design support to keep your brand alive.</p>
       </div>
+    </section>
+
+    <section class="services" aria-labelledby="services-label">
+      <h2 class="services__label dm" id="services-label">Services:</h2>
+      <ul class="services__list">
+        <li class="service" style="--i: 0;">
+          <h3>
+            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-branding" id="service-branding-toggle">
+              <span class="service__heading">
+                <span class="service__name">Brand strategy</span>
+                <span class="service__intro"><span class="service__intro-text">Before anything is designed, we get to the heart of your brand. We research your competitors and audience, then define your vision, mission, positioning, values and tone of voice, giving every decision that follows a clear, confident direction.</span></span>
+              </span>
+              <span class="service__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="service__panel" id="service-branding" role="region" aria-labelledby="service-branding-toggle">
+            <div class="service__panel-inner">
+              <!-- Brand strategy: one pinned screen. The mind map grows out, shrinks into the right-hand side, then
+                   the six points come up on the left one by one, each lit up on the map (script sets the stages) -->
+              <div class="strategy" style="--n: 6;">
+                <div class="service__screen strategy__stage" aria-label="Brand strategy">
+                  <p class="service__screen-label dm">Brand strategy <span class="strategy__count">01 / 06</span></p>
+                  <div class="strategy__body">
+                    <div class="strategy__points">
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Vision &amp; mission</h4>
+                        <p class="strategy__text">Your vision is the future your brand is working towards; your mission is how it gets there, every day. Together they give the whole business a clear direction and a reason to believe in it.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Positioning</h4>
+                        <p class="strategy__text">Your positioning is the space your brand owns in its market: who it’s for, what it believes and why it’s different. We map you against your competitors to find where you can lead, not follow.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Values</h4>
+                        <p class="strategy__text">Your values are the handful of principles your brand won’t compromise on. We define what they are and what they mean in practice, so they guide how you work, hire and make decisions, not just sit on a wall.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Tone of voice</h4>
+                        <p class="strategy__text">Your tone of voice is how your brand sounds, wherever it speaks. We define its personality in a few clear words and show how it reads in practice, so every message feels like it comes from the same place.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Competitor research</h4>
+                        <p class="strategy__text">We study the brands you’re up against: how they look, what they say, how they work and where they make their money. Then we pinpoint the gaps and opportunities, so your brand stands apart rather than blending in.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Audience persona</h4>
+                        <p class="strategy__text">We build detailed profiles of the people you want to reach: who they are, what they want and what’s holding them back. Knowing your audience this well shapes every decision, from the strategy to the smallest detail.</p>
+                      </article>
+                    </div>
+                    <div class="mindmap">
+                      <p class="mindmap__centre">Brand strategy</p>
+                      <ul class="mindmap__branches">
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Vision &amp; mission</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Positioning</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Values</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Tone of voice</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Competitor research</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Audience persona</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="service" style="--i: 1;">
+          <h3>
+            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-content" id="service-content-toggle">
+              <span class="service__heading">
+                <span class="service__name">Brand identity</span>
+                <span class="service__intro"><span class="service__intro-text">We turn your strategy into a brand people can see, hear and feel. From your verbal and visual identity to storytelling, motion and social content, every piece works together, held in brand guidelines that keep it consistent as you grow.</span></span>
+              </span>
+              <span class="service__icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="service__panel" id="service-content" role="region" aria-labelledby="service-content-toggle">
+            <div class="service__panel-inner">
+              <!-- Brand identity: the same pinned mind map layout as Brand strategy -->
+              <div class="strategy" style="--n: 6;">
+                <div class="service__screen strategy__stage" aria-label="Brand identity">
+                  <p class="service__screen-label dm">Brand identity <span class="strategy__count">01 / 06</span></p>
+                  <div class="strategy__body">
+                    <div class="strategy__points">
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Verbal identity</h4>
+                        <p class="strategy__text">Your verbal identity is how your brand comes across in words: its messaging, taglines and the way it talks. Working hand in hand with the visuals, it shapes how your audience sees you, so everything you say and show tells the same story.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Visual identity</h4>
+                        <p class="strategy__text">Your visual identity is your logo, colours, typography and the visual choices that grow out of your brand strategy. Every decision is made to set you apart, so your brand is instantly recognisable in the real world, wherever people meet it.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Storytelling</h4>
+                        <p class="strategy__text">People connect with stories, not logos. We shape your brand’s story around something your audience recognises in their own lives, then carry it through every part of your identity, so they don’t just see your brand, they feel part of it.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Motion design</h4>
+                        <p class="strategy__text">Motion brings your brand to life. Through cutting-edge visuals, animated logos and considered movement, we make your identity feel alive on every screen, so it doesn’t just get seen, it gets remembered.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Brand guidelines</h4>
+                        <p class="strategy__text">Your brand guidelines are the toolkit that keeps your identity from getting lost. A clear guide your whole team can use and pass on, so every new hire, partner and piece of work stays true to your brand.</p>
+                      </article>
+                      <article class="strategy__point">
+                        <h4 class="strategy__title">Social content</h4>
+                        <p class="strategy__text">We translate your brand identity into your social media content and presence, so every post promotes your brand and stays true to it, with the same look, voice and story wherever people find you.</p>
+                      </article>
+                    </div>
+                    <div class="mindmap">
+                      <p class="mindmap__centre">Brand identity</p>
+                      <ul class="mindmap__branches">
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Verbal identity</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Visual identity</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Storytelling</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Motion design</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Brand guidelines</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Social content</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </section>
 
     <section class="team" aria-labelledby="team-label">
@@ -898,70 +1187,6 @@
           <div class="team__photo team__photo--empty dm">Photo</div>
           <h3 class="team__name">Rohan McCallum</h3>
           <p class="team__role dm">Creative Director</p>
-        </li>
-      </ul>
-    </section>
-
-    <section class="services" aria-labelledby="services-label">
-      <h2 class="services__label dm" id="services-label">Services:</h2>
-      <!-- TODO: the services in each category are filler; swap in the real lists -->
-      <ul class="services__list">
-        <li class="service" style="--i: 0;">
-          <h3>
-            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-branding" id="service-branding-toggle">
-              <span class="service__name">Branding</span>
-              <span class="service__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div class="service__panel" id="service-branding" role="region" aria-labelledby="service-branding-toggle">
-            <div class="service__panel-inner">
-              <ul class="service__items">
-                <li style="--n: 0;">Brand strategy</li>
-                <li style="--n: 1;">Logo &amp; identity design</li>
-                <li style="--n: 2;">Visual systems</li>
-                <li style="--n: 3;">Brand guidelines</li>
-                <li style="--n: 4;">Packaging</li>
-              </ul>
-            </div>
-          </div>
-        </li>
-        <li class="service" style="--i: 1;">
-          <h3>
-            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-content" id="service-content-toggle">
-              <span class="service__name">Content</span>
-              <span class="service__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div class="service__panel" id="service-content" role="region" aria-labelledby="service-content-toggle">
-            <div class="service__panel-inner">
-              <ul class="service__items">
-                <li style="--n: 0;">Art direction</li>
-                <li style="--n: 1;">Social media content</li>
-                <li style="--n: 2;">Photography direction</li>
-                <li style="--n: 3;">Campaign design</li>
-                <li style="--n: 4;">Copywriting</li>
-              </ul>
-            </div>
-          </div>
-        </li>
-        <li class="service" style="--i: 2;">
-          <h3>
-            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-web" id="service-web-toggle">
-              <span class="service__name">Web</span>
-              <span class="service__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div class="service__panel" id="service-web" role="region" aria-labelledby="service-web-toggle">
-            <div class="service__panel-inner">
-              <ul class="service__items">
-                <li style="--n: 0;">Website design</li>
-                <li style="--n: 1;">Web development</li>
-                <li style="--n: 2;">UI &amp; UX design</li>
-                <li style="--n: 3;">E-commerce</li>
-                <li style="--n: 4;">Ongoing support</li>
-              </ul>
-            </div>
-          </div>
         </li>
       </ul>
     </section>
@@ -1070,30 +1295,52 @@
       new ResizeObserver(() => section.style.setProperty('--values-pin', intro.offsetHeight + 'px')).observe(intro);
     })();
 
-    // Why choose us: each reason pins directly below the pinned label, whatever its height
-    (() => {
-      const section = document.querySelector('.why');
-      const intro = section.querySelector('.why__intro');
-      new ResizeObserver(() => section.style.setProperty('--why-pin', intro.offsetHeight + 'px')).observe(intro);
-    })();
-
-    // Services: one category open at a time; rows rise in the first time the section comes into view
+    // Services: one category open at a time, expanding into its mind map; rows rise in the first time
+    // the section comes into view
     (() => {
       const section = document.querySelector('.services');
       const items = [...section.querySelectorAll('.service')];
 
+      const nav = document.querySelector('.nav');
+      // Each service's title row height (it changes as the introduction folds away when it opens)
+      items.forEach((item) => {
+        const head = item.querySelector('h3');
+        const setHead = () => item.style.setProperty('--service-head', head.offsetHeight + 'px');
+        setHead();
+        document.fonts.ready.then(setHead);
+        new ResizeObserver(setHead).observe(head);
+      });
+
+      // Scroll so the category's name sits just under the nav
+      function toTop(item, behavior) {
+        const y = item.getBoundingClientRect().top + window.scrollY - nav.offsetHeight;
+        window.scrollTo({ top: y, behavior });
+      }
+
+      // Close without animating, so the page doesn't shift while we scroll to the next one
+      function closeNow(item) {
+        const panel = item.querySelector('.service__panel');
+        panel.style.transition = 'none';
+        item.classList.remove('is-open');
+        item.querySelector('.service__toggle').setAttribute('aria-expanded', 'false');
+        panel.offsetHeight; // apply the change before turning the transition back on
+        panel.style.transition = '';
+      }
+
       items.forEach((item) => {
         const button = item.querySelector('.service__toggle');
         button.addEventListener('click', () => {
-          const opening = !item.classList.contains('is-open');
-          items.forEach((other) => {
-            other.classList.remove('is-open');
-            other.querySelector('.service__toggle').setAttribute('aria-expanded', 'false');
-          });
-          if (opening) {
-            item.classList.add('is-open');
-            button.setAttribute('aria-expanded', 'true');
+          if (item.classList.contains('is-open')) {
+            // Closing from inside the panels: go back to the name first, then fold it away
+            if (item.getBoundingClientRect().top < nav.offsetHeight) toTop(item, 'auto');
+            item.classList.remove('is-open');
+            button.setAttribute('aria-expanded', 'false');
+            return;
           }
+          items.filter((other) => other !== item && other.classList.contains('is-open')).forEach(closeNow);
+          item.classList.add('is-open');
+          button.setAttribute('aria-expanded', 'true');
+          toTop(item, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
         });
       });
 
@@ -1105,6 +1352,89 @@
       }, { threshold: 0.2 });
       io.observe(section);
     })();
+
+    // Mind maps (Brand strategy, Brand identity): as you scroll through the pinned screen, (1) the branches grow
+    // out from the centre, (2) the map shrinks into the right-hand side as the points appear on the left, then
+    // (3) each point comes up in turn and its branch lights up on the map
+    document.querySelectorAll('.strategy').forEach((strategy) => {
+      const stage = strategy.querySelector('.strategy__stage');
+      const map = strategy.querySelector('.mindmap');
+      const centre = map.querySelector('.mindmap__centre');
+      const branches = [...map.querySelectorAll('.mindmap__branch')];
+      const lines = branches.map((b) => b.querySelector('.mindmap__line'));
+      const nodes = branches.map((b) => b.querySelector('.mindmap__node'));
+      const points = [...strategy.querySelectorAll('.strategy__point')];
+      const count = strategy.querySelector('.strategy__count');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const n = branches.length;
+      // Evenly spaced, clockwise from the top, so the first point sits at twelve o'clock
+      const angles = branches.map((b, i) => -90 + i * 360 / n);
+      // Where each stage ends, as a share of the whole scroll (matching the CSS height): the map grows over
+      // 135vh, shrinks over 90vh, then each point gets 112.5vh
+      const total = 225 + n * 112.5;
+      const GROW = 135 / total, SHRINK = 225 / total;
+      const clamp = (v) => Math.min(Math.max(v, 0), 1);
+
+      // reach: how far the branches stretch, from 1 (full size) down to 0.75 once the map has moved aside
+      // (on phones they stay full length, as the map hardly shrinks there)
+      function layout(reach = 1) {
+        const w = map.clientWidth, h = map.clientHeight;
+        const phone = w < 600;
+        if (phone) reach = 1;
+        const rx = w * (phone ? 0.39 : 0.36) * reach, ry = h * (phone ? 0.3 : 0.36) * reach;
+        // The centre's half size, plus a little breathing room, which no topic may come inside
+        const cw = centre.offsetWidth / 2, ch = centre.offsetHeight / 2, gap = 16;
+        nodes.forEach((node, i) => {
+          const a = angles[i] * Math.PI / 180;
+          const hw = node.offsetWidth / 2, hh = node.offsetHeight / 2;
+          let dx = Math.cos(a) * rx, dy = Math.sin(a) * ry;
+          // Keep each topic inside the map's edges...
+          dx = Math.min(Math.max(dx, hw - w / 2), w / 2 - hw);
+          // ...and clear of the centre: a topic level with it moves up or down until there's a gap
+          if (Math.abs(dx) < cw + hw + gap && Math.abs(dy) < ch + hh + gap) {
+            dy = (dy < 0 ? -1 : 1) * (ch + hh + gap);
+          }
+          node.style.setProperty('--x', (w / 2 + dx) + 'px');
+          node.style.setProperty('--y', (h / 2 + dy) + 'px');
+          lines[i].style.setProperty('--len', Math.hypot(dx, dy) + 'px');
+          lines[i].style.setProperty('--angle', Math.atan2(dy, dx) + 'rad');
+        });
+      }
+
+      let ticking = false;
+      function update() {
+        ticking = false;
+        // How far through the pinned scroll you are, from 0 to 1
+        const travel = strategy.offsetHeight - stage.offsetHeight;
+        const P = travel > 0 ? clamp((stage.getBoundingClientRect().top - strategy.getBoundingClientRect().top) / travel) : 0;
+
+        // 1. Each branch takes an equal share of the growing stage: its line draws, then its topic fades in
+        const grow = reduced.matches ? 1 : clamp(P / GROW);
+        branches.forEach((b, i) => {
+          const t = clamp(grow * n - i);
+          lines[i].style.setProperty('--p', clamp(t / 0.6).toFixed(3));
+          nodes[i].style.setProperty('--p', clamp((t - 0.5) / 0.5).toFixed(3));
+        });
+
+        // 2. The map shrinks into the right-hand side, drawing its branches in shorter, and the points fade
+        // in on the left
+        const m = clamp((P - GROW) / (SHRINK - GROW));
+        strategy.style.setProperty('--m', m.toFixed(3));
+        layout(1 - m * 0.25);
+        strategy.classList.toggle('is-reading', m > 0.5);
+
+        // 3. Each point gets an equal share of the rest; the one you're on shows and lights up its branch
+        const active = Math.min(Math.floor(clamp((P - SHRINK) / (1 - SHRINK)) * points.length), points.length - 1);
+        points.forEach((pt, i) => pt.classList.toggle('is-active', i === active));
+        branches.forEach((b, i) => b.classList.toggle('is-active', i === active));
+        count.textContent = String(active + 1).padStart(2, '0') + ' / ' + String(points.length).padStart(2, '0');
+      }
+
+      new ResizeObserver(update).observe(map);
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      reduced.addEventListener('change', update);
+      update();
+    });
 
     // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
     (() => {
