@@ -516,7 +516,7 @@
        you go: --p on each branch as the mind map grows out from the centre; --m from 0 to 1 as the map shrinks
        into the right-hand half and the points appear on the left; and .is-active on the point you're on and
        its branch, which turns purple on the map. */
-    .strategy { height: calc(100svh - var(--nav-h) - var(--service-head, 104px) + 520vh); }
+    .strategy { height: calc(100svh - var(--nav-h) - var(--service-head, 104px) + 900vh); }
 
     .strategy__body {
       position: relative;
@@ -1064,11 +1064,11 @@
                     <!-- TODO: replace the filler text for each point -->
                     <div class="strategy__points">
                       <article class="strategy__point">
-                        <h4 class="strategy__title">Positioning</h4>
+                        <h4 class="strategy__title">Vision &amp; mission</h4>
                         <p class="strategy__text">Filler text for now. A short description of what this part of the strategy covers and why it matters to the brand goes here, in around three lines.</p>
                       </article>
                       <article class="strategy__point">
-                        <h4 class="strategy__title">Vision &amp; mission</h4>
+                        <h4 class="strategy__title">Positioning</h4>
                         <p class="strategy__text">Filler text for now. A short description of what this part of the strategy covers and why it matters to the brand goes here, in around three lines.</p>
                       </article>
                       <article class="strategy__point">
@@ -1091,8 +1091,8 @@
                     <div class="mindmap">
                       <p class="mindmap__centre">Brand strategy</p>
                       <ul class="mindmap__branches">
-                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Positioning</span></li>
                       <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Vision &amp; mission</span></li>
+                      <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Positioning</span></li>
                       <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Values</span></li>
                       <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Verbal identity</span></li>
                       <li class="mindmap__branch"><span class="mindmap__line" aria-hidden="true"></span><span class="mindmap__node">Competitor research</span></li>
@@ -1340,8 +1340,8 @@
       const points = [...strategy.querySelectorAll('.strategy__point')];
       const count = strategy.querySelector('.strategy__count');
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-      // Clockwise from the top left, so the branches appear in a circle
-      const angles = [-150, -90, -30, 30, 90, 150];
+      // Clockwise from the top, so the branches appear in a circle starting with Vision & mission
+      const angles = [-90, -30, 30, 90, 150, -150];
       // Where each stage ends, as a share of the whole scroll: the map grows, then shrinks, then the points
       const GROW = 0.15, SHRINK = 0.25;
       const clamp = (v) => Math.min(Math.max(v, 0), 1);
