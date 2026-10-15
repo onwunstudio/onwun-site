@@ -90,4 +90,4 @@ Try not to edit the same page at the same time; if you do, Git will flag the ove
 - Real links for Instagram, LinkedIn, T&Cs and Privacy policy. ("Book a discovery call" goes to Calendly.)
 - Team photos and the real list of services on the About page.
 - Intros for ELEV8 and rise; project images for StuartFox and ATLAS.
-- SEO basics still to add: favicon, a main heading on the home page, sitemap and robots file, 404 page.
+- SEO still to add: a 404 page.
