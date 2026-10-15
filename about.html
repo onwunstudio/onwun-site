@@ -398,7 +398,7 @@
     /* Sora SemiBold 36px, the same as the value titles */
     .service__toggle {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 24px;
       width: 100%;
       padding: 32px 0;
@@ -420,12 +420,48 @@
 
     .service__toggle:focus-visible { outline: 1px solid var(--purple); outline-offset: 4px; }
 
-    .service__name {
+    .service__heading {
       flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service__name {
+      align-self: flex-start;
       transition: transform 0.4s var(--ease);
     }
 
     .service:hover .service__name { transform: translateX(8px); }
+
+    /* A short introduction under the title, in the statement type. It folds away when the service opens,
+       so only the title stays pinned above the mind map */
+    .service__intro {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 0.5s var(--ease), opacity 0.3s;
+    }
+
+    .service.is-open .service__intro {
+      grid-template-rows: 0fr;
+      opacity: 0;
+    }
+
+    .service__intro-text {
+      display: block;
+      overflow: hidden;
+      max-width: 660px;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--grey-text);
+    }
+
+    /* The space above the introduction sits inside it, so it folds away with it */
+    .service__intro-text::before {
+      content: "";
+      display: block;
+      height: 16px;
+    }
 
     /* A circled "+" drawn in CSS; the whole circle turns so the "+" becomes a purple "×" when open */
     .service__icon {
@@ -434,6 +470,7 @@
       height: 32px;
       border: 1px solid currentColor;
       border-radius: 50%;
+      margin-top: 4px; /* centred on the title's line */
       color: var(--muted);
       transition: transform 0.5s var(--ease), color 0.3s;
     }
@@ -629,7 +666,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .js .service { opacity: 1; transform: none; transition: none; }
-      .service__panel, .service__icon, .service__name, .service::after { transition: none; }
+      .service__panel, .service__icon, .service__name, .service__intro, .service::after { transition: none; }
     }
 
     /* Stacked values, as the home page projects: the label pins to the top, each value pins just below
@@ -803,6 +840,9 @@
       .services { padding-top: 56px; }
       .services__label { margin-bottom: 24px; }
       .service__toggle { padding: 22px 0; font-size: 28px; }
+      .service__icon { margin-top: 1px; }
+      .service__intro-text { font-size: 16px; }
+      .service__intro-text::before { height: 12px; }
       .service__icon { flex-basis: 28px; height: 28px; }
       .service__icon::before,
       .service__icon::after { width: 10px; margin-left: -5px; }
@@ -1033,7 +1073,11 @@
         <li class="service" style="--i: 0;">
           <h3>
             <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-branding" id="service-branding-toggle">
-              <span class="service__name">Brand strategy</span>
+              <span class="service__heading">
+                <span class="service__name">Brand strategy</span>
+                <!-- TODO: replace the filler introduction -->
+                <span class="service__intro"><span class="service__intro-text">Filler text for now. A short introduction to this service goes here, explaining what it covers, who it’s for and the difference it makes to your brand, in around three to four lines of copy.</span></span>
+              </span>
               <span class="service__icon" aria-hidden="true"></span>
             </button>
           </h3>
@@ -1091,7 +1135,11 @@
         <li class="service" style="--i: 1;">
           <h3>
             <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-content" id="service-content-toggle">
-              <span class="service__name">Brand identity</span>
+              <span class="service__heading">
+                <span class="service__name">Brand identity</span>
+                <!-- TODO: replace the filler introduction -->
+                <span class="service__intro"><span class="service__intro-text">Filler text for now. A short introduction to this service goes here, explaining what it covers, who it’s for and the difference it makes to your brand, in around three to four lines of copy.</span></span>
+              </span>
               <span class="service__icon" aria-hidden="true"></span>
             </button>
           </h3>
@@ -1283,11 +1331,14 @@
       const items = [...section.querySelectorAll('.service')];
 
       const nav = document.querySelector('.nav');
-      const head = items[0].querySelector('h3');
-      const setHead = () => section.style.setProperty('--service-head', head.offsetHeight + 'px');
-      setHead();
-      document.fonts.ready.then(setHead);
-      new ResizeObserver(setHead).observe(head);
+      // Each service's title row height (it changes as the introduction folds away when it opens)
+      items.forEach((item) => {
+        const head = item.querySelector('h3');
+        const setHead = () => item.style.setProperty('--service-head', head.offsetHeight + 'px');
+        setHead();
+        document.fonts.ready.then(setHead);
+        new ResizeObserver(setHead).observe(head);
+      });
 
       // Scroll so the category's name sits just under the nav
       function toTop(item, behavior) {
