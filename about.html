@@ -354,7 +354,7 @@
     /* ───────── Services ─────────
        Full width: the label above, then the three categories, each across the whole page between thin
        rules, with a circled "+" on the right. Hovering a category draws a purple rule along its line;
-       clicking it turns the "+" into a purple "×" and expands it into three full-screen panels.
+       clicking it turns the "+" into a purple "×" and expands it into its pinned mind map.
        Rows rise in the first time the section is seen. */
     .services {
       padding: 138px 20px 0;
@@ -454,10 +454,10 @@
     .service:hover .service__icon { color: var(--white); }
     .service.is-open .service__icon { color: var(--purple); transform: rotate(135deg); }
 
-    /* Opening a category expands it downwards into three full-screen panels (animating its row from 0 to
-       its natural height). While it's open, the category's name pins under the nav, and each panel pins
-       below it so the next one slides up over the last as you scroll, as the values do. Clip rather than
-       hide, so the panels can still pin to the screen. --service-head is the name row's height (script). */
+    /* Opening a category expands it downwards (animating its row from 0 to its natural height) into its
+       mind map. While it's open, the category's name pins under the nav and the mind map's screen pins
+       below it. Clip rather than hide, so the screen can still pin. --service-head is the name row's
+       height (script). */
     .service__panel {
       display: grid;
       grid-template-rows: 0fr;
@@ -500,19 +500,6 @@
     }
 
     .service__screen-label span { color: var(--purple); }
-
-    /* Placeholder until the screen's content is in, in the same style as the other image placeholders */
-    .service__screen-body {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--placeholder-bg);
-      border: 1px solid var(--line);
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
 
     /* ── Brand strategy and Brand identity: a pinned mind map ──
        One screen pinned for a long scroll (.strategy sets the scroll length). The script sets three things as
@@ -1058,7 +1045,6 @@
 
     <section class="services" aria-labelledby="services-label">
       <h2 class="services__label dm" id="services-label">Services:</h2>
-      <!-- TODO: each category's three screens are placeholders; add their content -->
       <ul class="services__list">
         <li class="service" style="--i: 0;">
           <h3>
@@ -1171,32 +1157,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="service" style="--i: 2;">
-          <h3>
-            <button class="service__toggle" type="button" aria-expanded="false" aria-controls="service-web" id="service-web-toggle">
-              <span class="service__name">Web design</span>
-              <span class="service__icon" aria-hidden="true"></span>
-            </button>
-          </h3>
-          <div class="service__panel" id="service-web" role="region" aria-labelledby="service-web-toggle">
-            <div class="service__panel-inner">
-              <div class="service__screens">
-                <article class="service__screen" aria-label="Web design, screen 1 of 3">
-                  <p class="service__screen-label dm">Web design <span>01 / 03</span></p>
-                  <div class="service__screen-body dm">Web design screen 1: content to come</div>
-                </article>
-                <article class="service__screen" aria-label="Web design, screen 2 of 3">
-                  <p class="service__screen-label dm">Web design <span>02 / 03</span></p>
-                  <div class="service__screen-body dm">Web design screen 2: content to come</div>
-                </article>
-                <article class="service__screen" aria-label="Web design, screen 3 of 3">
-                  <p class="service__screen-label dm">Web design <span>03 / 03</span></p>
-                  <div class="service__screen-body dm">Web design screen 3: content to come</div>
-                </article>
               </div>
             </div>
           </div>
@@ -1315,7 +1275,7 @@
       new ResizeObserver(() => section.style.setProperty('--why-pin', intro.offsetHeight + 'px')).observe(intro);
     })();
 
-    // Services: one category open at a time, expanding into its three screens; rows rise in the first time
+    // Services: one category open at a time, expanding into its mind map; rows rise in the first time
     // the section comes into view
     (() => {
       const section = document.querySelector('.services');
