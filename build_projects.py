@@ -235,8 +235,7 @@ def media(slot, index, image):
     style = f' style="--i: {stagger};"' if stagger else ""
     if image:
         return media_block(image, f"media media--{slot}", stagger)
-    caption = "Landscape image" if slot == "landscape" else "1080 × 1080"
-    return f'<div class="filler filler--{slot} dm reveal"{style}>{caption}</div>'
+    return f'<div class="filler filler--{slot} dm reveal"{style}>Coming soon</div>'
 
 
 # Chapters: a project can list "chapters" instead of "images", for a freer layout (ATLAS and Denglish do). Each of
