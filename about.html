@@ -1346,9 +1346,10 @@
       const GROW = 0.15, SHRINK = 0.25;
       const clamp = (v) => Math.min(Math.max(v, 0), 1);
 
-      function layout() {
+      // reach: how far the branches stretch, from 1 (full size) down to 0.6 once the map has moved aside
+      function layout(reach = 1) {
         const w = map.clientWidth, h = map.clientHeight;
-        const rx = w * (w < 600 ? 0.3 : 0.36), ry = h * (w < 600 ? 0.32 : 0.36);
+        const rx = w * (w < 600 ? 0.3 : 0.36) * reach, ry = h * (w < 600 ? 0.32 : 0.36) * reach;
         nodes.forEach((node, i) => {
           const a = angles[i] * Math.PI / 180;
           const dx = Math.cos(a) * rx, dy = Math.sin(a) * ry;
@@ -1374,9 +1375,11 @@
           nodes[i].style.setProperty('--p', clamp((t - 0.5) / 0.5).toFixed(3));
         });
 
-        // 2. The map shrinks into the right-hand side and the points fade in on the left
+        // 2. The map shrinks into the right-hand side, drawing its branches in shorter, and the points fade
+        // in on the left
         const m = clamp((P - GROW) / (SHRINK - GROW));
         strategy.style.setProperty('--m', m.toFixed(3));
+        layout(1 - m * 0.4);
         strategy.classList.toggle('is-reading', m > 0.5);
 
         // 3. Each point gets an equal share of the rest; the one you're on shows and lights up its branch
@@ -1386,10 +1389,9 @@
         count.textContent = String(active + 1).padStart(2, '0') + ' / ' + String(points.length).padStart(2, '0');
       }
 
-      new ResizeObserver(() => { layout(); update(); }).observe(map);
+      new ResizeObserver(update).observe(map);
       window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
       reduced.addEventListener('change', update);
-      layout();
       update();
     })();
 
