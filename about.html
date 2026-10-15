@@ -827,7 +827,9 @@
       }
       /* Phones: the map moves up to fill the top of the screen, only a little smaller, with the point
          you're on underneath */
-      .mindmap { transform: translateY(calc(var(--m, 0) * -17%)) scale(calc(1 - var(--m, 0) * 0.15)); }
+      .mindmap { transform: translateY(calc(var(--m, 0) * -19%)) scale(calc(1 - var(--m, 0) * 0.15)); }
+      /* ...and the title and description sit lower, close to the bottom of the screen */
+      .strategy__stage { padding-bottom: 8px; }
       .strategy__points { top: auto; bottom: 0; width: 100%; transform: none; }
       .strategy__point { top: auto; bottom: 0; transform: none; }
       .strategy__point:not(.is-active) { transform: translateY(16px); }
