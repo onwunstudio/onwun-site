@@ -295,7 +295,7 @@
     /* ───────── Meet the team ─────────
        Two portraits side by side across the full width (20px apart, as the paired project images),
        each with a name and role underneath, in the style of the "More projects" cards */
-    .team { padding: 114px 20px 0; } /* 138px from the last reason's text, with its 24px padding */
+    .team { padding: 138px 20px 0; }
 
     .team__label {
       margin-bottom: 24px;
@@ -356,8 +356,9 @@
        rules, with a circled "+" on the right. Hovering a category draws a purple rule along its line;
        clicking it turns the "+" into a purple "×" and expands it into its pinned mind map.
        Rows rise in the first time the section is seen. */
+    /* 138px from the last Why choose us reason's text, with its 24px padding */
     .services {
-      padding: 138px 20px 0;
+      padding: 114px 20px 0;
     }
 
     .services__label {
@@ -1026,23 +1027,6 @@
       </div>
     </section>
 
-    <section class="team" aria-labelledby="team-label">
-      <h2 class="team__label dm" id="team-label">Meet the team:</h2>
-      <ul class="team__grid">
-        <!-- TODO: swap each placeholder for <div class="team__photo"><img src="assets/team/…" alt="…"></div> -->
-        <li class="team__member">
-          <div class="team__photo team__photo--empty dm">Photo</div>
-          <h3 class="team__name">Niall Penny</h3>
-          <p class="team__role dm">Creative Director</p>
-        </li>
-        <li class="team__member">
-          <div class="team__photo team__photo--empty dm">Photo</div>
-          <h3 class="team__name">Rohan McCallum</h3>
-          <p class="team__role dm">Creative Director</p>
-        </li>
-      </ul>
-    </section>
-
     <section class="services" aria-labelledby="services-label">
       <h2 class="services__label dm" id="services-label">Services:</h2>
       <ul class="services__list">
@@ -1160,6 +1144,23 @@
               </div>
             </div>
           </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="team" aria-labelledby="team-label">
+      <h2 class="team__label dm" id="team-label">Meet the team:</h2>
+      <ul class="team__grid">
+        <!-- TODO: swap each placeholder for <div class="team__photo"><img src="assets/team/…" alt="…"></div> -->
+        <li class="team__member">
+          <div class="team__photo team__photo--empty dm">Photo</div>
+          <h3 class="team__name">Niall Penny</h3>
+          <p class="team__role dm">Creative Director</p>
+        </li>
+        <li class="team__member">
+          <div class="team__photo team__photo--empty dm">Photo</div>
+          <h3 class="team__name">Rohan McCallum</h3>
+          <p class="team__role dm">Creative Director</p>
         </li>
       </ul>
     </section>
