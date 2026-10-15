@@ -1931,6 +1931,12 @@
 
       hero.addEventListener('pointermove', (e) => {
         if (!mouse.matches || e.pointerType !== 'mouse') return;
+        // Out of the way over "Start a project" (or any link), so it's clear to click
+        if (e.target.closest('a')) {
+          trail.classList.remove('is-on');
+          last = null;
+          return;
+        }
         if (!slides) load();
         const box = hero.getBoundingClientRect();
         pos = { x: e.clientX - box.left, y: e.clientY - box.top };
