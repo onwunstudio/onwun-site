@@ -816,7 +816,7 @@
       .service__icon::before,
       .service__icon::after { width: 10px; margin-left: -5px; }
       .service__screen { padding: 24px 0 28px; }
-      .mindmap__centre { padding: 12px 20px; font-size: 20px; }
+      .mindmap__centre { padding: 10px 16px; font-size: 17px; }
       /* Phones: longer topic names wrap onto two lines rather than reaching the screen edges */
       .mindmap__node {
         max-width: 112px;
@@ -1368,6 +1368,7 @@
     document.querySelectorAll('.strategy').forEach((strategy) => {
       const stage = strategy.querySelector('.strategy__stage');
       const map = strategy.querySelector('.mindmap');
+      const centre = map.querySelector('.mindmap__centre');
       const branches = [...map.querySelectorAll('.mindmap__branch')];
       const lines = branches.map((b) => b.querySelector('.mindmap__line'));
       const nodes = branches.map((b) => b.querySelector('.mindmap__node'));
@@ -1389,10 +1390,19 @@
         const w = map.clientWidth, h = map.clientHeight;
         const phone = w < 600;
         if (phone) reach = 1;
-        const rx = w * (phone ? 0.33 : 0.36) * reach, ry = h * (phone ? 0.3 : 0.36) * reach;
+        const rx = w * (phone ? 0.39 : 0.36) * reach, ry = h * (phone ? 0.3 : 0.36) * reach;
+        // The centre's half size, plus a little breathing room, which no topic may come inside
+        const cw = centre.offsetWidth / 2, ch = centre.offsetHeight / 2, gap = 16;
         nodes.forEach((node, i) => {
           const a = angles[i] * Math.PI / 180;
-          const dx = Math.cos(a) * rx, dy = Math.sin(a) * ry;
+          const hw = node.offsetWidth / 2, hh = node.offsetHeight / 2;
+          let dx = Math.cos(a) * rx, dy = Math.sin(a) * ry;
+          // Keep each topic inside the map's edges...
+          dx = Math.min(Math.max(dx, hw - w / 2), w / 2 - hw);
+          // ...and clear of the centre: a topic level with it moves up or down until there's a gap
+          if (Math.abs(dx) < cw + hw + gap && Math.abs(dy) < ch + hh + gap) {
+            dy = (dy < 0 ? -1 : 1) * (ch + hh + gap);
+          }
           node.style.setProperty('--x', (w / 2 + dx) + 'px');
           node.style.setProperty('--y', (h / 2 + dy) + 'px');
           lines[i].style.setProperty('--len', Math.hypot(dx, dy) + 'px');
