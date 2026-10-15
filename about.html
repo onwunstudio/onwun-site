@@ -238,22 +238,15 @@
     }
 
     /* ───────── Why choose us ─────────
-       A compact block in the left-hand column (660px), under the values: the label, then the three reasons,
-       set close together so it leads straight into the team below */
-    .why {
-      --why-pin: 179px; /* height of the pinned label block; kept in sync by script */
-      --why-h: 140px;   /* one reason, incl. its rule */
-      padding: 0 20px;
-    }
+       A compact block in the left-hand column (660px), under the values: the label, one paragraph in the
+       statement type, then a smaller paragraph about what comes after the brand identity */
+    .why { padding: 0 20px; }
 
     .why__inner { max-width: 660px; }
 
     /* Less space above than other sections: the last value already ends in some empty space, and the two
        together make the usual 138px from the last value's text to this label */
-    .why__intro {
-      padding: 48px 0 24px;
-      background: var(--black);
-    }
+    .why__intro { padding: 48px 0 24px; }
 
     .why__label {
       font-size: 13px;
@@ -262,34 +255,20 @@
       text-transform: uppercase;
     }
 
-    .why__list { list-style: none; }
-
     /* Same type as the statements */
-    .why__item {
-      padding: 24px 0;
-      background: var(--black);
+    .why__lead {
       font-weight: 300;
       font-size: 24px;
       line-height: 1.25;
     }
 
-    /* Stacked reasons, as the values above: the label pins, each reason pins just below it and the
-       next slides up over it, then the block scrolls away together */
-    @media (min-width: 900px) and (min-height: 750px) {
-      .why__intro {
-        position: sticky;
-        top: var(--nav-h);
-        z-index: 2;
-        margin-bottom: var(--why-h);
-      }
-
-      .why__list { margin-top: calc(var(--why-h) * -1); }
-
-      .why__item {
-        position: sticky;
-        top: calc(var(--nav-h) + var(--why-pin));
-        height: var(--why-h);
-      }
+    .why__more {
+      max-width: 560px;
+      margin-top: 32px;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--grey-text);
     }
 
     /* ───────── Meet the team ─────────
@@ -356,9 +335,8 @@
        rules, with a circled "+" on the right. Hovering a category draws a purple rule along its line;
        clicking it turns the "+" into a purple "×" and expands it into its pinned mind map.
        Rows rise in the first time the section is seen. */
-    /* 138px from the last Why choose us reason's text, with its 24px padding */
     .services {
-      padding: 114px 20px 0;
+      padding: 138px 20px 0;
     }
 
     .services__label {
@@ -835,7 +813,8 @@
       .value__body { grid-column: 1; min-height: 0; padding: 32px 0 48px; }
       .value__text { font-size: 20px; }
       .why__intro { padding-top: 56px; }
-      .why__item { font-size: 20px; }
+      .why__lead { font-size: 20px; }
+      .why__more { margin-top: 24px; font-size: 16px; }
       .team { padding-top: 56px; }
       .services { padding-top: 56px; }
       .services__label { margin-bottom: 24px; }
@@ -1059,11 +1038,8 @@
       <div class="why__intro">
         <h2 class="why__label dm" id="why-label">Why choose us:</h2>
       </div>
-      <ul class="why__list">
-        <li class="why__item">You work directly with the two people actually designing your brand, from the first call to final delivery.</li>
-        <li class="why__item">We take on fewer clients by design, so every project gets the depth of research and craft we’d want for our own studio.</li>
-        <li class="why__item">Strategy, identity and build stay under one roof, so nothing gets diluted or lost moving between separate teams.</li>
-      </ul>
+      <p class="why__lead">You work directly with the two people actually designing your brand, from the first call to final delivery. Whether you’re a new founder building something from the ground up or an established business ready for its next chapter, we shape a brand that fits where you are and where you’re going: grounded in strategy, brought to life through a distinctive identity, and built to set you apart.</p>
+      <p class="why__more">Once your brand identity is complete, the journey doesn’t have to stop there. We can take your brand further with a custom website, manage your social media content, or keep everything moving with our premium brand retainers, offering ongoing design support to keep your brand alive.</p>
       </div>
     </section>
 
@@ -1313,13 +1289,6 @@
       const section = document.querySelector('.values');
       const intro = section.querySelector('.values__intro');
       new ResizeObserver(() => section.style.setProperty('--values-pin', intro.offsetHeight + 'px')).observe(intro);
-    })();
-
-    // Why choose us: each reason pins directly below the pinned label, whatever its height
-    (() => {
-      const section = document.querySelector('.why');
-      const intro = section.querySelector('.why__intro');
-      new ResizeObserver(() => section.style.setProperty('--why-pin', intro.offsetHeight + 'px')).observe(intro);
     })();
 
     // Services: one category open at a time, expanding into its mind map; rows rise in the first time
