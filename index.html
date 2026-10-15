@@ -201,12 +201,8 @@
     }
 
     /* "Start a project", styled like "Get in touch" (.projects__cta), fading in as the intro finishes */
-    /* Bottom-left corner of the splash, level with the bottom of the logo */
     .hero__cta {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      line-height: 1;
+      margin-top: calc(36 / 1326 * 100cqw);
       transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--cta-d, 0s);
     }
 
@@ -1141,8 +1137,7 @@
         width: 100%;
       }
 
-      /* Above the logo, which takes the full width along the bottom (its letters rise 650/3306 of its width) */
-      .hero__cta { bottom: calc(100cqw * 650 / 3306 + 24px); }
+      .hero__cta { margin-top: 24px; }
 
       .hero__intro {
         font-size: 26px;
@@ -1319,8 +1314,8 @@
       <div class="hero__frame">
         <div class="hero__lead">
           <p class="hero__intro" data-letters>A brand strategy and design consultancy based in London and Manchester, built for businesses ready to lead, not follow.</p>
+          <p class="hero__cta"><a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Start a project</span></a></p>
         </div>
-        <p class="hero__cta"><a class="projects__cta" href="contact.html"><span class="projects__cta-arrow" aria-hidden="true">→</span><span class="projects__cta-text">Start a project</span></a></p>
         <div class="hero__wordmark" role="img" aria-label="Onwun">
           <div class="hero__wordmark-base"></div>
           <div class="hero__wordmark-reveal"></div>
@@ -1807,10 +1802,8 @@
       document.fonts.ready.then(() => {
         [hero, statement, ...processParas].forEach(split);
 
-        // hero: plays alongside the logo reveal; the call to action fades in once the logo has slid in
-        // (its animation ends 2s after the page starts)
-        play(hero, 0.35);
-        heroCta.style.setProperty('--cta-d', Math.max(0, 2.2 - performance.now() / 1000).toFixed(3) + 's');
+        // hero: plays alongside the logo reveal, then the call to action fades in
+        heroCta.style.setProperty('--cta-d', play(hero, 0.35).toFixed(3) + 's');
         heroCta.classList.add('is-in');
 
         // featured projects: plays the first time it scrolls into view
