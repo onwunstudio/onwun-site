@@ -145,10 +145,10 @@
       container-type: inline-size;
       /* The frame no longer clips, so the wordmark bleeds to the page edges */
       overflow: clip;
-      /* Stays put once its bottom reaches the bottom of the screen (or it reaches the nav, if it is
-         shorter than the screen), so the sections below slide up over it */
+      /* Stays put under the nav (it never runs taller than the screen), so the sections below slide up
+         over it */
       position: sticky;
-      top: min(var(--nav-h), calc(100vh - 40px - (100vw - 40px) * 728 / 1326));
+      top: var(--nav-h);
       /* Above the footer waiting underneath (solid, so it never shows through); the sections after it
          share this layer and, coming later in the page, still slide over it */
       z-index: 1;
@@ -180,10 +180,12 @@
     /* A thin rule marks the edge cutting up through the hero */
     .projects { border-top: 1px solid var(--line-step); }
 
+    /* 1326 × 728 at the design size, but never taller than the screen under the nav, so the whole logo
+       along its bottom is always in view on shorter laptop screens */
     .hero__frame {
       position: relative;
       width: 100%;
-      aspect-ratio: 1326 / 728;
+      height: min(100cqw * 728 / 1326, 100svh - var(--nav-h) - 40px);
       border: 1px solid var(--black);
     }
 
@@ -216,13 +218,13 @@
 
     .js .hero__cta:not(.is-in) { opacity: 0; }
 
-    /* The same size as the footer logo (47% of the page width), in the bottom-right corner. The image has
-       transparent margins (21px right, 36px below the baseline, of 3306 × 706); pulled back so the letters
-       sit exactly 20px from the page edge and on the bottom line, as in the footer. */
+    /* Full bleed: the letters run exactly from one edge of the screen to the other and sit on the bottom
+       line, the whole word always in view. The image has transparent margins (20px left, 21px right, 36px
+       below the baseline, of 3306 × 706), so it is sized and pulled back to put the letters on the edges. */
     .hero__wordmark {
       position: absolute;
-      --mark-w: 47cqw;
-      right: calc(-21 / 3306 * var(--mark-w));
+      --mark-w: calc((100cqw + 40px) * 3306 / 3265);
+      left: calc(-20px - 20 / 3306 * var(--mark-w));
       bottom: calc(-36 / 3306 * var(--mark-w));
       width: var(--mark-w);
       height: calc(var(--mark-w) * 706 / 3306);
@@ -280,7 +282,7 @@
       100% { --glow-bx: 12%; --glow-by: 40%; }
     }
 
-    /* On load, step 1: the wordmark slides in from the left of the screen to its corner, revealed from the
+    /* On load, step 1: the wordmark slides in from the left of the screen, revealed from the
        left by a soft, feathered edge as it goes. The mask only exists during the animation ("backwards" fill). */
     .hero__wordmark {
       animation: wordmark-reveal 1.8s cubic-bezier(0.55, 0, 0.25, 1) 0.2s backwards;
@@ -296,7 +298,7 @@
         mask-repeat: no-repeat;
         -webkit-mask-position: 100% 0;
         mask-position: 100% 0;
-        transform: translateX(calc(-100cqw - 20px));
+        transform: translateX(-100%);
       }
       to {
         -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
@@ -328,6 +330,44 @@
     @keyframes wordmark-sweep {
       from { background-position: 100% 0; }
       to { background-position: 0 0; }
+    }
+
+    /* Cursor trail: project images ride on the cursor across the splash screen, flicking to the next
+       every time the cursor travels a little further (laptops and desktops only). Nothing is cropped: each
+       slide is one whole image, or two from the same project side by side at the same height. */
+    .hero__trail {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      will-change: transform;
+    }
+
+    .hero__trail.is-on { opacity: 1; }
+
+    /* Centred on the cursor */
+    .hero__slide {
+      position: absolute;
+      display: flex;
+      gap: 6px;
+      height: 160px;
+      transform: translate(-50%, -50%);
+      visibility: hidden;
+    }
+
+    .hero__slide.is-current { visibility: visible; }
+
+    .hero__slide img {
+      display: block;
+      height: 100%;
+      width: auto;
+    }
+
+    @media not ((hover: hover) and (pointer: fine) and (min-width: 900px)) {
+      .hero__trail { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1147,8 +1187,6 @@
         white-space: normal; /* drops the extra space the desktop line breaks rely on */
       }
 
-      /* The same size as the footer logo on phones: the full width between the 20px page edges */
-      .hero__wordmark { --mark-w: 100cqw; }
     }
 
     /* ───────── Scrolling on phones ─────────
@@ -1324,6 +1362,9 @@
           <div class="hero__wordmark-sweep"></div>
         </div>
       </div>
+      <!-- Project images for the cursor trail: small copies in assets/cursor, grouped into slides of one image
+           or two from the same project, with each image's width / height (the script loads them) -->
+      <div class="hero__trail" aria-hidden="true" data-slides='[[["atlas-app-phone.jpg",0.727],["atlas-flash-poster.jpg",0.748]],[["atlas-guides.jpg",1.414],["atlas-suitcase-stickers.jpg",0.805]],[["atlas-mockup.jpg",1.543]],[["atlas-poster.jpg",1.501]],[["atlas-travel-guides.jpg",1.414]],[["denglish-post-73-poster.jpg",0.798],["denglish-post-74-poster.jpg",0.798]],[["denglish-website-ipad.jpg",1.333],["denglish-app-screens.jpg",0.971]],[["denglish-brand-presentation.jpg",1.356]],[["denglish-stickers-poster.jpg",1.783]],[["elev8-poster-drinking.jpg",0.707],["elev8-can-labels.jpg",0.841]],[["elev8-billboard.jpg",1.44]],[["elev8-cans-night.jpg",1.414]],[["elev8-mockup.jpg",1.501]],[["elev8-poster-wall.jpg",1.369]],[["elev8-six-pack-boxes.jpg",1.501]],[["rise-apron.jpg",0.589],["rise-billboard.jpg",0.659]],[["rise-pouches-stump.jpg",0.662],["rise-pouch-leaves.jpg",0.705]],[["rise-hoarding.jpg",1.564]],[["rise-mockup.jpg",1.509]],[["rise-pouches-flatlay.jpg",1.414]],[["rise-pouches-pink.jpg",1.501]],[["rise-van.jpg",1.505]],[["stuartfox-mockup.jpg",1.411]]]'></div>
     </section>
 
     <section class="projects" id="work" aria-labelledby="projects-label">
@@ -1847,6 +1888,88 @@
         }
       }, { passive: true });
       update();
+    })();
+
+    // Splash cursor trail: a small frame follows the cursor and flicks to the next project image every
+    // STEP pixels of travel. Images load only once someone with a mouse first moves over the splash.
+    (() => {
+      const hero = document.querySelector('.hero');
+      const trail = document.querySelector('.hero__trail');
+      const mouse = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 900px)');
+      const STEP = 70;
+      let slides = null;
+      let current = 0;
+      let travelled = 0;
+      let last = null;
+      let pos = null;
+      let frame = null;
+
+      function load() {
+        const data = JSON.parse(trail.dataset.slides);
+        // Shuffled, so the projects mix together
+        for (let i = data.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [data[i], data[j]] = [data[j], data[i]];
+        }
+        slides = data.map((images) => {
+          const slide = document.createElement('div');
+          slide.className = 'hero__slide';
+          images.forEach(([name, ratio]) => {
+            const img = document.createElement('img');
+            img.src = 'assets/cursor/' + name;
+            img.alt = '';
+            img.decoding = 'async';
+            img.style.aspectRatio = ratio; // holds its width before it loads
+            slide.appendChild(img);
+          });
+          trail.appendChild(slide);
+          return slide;
+        });
+        slides[0].classList.add('is-current');
+      }
+
+      function next() {
+        slides[current].classList.remove('is-current');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('is-current');
+      }
+
+      hero.addEventListener('pointermove', (e) => {
+        if (!mouse.matches || e.pointerType !== 'mouse') return;
+        // Out of the way over "Start a project" (or any link), so it's clear to click
+        if (e.target.closest('a')) {
+          trail.classList.remove('is-on');
+          last = null;
+          return;
+        }
+        if (!slides) load();
+        const box = hero.getBoundingClientRect();
+        pos = { x: e.clientX - box.left, y: e.clientY - box.top };
+        if (last) {
+          travelled += Math.hypot(e.clientX - last.x, e.clientY - last.y);
+          if (travelled >= STEP) {
+            travelled %= STEP;
+            next();
+          }
+        }
+        last = { x: e.clientX, y: e.clientY };
+        if (!trail.classList.contains('is-on')) {
+          // Appearing: jump straight to the cursor rather than gliding in from the last spot
+          trail.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+          trail.classList.add('is-on');
+        }
+        if (!frame) {
+          frame = requestAnimationFrame(() => {
+            trail.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+            frame = null;
+          });
+        }
+      });
+
+      hero.addEventListener('pointerleave', () => {
+        trail.classList.remove('is-on');
+        last = null;
+      });
     })();
 
     // Phones: the process steps stack as you scroll. Each step is given the height of the tallest one so
