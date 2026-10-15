@@ -389,6 +389,26 @@
       gap: 20px;
     }
 
+    /* Images of different shapes side by side at one height: each takes a share of the width in
+       proportion to its shape (--ratio = width / height) */
+    .chapter__row--fit {
+      display: flex;
+    }
+
+    .chapter__row--fit > .media {
+      flex: var(--ratio) 1 0;
+      min-width: 0;
+    }
+
+    /* A row with a small caption underneath */
+    .chapter__group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chapter__group > .chapter__caption { align-self: start; }
+
     /* A small caption at the foot of the half beside an image */
     .chapter__caption {
       align-self: end;
@@ -664,6 +684,8 @@
       .case__squares { grid-template-columns: minmax(0, 1fr); }
       .media-pair { flex-direction: column; }
       .chapter__row { grid-template-columns: minmax(0, 1fr); }
+      .chapter__row--fit { flex-direction: column; }
+      .chapter__row--fit > .media { flex: none; width: 100%; }
       .chapter__row--right .chapter__caption { order: 1; } /* captions sit under their image */
       .chapter__caption { margin-top: -8px; }
       .media--pair-item { flex: none; width: 100%; }
@@ -844,17 +866,18 @@
         </div>
 
         <!-- A big full-width landscape image under the info (or a chapter of images and videos) -->
-        <div class="media media--landscape reveal" style="aspect-ratio: 3 / 2;"><img src="assets/denglish/brand-presentation.webp" alt="Denglish brand presentation spreads: app screens, wordmark breakdown, stickers and colour palette" loading="lazy"></div>
+        <div class="chapter">
+          <div class="media reveal" style="aspect-ratio: 1326 / 746;"><img src="assets/denglish/app-icon-phone-red.webp" alt="The Denglish app icon on a phone home screen, against a red gradient" loading="lazy"></div>
+          <div class="chapter__row chapter__row--fit"><div class="media media--video reveal" style="aspect-ratio: 1; --ratio: 1.0000;"><video src="assets/denglish/icon.mp4" poster="assets/denglish/icon-poster.webp" muted loop playsinline preload="none" aria-label="The Denglish app icon: a white d on a red-to-burgundy gradient"></video></div><div class="media media--video reveal" style="--i: 1; aspect-ratio: 16 / 9; --ratio: 1.7778;"><video src="assets/denglish/palette.mp4" poster="assets/denglish/palette-poster.webp" muted loop playsinline preload="none" aria-label="The Denglish colour palette: Violet #220049, Rose #FF6978 and Burgundy #440624"></video></div></div>
+        </div>
 
         <!-- Challenges: label on the left, text in the right column -->
         <h2 class="case__label dm reveal">Challenges:</h2>
         <p class="case__text">The challenge was to turn a functional English-learning tool into a clearer, more engaging learning experience, using intuitive interactions, visible progress and a consistent visual system to make Denglish easier to use and return to every day.</p>
 
         <!-- Three square images across the full width (or a chapter) -->
-        <div class="case__squares">
-          <div class="media media--square reveal"><img src="assets/denglish/website-ipad.webp" alt="The Denglish website on an iPad" loading="lazy"></div>
-          <div class="media media--square reveal" style="--i: 1;"><img src="assets/denglish/app-screens.webp" alt="Three Denglish app screens: coach, vocabulary drill and word trainer" loading="lazy"></div>
-          <div class="media media--square reveal" style="--i: 2;"><img src="assets/denglish/app-icon-phone.png" alt="The Denglish app icon on a phone home screen" loading="lazy"></div>
+        <div class="chapter">
+          <div class="media media--video reveal" style="aspect-ratio: 1326 / 746;"><video src="assets/denglish/stickers.mp4" poster="assets/denglish/stickers-poster.webp" muted loop playsinline preload="none" aria-label="Denglish stickers: the d icon and the wordmark between sound-wave dots, in three colourways"></video></div>
         </div>
 
         <!-- Solution: same layout as the challenges -->
@@ -862,7 +885,10 @@
         <p class="case__text">We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish. A consistent colour palette, type hierarchy, icon set and progress-focused interface bring structure to the learning journey, helping users understand what to do, track improvement and stay engaged day after day.</p>
 
         <!-- A second full-width landscape image (or a chapter) -->
-        <div class="media media--landscape media--whole reveal" style="--media-bg: #ffffff;"><img src="assets/denglish/app-store.webp" alt="Denglish splash screen on a phone, app store listing and app icon" loading="lazy"></div>
+        <div class="chapter">
+          <div class="chapter__row"><div class="media reveal" style="aspect-ratio: 1;"><img src="assets/denglish/website-ipad.webp" alt="The Denglish website on an iPad" loading="lazy"></div><div class="media reveal" style="--i: 1; aspect-ratio: 1;"><img src="assets/denglish/app-screens.webp" alt="Three Denglish app screens: coach, vocabulary drill and word trainer" loading="lazy"></div></div>
+          <div class="chapter__group"><div class="chapter__row"><div class="media media--video reveal" style="aspect-ratio: 4 / 5;"><video src="assets/denglish/post-73.mp4" poster="assets/denglish/post-73-poster.webp" muted loop playsinline preload="none" aria-label="Denglish social post: Say it out loud! Today: at the cafe"></video></div><div class="media media--video reveal" style="--i: 1; aspect-ratio: 4 / 5;"><video src="assets/denglish/post-74.mp4" poster="assets/denglish/post-74-poster.webp" muted loop playsinline preload="none" aria-label="Denglish social post: Ich hätte gern einen Kaffee, bitte. I’d like a coffee, please."></video></div></div><p class="chapter__caption reveal">Social — daily phrase series</p></div>
+        </div>
 
         <!-- Result: same layout as the challenges and solution -->
         <h2 class="case__label dm reveal">Result:</h2>

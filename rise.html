@@ -389,6 +389,26 @@
       gap: 20px;
     }
 
+    /* Images of different shapes side by side at one height: each takes a share of the width in
+       proportion to its shape (--ratio = width / height) */
+    .chapter__row--fit {
+      display: flex;
+    }
+
+    .chapter__row--fit > .media {
+      flex: var(--ratio) 1 0;
+      min-width: 0;
+    }
+
+    /* A row with a small caption underneath */
+    .chapter__group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chapter__group > .chapter__caption { align-self: start; }
+
     /* A small caption at the foot of the half beside an image */
     .chapter__caption {
       align-self: end;
@@ -664,6 +684,8 @@
       .case__squares { grid-template-columns: minmax(0, 1fr); }
       .media-pair { flex-direction: column; }
       .chapter__row { grid-template-columns: minmax(0, 1fr); }
+      .chapter__row--fit { flex-direction: column; }
+      .chapter__row--fit > .media { flex: none; width: 100%; }
       .chapter__row--right .chapter__caption { order: 1; } /* captions sit under their image */
       .chapter__caption { margin-top: -8px; }
       .media--pair-item { flex: none; width: 100%; }

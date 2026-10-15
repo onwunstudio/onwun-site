@@ -44,13 +44,30 @@ PROJECTS = {
         "challenges": "The challenge was to turn a functional English-learning tool into a clearer, more engaging learning experience, using intuitive interactions, visible progress and a consistent visual system to make Denglish easier to use and return to every day.",
         "solution": "We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish. A consistent colour palette, type hierarchy, icon set and progress-focused interface bring structure to the learning journey, helping users understand what to do, track improvement and stay engaged day after day.",
         "result": "Denglish’s new app &amp; website gave them a stronger digital presence that’s memorable, confident, and built to convert.",
-        "images": [
-            ("assets/denglish/brand-presentation.webp", "Denglish brand presentation spreads: app screens, wordmark breakdown, stickers and colour palette", {"ratio": "3 / 2"}),
-            ("assets/denglish/website-ipad.webp", "The Denglish website on an iPad"),
-            ("assets/denglish/app-screens.webp", "Three Denglish app screens: coach, vocabulary drill and word trainer"),
-            ("assets/denglish/app-icon-phone.png", "The Denglish app icon on a phone home screen"),
-            ("assets/denglish/app-store.webp", "Denglish splash screen on a phone, app store listing and app icon", {"bg": "#ffffff"}),
-        ],
+        # Chapters of images and videos after the info, the challenges and the solution
+        # (see "Chapters" below the projects)
+        "chapters": {
+            "intro": [
+                {"full": ("assets/denglish/app-icon-phone-red.webp", "The Denglish app icon on a phone home screen, against a red gradient", {"ratio": "1326 / 746"})},
+                {"row": [
+                    ("assets/denglish/icon.mp4", "The Denglish app icon: a white d on a red-to-burgundy gradient", {"poster": "assets/denglish/icon-poster.webp"}),
+                    ("assets/denglish/palette.mp4", "The Denglish colour palette: Violet #220049, Rose #FF6978 and Burgundy #440624", {"ratio": "16 / 9", "poster": "assets/denglish/palette-poster.webp"}),
+                ]},
+            ],
+            "challenges": [
+                {"full": ("assets/denglish/stickers.mp4", "Denglish stickers: the d icon and the wordmark between sound-wave dots, in three colourways", {"ratio": "1326 / 746", "poster": "assets/denglish/stickers-poster.webp"})},
+            ],
+            "solution": [
+                {"row": [
+                    ("assets/denglish/website-ipad.webp", "The Denglish website on an iPad"),
+                    ("assets/denglish/app-screens.webp", "Three Denglish app screens: coach, vocabulary drill and word trainer"),
+                ]},
+                {"row": [
+                    ("assets/denglish/post-73.mp4", "Denglish social post: Say it out loud! Today: at the cafe", {"ratio": "4 / 5", "poster": "assets/denglish/post-73-poster.webp"}),
+                    ("assets/denglish/post-74.mp4", "Denglish social post: Ich hätte gern einen Kaffee, bitte. I’d like a coffee, please.", {"ratio": "4 / 5", "poster": "assets/denglish/post-74-poster.webp"}),
+                 ], "caption": "Social — daily phrase series"},
+            ],
+        },
     },
     "stuartfox": {
         "name": "StuartFox",
@@ -200,6 +217,8 @@ def media_block(image, classes, stagger=0):
         props.append(f"--media-bg: {opts['bg']}")
     if "ratio" in opts:
         props.append(f"aspect-ratio: {opts['ratio']}")
+    if "share" in opts:
+        props.append(f"--ratio: {opts['share']}")
     style = f' style="{"; ".join(props)};"' if props else ""
     img_style = f' style="object-position: {opts["position"]};"' if "position" in opts else ""
     if src.endswith(".mp4"):
@@ -220,20 +239,40 @@ def media(slot, index, image):
     return f'<div class="filler filler--{slot} dm reveal"{style}>{caption}</div>'
 
 
-# Chapters: a project can list "chapters" instead of "images", for a freer layout (ATLAS does). Each of
+# Chapters: a project can list "chapters" instead of "images", for a freer layout (ATLAS and Denglish do). Each of
 # "intro" (after the project info), "challenges", "solution" and "result" (after that text) is a list of
 # blocks, stacked 20px apart, on the 20px-gutter grid:
 #   {"full": image}                  one image or video across the full width (give it a "ratio")
-#   {"row": [image, image]}          two side by side, half width each (square unless given a "ratio")
+#   {"row": [image, image]}          two side by side, half width each (square unless given a "ratio");
+#                                    if they're different shapes, they share the width at the same height
+#   {"row": [...], "caption": "…"}   the same, with a small caption underneath
 #   {"media": image, "caption": "…", "media_side": "left" or "right"}
 #                                    half-width image or video, with a small caption at the foot of the other half
 # Videos get a fine border, as in the design.
-def chapter_item(image, stagger=0):
-    classes = "media media--video" if image[0].endswith(".mp4") else "media"
+def ratio_of(image):
     opts = image[2] if len(image) > 2 else {}
-    if "ratio" not in opts:
-        image = (image[0], image[1], {**opts, "ratio": "1"})
-    return media_block(image, classes, stagger)
+    return opts.get("ratio", "1")
+
+
+def chapter_item(image, stagger=0, share=None):
+    classes = "media media--video" if image[0].endswith(".mp4") else "media"
+    opts = {**(image[2] if len(image) > 2 else {}), "ratio": ratio_of(image)}
+    if share:
+        opts["share"] = share  # this item's width / height, so the row's items line up at one height
+    return media_block((image[0], image[1], opts), classes, stagger)
+
+
+def chapter_row(images):
+    ratios = [ratio_of(image) for image in images]
+    if len(set(ratios)) == 1:
+        items = "".join(chapter_item(image, i) for i, image in enumerate(images))
+        return f'<div class="chapter__row">{items}</div>'
+    shares = []
+    for r in ratios:
+        w, h = (float(n) for n in r.split("/")) if "/" in r else (float(r), 1.0)
+        shares.append(f"{w / h:.4f}")
+    items = "".join(chapter_item(image, i, shares[i]) for i, image in enumerate(images))
+    return f'<div class="chapter__row chapter__row--fit">{items}</div>'
 
 
 def chapter(blocks):
@@ -244,8 +283,11 @@ def chapter(blocks):
         if "full" in block:
             parts.append(chapter_item(block["full"]))
         elif "row" in block:
-            items = "".join(chapter_item(image, i) for i, image in enumerate(block["row"]))
-            parts.append(f'<div class="chapter__row">{items}</div>')
+            row = chapter_row(block["row"])
+            if "caption" in block:
+                row = (f'<div class="chapter__group">{row}'
+                       f'<p class="chapter__caption reveal">{block["caption"]}</p></div>')
+            parts.append(row)
         else:
             caption = f'<p class="chapter__caption reveal">{block["caption"]}</p>'
             item = chapter_item(block["media"])
