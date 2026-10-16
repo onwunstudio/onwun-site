@@ -87,7 +87,7 @@ Try not to edit the same page at the same time; if you do, Git will flag the ove
 ## Still to do
 
 - Connect the contact form to a form service (e.g. Formspree); it doesn't send anything yet.
-- Real links for Instagram, LinkedIn, T&Cs and Privacy policy. ("Book a discovery call" goes to Calendly.)
+- Real link for LinkedIn. ("Book a discovery call" goes to Calendly.)
 - Team photos and the real list of services on the About page.
 - Intros for ELEV8 and rise; project images for StuartFox and ATLAS.
 - SEO still to add: a 404 page.

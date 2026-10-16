@@ -1231,6 +1231,21 @@
       .process.is-stacked .process__panel:not(.process__panel--intro) {
         border-top: 1px solid var(--line-step);
       }
+
+      /* The wordmark rides in the top-right corner while you're in the section, above the steps
+         (taking no space of its own); each letter is written out as its step's word lights up */
+      .process__logo {
+        display: block;
+        position: sticky;
+        top: calc(var(--nav-h) + 20px);
+        z-index: 3;
+        height: 20px;
+        width: auto;
+        aspect-ratio: 3306 / 706;
+        margin: 0 20px -20px auto;
+      }
+
+      .process__logo-ink path { transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
     }
 
     @media (max-width: 899px) {
@@ -1624,10 +1639,10 @@
     <div class="footer__frame">
       <div class="footer__brand">
         <div class="footer__brand-main">
-          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <!-- TODO: add the real LinkedIn URL -->
           <div class="footer__links">
             <ul class="footer__social">
-              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="https://www.instagram.com/onwun.studio/" target="_blank" rel="noopener">Instagram</a></li>
               <li><a class="footer__link" href="#">LinkedIn</a></li>
             </ul>
             <div class="footer__reach">
@@ -2025,11 +2040,28 @@
       window.addEventListener('load', measure);
       measure();
 
-      // Each step's word lights up white once the step is fully in view, as it does on wide screens
-      const steps = document.querySelectorAll('.process__panel:not(.process__panel--intro)');
+      // Each step's word lights up white once the step is fully in view, as it does on wide screens,
+      // and the purple pen writes that step's letter of the wordmark (unwritten until then)
+      const steps = [...document.querySelectorAll('.process__panel:not(.process__panel--intro)')];
+      const inks = document.querySelectorAll('.process__logo-ink path');
+      function unwrite() {
+        if (!phone.matches) return;
+        // Instantly, so the letters don't visibly rub out first
+        inks.forEach((path, i) => {
+          path.style.transition = 'none';
+          if (!steps[i].classList.contains('is-lit')) path.style.strokeDashoffset = 1;
+        });
+        inks[0]?.getBoundingClientRect();
+        inks.forEach((path) => path.style.removeProperty('transition'));
+      }
+      unwrite();
+      phone.addEventListener('change', unwrite);
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
-          if (phone.matches && e.isIntersecting) e.target.classList.add('is-lit');
+          if (phone.matches && e.isIntersecting) {
+            e.target.classList.add('is-lit');
+            inks[steps.indexOf(e.target)].style.strokeDashoffset = 0;
+          }
         });
       }, { threshold: 0.9 });
       steps.forEach((step) => io.observe(step));

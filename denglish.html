@@ -987,10 +987,10 @@
     <div class="footer__frame">
       <div class="footer__brand">
         <div class="footer__brand-main">
-          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <!-- TODO: add the real LinkedIn URL -->
           <div class="footer__links">
             <ul class="footer__social">
-              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="https://www.instagram.com/onwun.studio/" target="_blank" rel="noopener">Instagram</a></li>
               <li><a class="footer__link" href="#">LinkedIn</a></li>
             </ul>
             <div class="footer__reach">
@@ -1020,13 +1020,23 @@
     (() => {
       const videos = document.querySelectorAll('.media video');
       if (!videos.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const showing = new Set();
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) e.target.play().catch(() => {});
-          else e.target.pause();
+          if (e.isIntersecting) {
+            showing.add(e.target);
+            e.target.play().catch(() => {});
+          } else {
+            showing.delete(e.target);
+            e.target.pause();
+          }
         });
       }, { rootMargin: '200px 0px' });
       videos.forEach((video) => io.observe(video));
+      // iPhones in Low Power Mode won't start videos on their own; a tap anywhere starts the ones in view
+      document.addEventListener('touchend', () => {
+        showing.forEach((video) => { if (video.paused) video.play().catch(() => {}); });
+      }, { passive: true });
     })();
 
     // Blocks rise in the first time they come into view
