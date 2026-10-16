@@ -43,7 +43,12 @@
       --purple: #6a60f6;
       --purple-deep: #5d54d7;
       --purple-cta: #5b3fe4;
-      --muted: #626675;
+      --muted: #767a89; /* secondary text: 4.9:1 against black */
+      /* Small secondary text, sized to stay readable on black */
+      --size-label: 14px;     /* section labels: PROJECT:, CHALLENGES:, MORE PROJECTS: … */
+      --size-label-sm: 12px;  /* key details: CLIENT, INDUSTRY, YEAR, SERVICES */
+      --size-meta: 18px;      /* meta under project titles on the home page: Language app · 2026 */
+      --size-meta-sm: 16px;   /* meta under the More projects cards */
       --grey-text: #c9cad0; /* questions at rest and answers: softer than white */
       --line: #1f1f1f;
       --line-step: #2e2e2e;
@@ -253,7 +258,7 @@
 
     /* Resting state: clean flat grey with a gentle top-to-bottom fall-off */
     .hero__wordmark-base {
-      background: linear-gradient(to bottom, #72768a 0%, var(--muted) 45%, #4e5160 100%);
+      background: linear-gradient(to bottom, #72768a 0%, #626675 45%, #4e5160 100%);
     }
 
     /* Alive: two soft purple glows wander slowly through the letters, on their own paths and timings so
@@ -397,7 +402,7 @@
 
     .projects__label {
       flex: 0 0 220px;
-      font-size: 13px;
+      font-size: var(--size-label);
       line-height: normal;
       color: var(--muted);
       text-transform: uppercase;
@@ -636,7 +641,7 @@
     }
 
     .project__meta {
-      font-size: 16px;
+      font-size: var(--size-meta);
       line-height: normal;
       color: var(--muted);
     }
@@ -832,7 +837,7 @@
     .faq__label {
       flex: 0 1 660px;
       padding-left: 28px;
-      font-size: 13px;
+      font-size: var(--size-label);
       line-height: normal;
       color: var(--muted);
       text-transform: uppercase;
