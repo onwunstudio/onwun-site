@@ -741,6 +741,19 @@
     @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
       .menu, .menu.is-open, .menu__links li { transition: none; }
     }
+  
+    /* ───────── Phones: 10px page edges ─────────
+       Every section's side padding drops from 20px to 10px on phones, giving the content more room.
+       Kept last so it wins over the section rules above. */
+    @media (max-width: 899px) {
+      .nav,
+      .menu,
+      .contact,
+      .footer {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
   </style>
 </head>
 <body>

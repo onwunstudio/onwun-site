@@ -234,8 +234,8 @@
        below the baseline, of 3306 × 706), so it is sized and pulled back to put the letters on the edges. */
     .hero__wordmark {
       position: absolute;
-      --mark-w: calc((100cqw + 40px) * 3306 / 3265);
-      left: calc(-20px - 20 / 3306 * var(--mark-w));
+      --mark-w: calc((100cqw + 2 * var(--edge, 20px)) * 3306 / 3265);
+      left: calc(-1 * var(--edge, 20px) - 20 / 3306 * var(--mark-w));
       bottom: calc(-36 / 3306 * var(--mark-w));
       width: var(--mark-w);
       height: calc(var(--mark-w) * 706 / 3306);
@@ -1348,6 +1348,27 @@
 
     @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
       .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  
+    /* ───────── Phones: 10px page edges ─────────
+       Every section's side padding drops from 20px to 10px on phones, giving the content more room.
+       Kept last so it wins over the section rules above. */
+    @media (max-width: 899px) {
+      .nav,
+      .menu,
+      .hero,
+      .projects__intro,
+      .project__card,
+      .process__panel,
+      .faq,
+      .closing,
+      .footer {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      /* The process wordmark and the full-bleed splash wordmark follow the 10px edge too */
+      .process__logo { margin-right: 10px; }
+      .hero { --edge: 10px; }
     }
   </style>
   <script>document.documentElement.classList.add('js');</script>
