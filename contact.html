@@ -623,6 +623,9 @@
       .field textarea { font-size: 20px; }
       .field textarea { min-height: calc(20px * 1.25 * 3); }
       .button { align-self: flex-start; }
+      /* No hover on phones, so "Send message" is purple from the start, without the arrow */
+      .button__label { color: var(--purple); }
+      .button__arrow { display: none; }
       .contact__fact dt { flex-basis: 96px; }
 
       .footer { padding-top: 56px; }
