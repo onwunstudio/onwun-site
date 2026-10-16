@@ -27,7 +27,7 @@
   <script src="assets/consent.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;500;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     /* Privacy Policy, opened from "Privacy policy" in the footer. Built from the terms page.
        Nav and footer are copied from the home page (index.html); keep them in step. */
@@ -113,18 +113,23 @@
     .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
     .nav__links a:hover { opacity: 1; }
 
+    /* Medium weight in the logo's purple, so the call to action stands out and balances the logo */
     .nav__cta {
       font-family: var(--inter);
-      font-weight: 300;
+      font-weight: 500;
       font-size: 16px;
       line-height: normal;
-      color: var(--purple-cta);
+      color: var(--purple);
       white-space: nowrap;
-      transition: color 0.2s;
+      /* on hover an underline draws in from the left, like the closing statement links */
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: color 0.2s, background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .nav__cta:hover,
-    .nav__cta[aria-current="page"] { color: var(--purple); }
+    .nav__cta:focus-visible { background-size: 100% 1px; }
+    .nav__cta[aria-current="page"] { color: var(--white); }
 
     /* ───────── Layers ─────────
        The page slides up off the footer at the end, as on the other pages */
