@@ -146,8 +146,10 @@
 
 
     /* ───────── Layers ─────────
-       The poster stays put while the overview slides up over it (the home page's splash cut);
-       the footer waits underneath and is uncovered at the end, as on the home page. */
+       The poster stays put while the overview slides up over it (the home page's splash cut). It's pinned
+       only within .cover (poster + overview), so once the overview has passed it scrolls away too, rather
+       than staying pinned behind the rest of the page, where it could flash through at the bottom.
+       The footer waits underneath and is uncovered at the end, as on the home page. */
     .poster { z-index: 1; }
 
     .overview,
@@ -886,6 +888,9 @@
   </nav>
 
   <main>
+    <!-- The poster and the overview share a wrapper, so the poster only stays pinned while the overview
+         slides up over it, then scrolls away with it -->
+    <div class="cover">
     <section class="poster" aria-label="ATLAS">
       <div class="poster__frame">
         <img class="poster__image" src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned.">
@@ -944,6 +949,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <section class="more" aria-labelledby="more-label">
       <!-- On wide screens the block pins in the middle of the screen while scrolling slides the strip
