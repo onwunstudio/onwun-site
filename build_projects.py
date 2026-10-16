@@ -1,4 +1,4 @@
-"""Builds the project pages (denglish.html, stuartfox.html, atlas.html, elev8.html, rise.html) from one shared template.
+"""Builds the project pages (projects/denglish.html, projects/stuartfox.html, … served as /projects/denglish etc.) from one shared template.
 
 Every project page uses exactly the same layout, from _templates/project.html. To change the layout,
 edit the template; to change a project's words or images, edit its entry below. Then run:
@@ -373,8 +373,11 @@ def build():
             raise SystemExit(f"{slug}: unfilled template fields: {leftover}")
         # pages are served at /projects/<slug>, one level down, so every asset path starts from the root
         page = re.sub(r'((?:src|href|poster)=")assets/', r'\1/assets/', page)
-        (ROOT / f"{slug}.html").write_text(page)
-        print(f"built {slug}.html")
+        # each page lives at projects/<slug>.html, which Vercel serves as /projects/<slug>
+        out = ROOT / "projects" / f"{slug}.html"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(page)
+        print(f"built projects/{slug}.html")
 
 
 if __name__ == "__main__":

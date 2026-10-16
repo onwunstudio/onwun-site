@@ -1,7 +1,7 @@
 """Local preview that serves the site the way Vercel does (see vercel.json):
 
     /about            -> about.html            /about.html -> redirects to /about
-    /projects/atlas   -> atlas.html            /atlas.html -> redirects to /projects/atlas
+    /projects/atlas   -> projects/atlas.html   /atlas.html -> redirects to /projects/atlas
     anything missing  -> 404.html
 
 Run it from this folder, then open http://localhost:8000
@@ -34,9 +34,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self.redirect("/" + query)
         if path.endswith(".html") and (ROOT / path.lstrip("/")).is_file():
             return self.redirect(path[: -len(".html")] + query)
-        if m := re.fullmatch(rf"/projects/({PROJECTS})", path):
-            self.path = f"/{m.group(1)}.html{query}"
-        elif path != "/" and "." not in path.rsplit("/", 1)[-1] and (ROOT / f"{path.lstrip('/')}.html").is_file():
+        if path != "/" and "." not in path.rsplit("/", 1)[-1] and (ROOT / f"{path.lstrip('/')}.html").is_file():
             self.path = f"{path}.html{query}"
         return True
 
