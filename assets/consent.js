@@ -7,8 +7,7 @@
 //
 // The choice is kept in this browser (localStorage "onwun-consent"). Analytics stay off until someone
 // accepts them: window.onwunConsent.analytics says whether they have, and an "onwun:consent" event fires
-// on document whenever the choice changes, so an analytics script can wait for it, e.g.
-//   document.addEventListener('onwun:consent', (e) => { if (e.detail.analytics) startAnalytics(); });
+// on document whenever the choice changes. assets/analytics.js (Google Analytics) waits for it.
 (() => {
   const KEY = 'onwun-consent';
   const DISMISSED = 'onwun-consent-dismissed';
