@@ -94,6 +94,8 @@ PROJECTS = {
         "poster": '<img class="poster__image" src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned.">',
         "intro": "A premium menswear rental platform built around travel, culture and Manchester’s textile history.",
         "client": "ATLAS",
+        # Not a client commission: the "Client" line reads "Project type: Live brief" instead
+        "live_brief": True,
         "industry": "Premium menswear",
         "year": "2026",
         "services": services("Brand identity", "UI", "App design", "Social media"),
@@ -131,6 +133,8 @@ PROJECTS = {
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A bold identity and packaging system for an electrolyte craft beer brewed for active, health-aware drinkers.",
         "client": "ELEV8",
+        # Not a client commission: the "Client" line reads "Project type: Live brief" instead
+        "live_brief": True,
         "industry": "Electrolyte craft beer",
         "year": "2025",
         "services": services("Brand identity", "Packaging"),
@@ -158,6 +162,8 @@ PROJECTS = {
         # Challenges, solution and result are final; the intro is still placeholder copy
         "intro": "A playful, sustainable identity and packaging for an insect protein granola that makes better breakfasts easy.",
         "client": "rise",
+        # Not a client commission: the "Client" line reads "Project type: Live brief" instead
+        "live_brief": True,
         "industry": "Insect granola",
         "year": "2025",
         "services": services("Brand identity", "Visual direction", "Packaging"),
@@ -300,9 +306,9 @@ def chapter(blocks):
 CARDS = [
     ("stuartfox", "StuartFox", "Specialist finishes · 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
     ("denglish", "Denglish", "Language app · 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
-    ("atlas", "ATLAS", "Premium menswear · 2026", '<div class="more__image"><img src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>'),
-    ("elev8", "ELEV8", "Electrolyte craft beer · 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
-    ("rise", "rise", "Insect granola · 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
+    ("atlas", "ATLAS", "Premium menswear · Live brief · 2026", '<div class="more__image"><img src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>'),
+    ("elev8", "ELEV8", "Electrolyte craft beer · Live brief · 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
+    ("rise", "rise", "Insect granola · Live brief · 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
 ]
 
 
@@ -332,6 +338,10 @@ def build():
         }
         fields.pop("poster_bg", None)
         fields["slug"] = slug
+        if fields.pop("live_brief", False):
+            fields["client_label"], fields["client"] = "Project type", "Live brief"
+        else:
+            fields["client_label"] = "Client"
         fields["more_cards"] = more_cards(slug)
         chapters = fields.pop("chapters", None)
         images = fields.pop("images", None) or [None] * 5
