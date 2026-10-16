@@ -750,10 +750,15 @@
       .footer__legal { margin-top: 24px; }
     }
 
-    /* Phones: the poster and footer simply scroll with the page; pinning them made them flash back into
-       view when the phone's address bar resized the screen */
+    /* Phones: the poster stays pinned while the overview slides up over it, as on wider screens. It's only
+       pinned within .cover, so it can't flash back into view later on. Its position uses the smallest
+       screen height (svh), so it doesn't jump when the address bar shows or hides. The footer simply
+       scrolls with the page; pinning it made it flash back into view when the address bar resized. */
     @media (max-width: 899px) {
-      .poster,
+      .poster {
+        top: min(var(--nav-h), calc(100svh - 40px - (100vw - 40px) * 728 / 1326));
+      }
+
       .footer {
         position: relative;
         top: auto;
