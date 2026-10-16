@@ -1370,18 +1370,26 @@
         entries.forEach((e) => {
           if (e.intersectionRatio >= 0.5 && !showing) {
             showing = true;
-            video.currentTime = 0;
-            video.play().catch(() => {});
+            start();
           } else if (!e.isIntersecting && showing) {
             showing = false;
             video.pause();
           }
         });
       }, { threshold: [0, 0.5] }).observe(video);
-      // Back-up for phones that occasionally stop at the end instead of looping
+      // Rewinds only once the video has loaded (iPhones freeze on the first frame if it's rewound before
+      // then), and if playing is refused because it isn't ready yet, tries again as soon as it can play
+      function start() {
+        if (video.readyState > 0 && video.currentTime > 0) video.currentTime = 0;
+        video.play().catch(() => {
+          video.addEventListener('canplay', () => {
+            if (showing) video.play().catch(() => {});
+          }, { once: true });
+        });
+      }
+      // Back-up for phones that stop at the end instead of looping
       video.addEventListener('ended', () => {
-        video.currentTime = 0;
-        if (showing) video.play().catch(() => {});
+        if (showing) start();
       });
       // iPhones in Low Power Mode won't start videos on their own; a tap anywhere starts it while in view
       document.addEventListener('touchend', () => {

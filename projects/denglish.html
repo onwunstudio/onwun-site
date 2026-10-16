@@ -1068,21 +1068,29 @@
           const video = e.target;
           if (e.intersectionRatio >= 0.5 && !showing.has(video)) {
             showing.add(video);
-            video.currentTime = 0;
-            video.play().catch(() => {});
+            start(video);
           } else if (!e.isIntersecting && showing.has(video)) {
             showing.delete(video);
             video.pause();
           }
         });
       }, { threshold: [0, 0.5] });
+      // Rewinds only once the video has loaded (iPhones freeze on the first frame if it's rewound before
+      // then), and if playing is refused because it isn't ready yet, tries again as soon as it can play
+      function start(video) {
+        if (video.readyState > 0 && video.currentTime > 0) video.currentTime = 0;
+        video.play().catch(() => {
+          video.addEventListener('canplay', () => {
+            if (showing.has(video)) video.play().catch(() => {});
+          }, { once: true });
+        });
+      }
       videos.forEach((video) => {
         warm.observe(video);
         io.observe(video);
-        // Back-up for phones that occasionally stop at the end instead of looping
+        // Back-up for phones that stop at the end, or pause on their own, instead of looping
         video.addEventListener('ended', () => {
-          video.currentTime = 0;
-          if (showing.has(video)) video.play().catch(() => {});
+          if (showing.has(video)) start(video);
         });
       });
       // iPhones in Low Power Mode won't start videos on their own; a tap anywhere starts the ones in view
