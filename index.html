@@ -476,14 +476,16 @@
     .projects__cta:focus-visible .projects__cta-text::after { transform: scaleX(1); }
 
     /* ───────── Project cards ─────────
-       Each project is a full-width image with a black band of details underneath, in the site's two columns
-       (660 | 40 | 626): the name and meta on the left; the description and tags on the right. 80px separates
-       one project from the next, and the projects simply scroll by. */
+       Each project (the <article>) is a full-width image with a black band of details underneath, in the
+       site's two columns (660 | 40 | 626): the name and meta on the left; the description and tags on the
+       right. The caption sits tight under its own image (24px) and the space between projects, on the
+       article itself, is much larger, so each image and caption read as one unit. */
     .rule { display: none; }
 
     .project { background: var(--black); }
 
-    .project + .project { margin-top: 40px; }
+    /* 140px at 1440px wide, 120px at 1200, scaling down to 72px on phones */
+    .project + .project { margin-top: clamp(72px, 9.75vw, 140px); }
 
     .project__card {
       display: flex;
@@ -617,10 +619,8 @@
       grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
       column-gap: 40px;
       align-items: start;
-      padding: 28px 0 40px;
+      padding-top: 24px;
     }
-
-    .project:last-of-type .project__details { padding-bottom: 0; }
 
     .project__heading {
       display: flex;
@@ -1109,8 +1109,7 @@
 
       .project__mockup { aspect-ratio: 4 / 3; }
       .denglish-mark__word { width: 60%; }
-      .project__details { grid-template-columns: minmax(0, 1fr); row-gap: 20px; padding: 20px 0 32px; }
-      .project + .project { margin-top: 32px; }
+      .project__details { grid-template-columns: minmax(0, 1fr); row-gap: 20px; padding-top: 20px; }
       .project__tags { white-space: pre-wrap; }
 
       .footer { height: auto; aspect-ratio: auto; }
