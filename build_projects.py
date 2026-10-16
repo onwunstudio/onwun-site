@@ -55,7 +55,7 @@ PROJECTS = {
                 ]},
             ],
             "challenges": [
-                {"full": ("assets/denglish/stickers.mp4", "Denglish stickers: the d icon and the wordmark between sound-wave dots, in three colourways", {"ratio": "1326 / 746", "poster": "assets/denglish/stickers-poster.webp"})},
+                {"full": ("assets/denglish/stickers.mp4", "Denglish stickers: the d icon and the wordmark between sound-wave dots, in three colourways", {"ratio": "1326 / 746", "phone_ratio": "6 / 5", "poster": "assets/denglish/stickers-poster.webp"})},
             ],
             "solution": [
                 {"row": [
@@ -194,6 +194,8 @@ PROJECTS = {
 #   {"bg": "#ffffff"}  show the whole image instead (centred, nothing cropped) on a matching background
 #   {"ratio": "3 / 2"} give this slot a different shape (e.g. taller, to show more of the image), still edge to edge
 #   {"position": "40% 50%"} choose which part of a cropped image stays in view (left/right %, top/bottom %)
+#   {"phone_ratio": "6 / 5"} a different shape on phones, e.g. squarer, to crop away empty space at the
+#                            sides so the subject fills the frame on a narrow screen
 # A slot can also hold a video (an .mp4): it plays silently on a loop, like a moving image, while it's on
 # screen (it only loads once it's near, so it costs nothing to people who don't scroll that far). Give it
 #   {"poster": "assets/....webp"} a still frame to show until it starts
@@ -224,6 +226,9 @@ def media_block(image, classes, stagger=0):
         props.append(f"aspect-ratio: {opts['ratio']}")
     if "share" in opts:
         props.append(f"--ratio: {opts['share']}")
+    if "phone_ratio" in opts:
+        classes += " media--phone-ratio"
+        props.append(f"--phone-ratio: {opts['phone_ratio']}")
     style = f' style="{"; ".join(props)};"' if props else ""
     img_style = f' style="object-position: {opts["position"]};"' if "position" in opts else ""
     if src.endswith(".mp4"):

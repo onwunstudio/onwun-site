@@ -729,6 +729,9 @@
       .case__squares { grid-template-columns: minmax(0, 1fr); }
       .media-pair { flex-direction: column; }
       .chapter__row { grid-template-columns: minmax(0, 1fr); }
+      /* a squarer frame on phones where set ("phone_ratio" in build_projects.py), trimming empty space at
+         the sides; !important because the wide shape is set on the element itself */
+      .media--phone-ratio { aspect-ratio: var(--phone-ratio) !important; }
       .chapter__row--fit { flex-direction: column; }
       .chapter__row--fit > .media { flex: none; width: 100%; }
       .chapter__row--right .chapter__caption { order: 1; } /* captions sit under their image */
@@ -930,7 +933,7 @@
 
         <!-- Three square images across the full width (or a chapter) -->
         <div class="chapter">
-          <div class="media media--video reveal" style="aspect-ratio: 1326 / 746;"><video src="assets/denglish/stickers.mp4" poster="assets/denglish/stickers-poster.webp" muted loop playsinline preload="none" aria-label="Denglish stickers: the d icon and the wordmark between sound-wave dots, in three colourways"></video></div>
+          <div class="media media--video media--phone-ratio reveal" style="aspect-ratio: 1326 / 746; --phone-ratio: 6 / 5;"><video src="assets/denglish/stickers.mp4" poster="assets/denglish/stickers-poster.webp" muted loop playsinline preload="none" aria-label="Denglish stickers: the d icon and the wordmark between sound-wave dots, in three colourways"></video></div>
         </div>
 
         <!-- Solution: same layout as the challenges -->
