@@ -1,6 +1,7 @@
 """Local preview server for the site: like `python3 -m http.server`, but tells the browser not to cache,
-so a normal refresh always shows the latest files, and answers range requests (part of a file), which
-iPhone Safari needs to play and loop videos. For local previewing only."""
+so a normal refresh always shows the latest files; answers range requests (part of a file), which
+iPhone Safari needs to play and loop videos; and understands the same clean addresses as vercel.json
+(/about, /projects/atlas). For local previewing only."""
 
 import http.server
 import os
@@ -11,9 +12,38 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 
+PROJECTS = ("atlas", "denglish", "elev8", "rise", "stuartfox")
+
+
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
+
+    def translate_path(self, path):
+        """The same addresses as vercel.json on the live site: /projects/atlas serves atlas.html, and
+        /about serves about.html (clean URLs)."""
+        clean = path.split("?", 1)[0].split("#", 1)[0].rstrip("/")
+        parts = clean.split("/")
+        if len(parts) == 3 and parts[1] == "projects" and parts[2] in PROJECTS:
+            return str(ROOT / f"{parts[2]}.html")
+        local = super().translate_path(path)
+        if not os.path.splitext(clean)[1] and not os.path.isdir(local) and os.path.isfile(local + ".html"):
+            return local + ".html"
+        return local
+
+    def send_error(self, code, message=None, explain=None):
+        """Missing pages show the site's own 404 page, as on Vercel."""
+        page = ROOT / "404.html"
+        if code == 404 and page.is_file():
+            body = page.read_bytes()
+            self.send_response(404)
+            self.send_header("Content-type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            if self.command != "HEAD":
+                self.wfile.write(body)
+            return
+        super().send_error(code, message, explain)
 
     def end_headers(self):
         self.send_header("Cache-Control", "no-store, must-revalidate")
