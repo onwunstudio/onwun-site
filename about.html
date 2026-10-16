@@ -1357,13 +1357,32 @@
       const video = document.querySelector('.why__media video');
       if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       let showing = false;
+      // Load it a little before it scrolls into view, so it's ready to start straight away
+      const warm = new IntersectionObserver((entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        video.preload = 'auto';
+        warm.disconnect();
+      }, { rootMargin: '600px 0px' });
+      warm.observe(video);
+      // Start from the beginning once at least half of it is on screen; pause once it has left, so it
+      // starts from the beginning again next time
       new IntersectionObserver((entries) => {
         entries.forEach((e) => {
-          showing = e.isIntersecting;
-          if (showing) video.play().catch(() => {});
-          else video.pause();
+          if (e.intersectionRatio >= 0.5 && !showing) {
+            showing = true;
+            video.currentTime = 0;
+            video.play().catch(() => {});
+          } else if (!e.isIntersecting && showing) {
+            showing = false;
+            video.pause();
+          }
         });
-      }, { threshold: 0.25 }).observe(video);
+      }, { threshold: [0, 0.5] }).observe(video);
+      // Back-up for phones that occasionally stop at the end instead of looping
+      video.addEventListener('ended', () => {
+        video.currentTime = 0;
+        if (showing) video.play().catch(() => {});
+      });
       // iPhones in Low Power Mode won't start videos on their own; a tap anywhere starts it while in view
       document.addEventListener('touchend', () => {
         if (showing && video.paused) video.play().catch(() => {});
