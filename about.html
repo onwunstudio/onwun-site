@@ -1336,12 +1336,18 @@
     (() => {
       const video = document.querySelector('.why__media video');
       if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let showing = false;
       new IntersectionObserver((entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) video.play().catch(() => {});
+          showing = e.isIntersecting;
+          if (showing) video.play().catch(() => {});
           else video.pause();
         });
       }, { threshold: 0.25 }).observe(video);
+      // iPhones in Low Power Mode won't start videos on their own; a tap anywhere starts it while in view
+      document.addEventListener('touchend', () => {
+        if (showing && video.paused) video.play().catch(() => {});
+      }, { passive: true });
     })();
 
     // Services: one category open at a time, expanding into its mind map; rows rise in the first time
