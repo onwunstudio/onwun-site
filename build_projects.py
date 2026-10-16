@@ -43,7 +43,7 @@ PROJECTS = {
         "services": services("Visual identity", "UI", "App design", "Social media"),
         "challenges": "The challenge was to turn a functional English-learning tool into a clearer, more engaging learning experience, using intuitive interactions, visible progress and a consistent visual system to make Denglish easier to use and return to every day.",
         "solution": "We created a clear, flexible visual system that makes every interaction feel simple, motivating and recognisably Denglish. A consistent colour palette, type hierarchy, icon set and progress-focused interface bring structure to the learning journey, helping users understand what to do, track improvement and stay engaged day after day.",
-        "result": "Denglish’s new app &amp; website gave them a stronger digital presence that’s memorable, confident, and built to convert.",
+        "result": "A complete identity, app UI and launch social system, ready for Denglish’s waitlist launch.",
         # Chapters of images and videos after the info, the challenges and the solution
         # (see "Chapters" below the projects)
         "chapters": {
