@@ -1,4 +1,5 @@
 // Cookie consent (styles in assets/consent.css). Adds the banner and the settings panel to the page.
+// Paths start from the site root (/assets/…), so they also work on the 404 page at any address.
 //
 // The banner shows until a choice is made: Accept all, Reject all, or Settings (which opens the panel).
 // Escape closes it without accepting anything, until the next visit. Any element with
@@ -31,14 +32,14 @@
     if (panel.open) panel.close();
   }
 
-  const CLOSE_ICON = '<img src="assets/icons/close.svg" alt="" width="16" height="16">';
+  const CLOSE_ICON = '<img src="/assets/icons/close.svg" alt="" width="16" height="16">';
 
   const banner = document.createElement('section');
   banner.className = 'consent';
   banner.setAttribute('aria-label', 'Cookies');
   banner.hidden = true;
   banner.innerHTML = `
-    <p class="consent__text">We use cookies to run the site and, with your OK, to see how it’s used. <a href="privacy.html#cookies">Privacy Policy</a></p>
+    <p class="consent__text">We use cookies to run the site and, with your OK, to see how it’s used. <a href="/privacy.html#cookies">Privacy Policy</a></p>
     <div class="consent__actions">
       <div class="consent__choices">
         <button class="consent-button" type="button" data-choice="accept">Accept all</button>

@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Onwun</title>
+  <meta name="description" content="This page didn’t make the final cut, but plenty of our work did.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/assets/loading.css">
+  <script src="/assets/loading.js"></script>
+  <link rel="stylesheet" href="/assets/consent.css">
+  <script src="/assets/consent.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;500;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* 404: shown by Vercel for any address that doesn't exist. Built from the terms page.
+       Every path starts from the site root (/assets/…), so it works at any depth, e.g. /old/page.
+       Nav and footer are copied from the home page (index.html); keep them in step. */
+    :root {
+      --nav-h: 41px;
+      --black: #000;
+      --white: #fff;
+      --purple: #6a60f6;
+      --purple-deep: #5d54d7;
+      --purple-cta: #5b3fe4;
+      --muted: #626675;
+      --grey-text: #c9cad0;
+      --line-step: #2e2e2e;
+      --line: #1f1f1f;
+
+      --sora: "Sora", sans-serif;
+      --inter: "Inter", sans-serif;
+      --dm: "DM Sans", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--black); }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sora);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .dm {
+      font-family: var(--dm);
+      font-weight: 500;
+      font-variation-settings: "opsz" 14;
+    }
+
+    /* ───────── Nav Bar ───────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--nav-h);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+    }
+
+    .nav__logo {
+      display: block;
+      width: 141px;
+      height: 30px;
+      transform-origin: left center;
+      transition: transform 0.45s var(--ease);
+    }
+
+    .nav.is-compact .nav__logo { transform: scale(0.72); }
+
+    .nav__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    .nav__links a { opacity: 0.7; transition: opacity 0.2s; }
+    .nav__links a:hover { opacity: 1; }
+
+    /* Medium weight in the logo's purple, so the call to action stands out and balances the logo */
+    .nav__cta {
+      font-family: var(--inter);
+      font-weight: 500;
+      font-size: 16px;
+      line-height: normal;
+      color: var(--purple);
+      white-space: nowrap;
+      /* on hover an underline draws in from the left, like the closing statement links */
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: color 0.2s, background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav__cta:hover,
+    .nav__cta:focus-visible { background-size: 100% 1px; }
+    .nav__cta[aria-current="page"] { color: var(--white); }
+
+    /* ───────── Layers ─────────
+       The page slides up off the footer at the end, as on the other pages */
+    .lost {
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+      border-bottom: 1px solid var(--line-step);
+    }
+
+    .footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 0;
+      background: var(--black);
+    }
+
+    /* ───────── 404 (Figma: Website › 404 — Page Not Found (Creative)) ─────────
+       A full-width screen, 1366 × 768 at the design size, scaling with the window (1cqw = width / 100).
+       The page-not-found "case study" on the left; a tumbling 404 on the right, the 0 solid purple and the
+       4s outlined, running off the right-hand edge. */
+    .lost {
+      container-type: inline-size;
+      overflow: hidden;
+      min-height: max(640px, calc(100vw * 768 / 1366));
+    }
+
+    .lost__digits {
+      container-type: inline-size; /* the digits are placed and sized against this box (1cqw = its width / 100) */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      aspect-ratio: 1366 / 768;
+      pointer-events: none;
+    }
+
+    /* Each digit sits in its own box (the size of the turned glyph in the design) and turns about its centre */
+    .lost__digit {
+      position: absolute;
+      left: calc(var(--x) / 1366 * 100cqw);
+      top: calc(var(--y) / 1366 * 100cqw);
+      width: calc(var(--w) / 1366 * 100cqw);
+      height: calc(var(--h) / 1366 * 100cqw);
+      display: grid;
+      place-items: center;
+    }
+
+    .lost__digit span {
+      grid-area: 1 / 1;
+      display: block;
+      transform: rotate(var(--r));
+      font-weight: 600;
+      font-size: calc(var(--size) / 1366 * 100cqw);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .lost__digit--solid span { color: var(--purple); }
+
+    /* Outlined 4s: the font builds the 4 from overlapping pieces, so a plain outline would show lines
+       inside it. Instead a thicker purple outline sits under a black copy of the 4, leaving a clean edge. */
+    .lost__digit--outline span:first-child {
+      color: var(--purple);
+      -webkit-text-stroke: calc(4 / 1366 * 100cqw) var(--purple);
+    }
+
+    .lost__digit--outline span:last-child { color: var(--black); }
+
+    .lost__body {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+      width: 480px;
+      max-width: 100%;
+      padding: 138px 0 140px 48px;
+      box-sizing: content-box;
+    }
+
+    .lost__label {
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .lost__title {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-weight: 300;
+    }
+
+    .lost__title h1 {
+      font-weight: 300;
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    .lost__title p {
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .lost__text {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .lost__tags {
+      font-weight: 300;
+      font-size: 12px;
+    }
+
+    .lost__tags .sep { color: var(--purple); }
+
+    .lost__rule {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .lost__ctas {
+      display: flex;
+      gap: 32px;
+    }
+
+    /* Purple links: on hover the arrow slides across and an underline draws in from the left */
+    .lost__ctas a {
+      font-size: 14px;
+      color: var(--purple);
+      background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+      padding-bottom: 2px;
+      transition: background-size 0.4s var(--ease);
+    }
+
+    .lost__ctas a span {
+      display: inline-block;
+      transition: transform 0.4s var(--ease);
+    }
+
+    .lost__ctas a:hover,
+    .lost__ctas a:focus-visible { background-size: 100% 1px; outline: none; }
+    .lost__ctas a:hover span,
+    .lost__ctas a:focus-visible span { transform: translateX(4px); }
+
+    .lost__code {
+      position: absolute;
+      left: 48px;
+      bottom: 44px;
+      font-weight: 400;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ───────── Footer ───────── */
+    .footer {
+      padding: 136px 20px 20px;
+      display: flex;
+    }
+
+    .footer__frame {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer__brand {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .footer__brand-main {
+      flex: 0 0 47%;
+      min-width: 0;
+    }
+
+    .footer__logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-left: calc(-20 / 3306 * 100%);
+      margin-bottom: calc(-36 / 3306 * 100%);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 96px;
+      margin-bottom: calc(40px - 20 / 3306 * 100%);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer__social { list-style: none; }
+
+    .footer__link {
+      color: var(--muted);
+      transition: color 0.25s;
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible { color: var(--purple); }
+
+    .footer__legal {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    .footer__legal a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__legal a:hover,
+    .footer__legal a:focus-visible { color: var(--white); }
+
+    .footer__tagline {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--purple);
+      margin-bottom: -0.19em;
+    }
+
+    @media (max-width: 899px) {
+      .nav__links { display: none; }
+
+      /* Phones: the text first, then the 404 underneath, running off the right-hand edge */
+      .lost { min-height: 0; }
+      .lost__body { width: auto; padding: 56px 20px 0; box-sizing: border-box; }
+      .lost__title h1 { font-size: 28px; }
+      .lost__ctas { flex-wrap: wrap; gap: 16px 32px; }
+      .lost__digits {
+        position: relative;
+        width: 180%;
+        margin: -8px 0 0 -72%;
+      }
+      .lost__code { position: static; display: block; padding: 0 20px 48px; font-size: 11px; line-height: 1.5; }
+
+      .footer { padding-top: 56px; }
+      .footer__brand { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 16px; }
+      .footer__brand-main { flex: none; width: 100%; }
+      .footer__links { gap: 48px; }
+      /* Scaled down in proportion to the wordmark above it, on one line */
+      .footer__tagline { text-align: left; font-size: 20px; line-height: 1.2; margin-bottom: 0; }
+      .footer__tagline br { display: none; }
+      .footer__legal { margin-top: 24px; }
+    }
+
+    /* Phones: the footer simply scroll with the page; pinning them made them flash back into
+       view when the phone's address bar resized the screen */
+    @media (max-width: 899px) {
+      .footer {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+    }
+
+    /* ───────── Phone menu ─────────
+       Below 900px the nav links and "Talk to us" give way to a "Menu" button, which opens a full-screen
+       list of the pages under the nav. Shared by every page; keep them in step. */
+    .nav__menu { display: none; }
+    .menu { display: none; }
+
+    @media (max-width: 899px) {
+      .nav__cta { display: none; }
+
+      .nav__menu {
+        display: block;
+        padding: 8px 0 8px 16px;
+        background: none;
+        border: 0;
+        color: var(--white);
+        font: inherit;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: normal;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        inset: var(--nav-h) 0 0;
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px 20px 20px;
+        background: var(--black);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0s 0.3s;
+      }
+
+      .menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+
+      .menu__links { list-style: none; }
+
+      /* Each page rises in, one after another, as the menu opens */
+      .menu__links li {
+        border-bottom: 1px solid var(--line-step);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .menu.is-open .menu__links li {
+        opacity: 1;
+        transform: none;
+        transition-delay: calc(0.05s + var(--i) * 0.06s);
+      }
+
+      /* Same type as the project titles */
+      .menu__links a {
+        display: block;
+        padding: 18px 0;
+        font-weight: 400;
+        font-size: 36px;
+        line-height: 1.1;
+        color: var(--white);
+      }
+
+      .menu__links a[aria-current="page"] { color: var(--muted); }
+      .menu__links .menu__cta { color: var(--purple); }
+
+      .menu__foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      html.menu-open { overflow: hidden; }
+    }
+
+    @media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+      .menu, .menu.is-open, .menu__links li { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav__logo" href="/" aria-label="Onwun home">
+      <img src="/assets/onwun-logo.png" alt="Onwun">
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav__links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/index.html#work">Projects</a></li>
+        <li><a href="/about.html">About us</a></li>
+      </ul>
+    </nav>
+    <a class="nav__cta" href="/contact.html">Talk to us</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </header>
+
+  <!-- Phone menu, opened by the "Menu" button in the nav -->
+  <nav class="menu" id="menu" aria-label="Menu">
+    <ul class="menu__links">
+        <li style="--i: 0;"><a href="/">Home</a></li>
+        <li style="--i: 1;"><a href="/index.html#work">Projects</a></li>
+        <li style="--i: 2;"><a href="/about.html">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="/contact.html">Talk to us</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a href="mailto:contact@onwun.com">contact@onwun.com</a>
+      <a href="tel:+447941625316">+44 7941 625316</a>
+    </div>
+  </nav>
+
+  <main class="lost">
+    <div class="lost__body">
+      <p class="lost__label dm">Case study 404:</p>
+      <div class="lost__title">
+        <h1>Page not found</h1>
+        <p>Missing brief - 2026</p>
+      </div>
+      <p class="lost__text">We searched every brief, moodboard and folder. This page didn’t make the final cut — but plenty of our work did.</p>
+      <p class="lost__tags">Wayfinding <span class="sep">/</span> Damage control <span class="sep">/</span> Getting you back on track</p>
+      <div class="lost__rule"></div>
+      <div class="lost__ctas dm">
+        <a href="/">Back to homepage <span aria-hidden="true">→</span></a>
+        <a href="/index.html#work">View our work <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="lost__digits" aria-hidden="true">
+      <!-- the 0 comes last so it sits over both 4s -->
+      <div class="lost__digit lost__digit--outline" style="--x: 560; --y: 252.29; --w: 373.21; --h: 502.05; --size: 460; --r: -9deg;"><span>4</span><span>4</span></div>
+      <div class="lost__digit lost__digit--outline" style="--x: 1037.85; --y: 390; --w: 432.22; --h: 531.74; --size: 460; --r: 18deg;"><span>4</span><span>4</span></div>
+      <div class="lost__digit lost__digit--solid" style="--x: 825.65; --y: 220; --w: 446.2; --h: 558.34; --size: 520; --r: 6deg;"><span>0</span></div>
+    </div>
+
+    <p class="lost__code">ERROR CODE: ONWUN-404 — EVEN GREAT BRANDS TAKE A WRONG TURN</p>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__frame">
+      <div class="footer__brand">
+        <div class="footer__brand-main">
+          <!-- TODO: add the real Instagram and LinkedIn URLs -->
+          <div class="footer__links">
+            <ul class="footer__social">
+              <li><a class="footer__link" href="#">Instagram</a></li>
+              <li><a class="footer__link" href="#">LinkedIn</a></li>
+            </ul>
+            <div class="footer__reach">
+              <a class="footer__link" href="mailto:contact@onwun.com">contact@onwun.com</a>
+              <p>+44 7941 625316</p>
+            </div>
+          </div>
+          <img class="footer__logo" src="/assets/onwun-wordmark.png" alt="Onwun">
+        </div>
+        <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
+      </div>
+      <div class="footer__legal">
+        <a href="/terms.html">T&amp;Cs</a>
+        <div class="footer__legal-group">
+          <a href="#cookie-settings" data-cookie-settings>Cookie settings</a>
+          <a href="/privacy.html">Privacy policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav: the logo shrinks once you scroll, and grows back at the top (as on the home page)
+    (() => {
+      const nav = document.querySelector('.nav');
+      let ticking = false;
+      function update() {
+        nav.classList.toggle('is-compact', window.scrollY > 40);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    })();
+
+    // Phone menu: the "Menu" button opens and closes the list of pages; choosing a page, pressing Escape
+    // or widening the window past the phone layout closes it
+    (() => {
+      const button = document.querySelector('.nav__menu');
+      const menu = document.getElementById('menu');
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Close' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+      }
+
+      button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          setOpen(false);
+          button.focus();
+        }
+      });
+      window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>
