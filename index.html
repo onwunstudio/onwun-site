@@ -357,7 +357,6 @@
     .hero__slide {
       position: absolute;
       display: flex;
-      gap: 6px;
       height: 160px;
       transform: translate(-50%, -50%);
       visibility: hidden;
@@ -370,6 +369,10 @@
       height: 100%;
       width: auto;
     }
+
+    /* Pairs join seamlessly: the second image tucks 1px under the first, so no hairline shows where
+       their edges fall between pixels */
+    .hero__slide img + img { margin-left: -1px; }
 
     @media not ((hover: hover) and (pointer: fine) and (min-width: 900px)) {
       .hero__trail { display: none; }
