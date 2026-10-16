@@ -1026,18 +1026,38 @@
       const videos = document.querySelectorAll('.media video');
       if (!videos.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const showing = new Set();
+      // Load each video a little before it scrolls into view, so it's ready to start straight away
+      const warm = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.preload = 'auto';
+          warm.unobserve(e.target);
+        });
+      }, { rootMargin: '600px 0px' });
+      // Start from the beginning once at least half of it is on screen; pause once it has left, so it
+      // starts from the beginning again next time
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            showing.add(e.target);
-            e.target.play().catch(() => {});
-          } else {
-            showing.delete(e.target);
-            e.target.pause();
+          const video = e.target;
+          if (e.intersectionRatio >= 0.5 && !showing.has(video)) {
+            showing.add(video);
+            video.currentTime = 0;
+            video.play().catch(() => {});
+          } else if (!e.isIntersecting && showing.has(video)) {
+            showing.delete(video);
+            video.pause();
           }
         });
-      }, { rootMargin: '200px 0px' });
-      videos.forEach((video) => io.observe(video));
+      }, { threshold: [0, 0.5] });
+      videos.forEach((video) => {
+        warm.observe(video);
+        io.observe(video);
+        // Back-up for phones that occasionally stop at the end instead of looping
+        video.addEventListener('ended', () => {
+          video.currentTime = 0;
+          if (showing.has(video)) video.play().catch(() => {});
+        });
+      });
       // iPhones in Low Power Mode won't start videos on their own; a tap anywhere starts the ones in view
       document.addEventListener('touchend', () => {
         showing.forEach((video) => { if (video.paused) video.play().catch(() => {}); });
