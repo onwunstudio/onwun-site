@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/projects/:slug(atlas|denglish|elev8|rise|stuartfox)", "destination": "/:slug.html" }
+  ],
+  "redirects": [
+    { "source": "/:slug(atlas|denglish|elev8|rise|stuartfox).html", "destination": "/projects/:slug", "permanent": true },
+    { "source": "/:slug(atlas|denglish|elev8|rise|stuartfox)", "destination": "/projects/:slug", "permanent": true }
+  ]
+}

@@ -8,6 +8,7 @@ edit the template; to change a project's words or images, edit its entry below. 
 Text is HTML: write "&amp;" for "&".
 """
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -323,7 +324,7 @@ def more_cards(current):
         if slug == current:
             continue
         cards.append(
-            f'''          <a class="more__card" href="{slug}.html">
+            f'''          <a class="more__card" href="/projects/{slug}">
             {image}
             <p class="more__title">{title}</p>
             <p class="more__meta">{meta}</p>
@@ -370,6 +371,8 @@ def build():
         leftover = [part.split("}}")[0] for part in page.split("{{")[1:]]
         if leftover:
             raise SystemExit(f"{slug}: unfilled template fields: {leftover}")
+        # pages are served at /projects/<slug>, one level down, so every asset path starts from the root
+        page = re.sub(r'((?:src|href|poster)=")assets/', r'\1/assets/', page)
         (ROOT / f"{slug}.html").write_text(page)
         print(f"built {slug}.html")
 

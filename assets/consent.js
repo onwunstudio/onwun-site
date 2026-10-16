@@ -38,7 +38,7 @@
   banner.setAttribute('aria-label', 'Cookies');
   banner.hidden = true;
   banner.innerHTML = `
-    <p class="consent__text">We use cookies to run the site and, with your OK, to see how it’s used. <a href="/privacy.html#cookies">Privacy Policy</a></p>
+    <p class="consent__text">We use cookies to run the site and, with your OK, to see how it’s used. <a href="/privacy#cookies">Privacy Policy</a></p>
     <div class="consent__actions">
       <div class="consent__choices">
         <button class="consent-button" type="button" data-choice="accept">Accept all</button>

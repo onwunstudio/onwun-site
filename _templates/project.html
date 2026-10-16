@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{title}}</title>
   <meta name="description" content="{{description}}">
-  <link rel="canonical" href="https://onwun.com/{{slug}}.html">
+  <link rel="canonical" href="https://onwun.com/projects/{{slug}}">
   <!-- Link previews (LinkedIn, WhatsApp, iMessage, Slack…): 1200 × 630 images in assets/og -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Onwun">
   <meta property="og:locale" content="en_GB">
   <meta property="og:title" content="{{title}}">
   <meta property="og:description" content="{{description}}">
-  <meta property="og:url" content="https://onwun.com/{{slug}}.html">
+  <meta property="og:url" content="https://onwun.com/projects/{{slug}}">
   <meta property="og:image" content="https://onwun.com/assets/og/{{slug}}.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -21,11 +21,11 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="assets/loading.css">
-  <script src="assets/loading.js"></script>
-  <link rel="stylesheet" href="assets/consent.css">
-  <script src="assets/consent.js" defer></script>
-  <script src="assets/analytics.js" defer></script>
+  <link rel="stylesheet" href="/assets/loading.css">
+  <script src="/assets/loading.js"></script>
+  <link rel="stylesheet" href="/assets/consent.css">
+  <script src="/assets/consent.js" defer></script>
+  <script src="/assets/analytics.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Inter:wght@300;400;500;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
@@ -214,7 +214,7 @@
       left: calc(var(--x) / 1157 * 100%);
       width: calc(var(--w) / 1157 * 100%);
       height: 100%;
-      background: url("assets/denglish-logo.png") no-repeat;
+      background: url("/assets/denglish-logo.png") no-repeat;
       background-size: calc(1157 / var(--w) * 100%) 100%;
       background-position: calc(var(--x) / (1157 - var(--w)) * 100%) 0;
       animation: poster-letter 2.6s 0.3s both;
@@ -885,27 +885,27 @@
   <script>document.documentElement.classList.add('js');</script>
 
   <header class="nav">
-    <a class="nav__logo" href="index.html" aria-label="Onwun home">
-      <img src="assets/onwun-logo.png" alt="Onwun">
+    <a class="nav__logo" href="/" aria-label="Onwun home">
+      <img src="/assets/onwun-logo.png" alt="Onwun">
     </a>
     <nav aria-label="Main">
       <ul class="nav__links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html#work" aria-current="page">Projects</a></li>
-        <li><a href="about.html">About us</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#work" aria-current="page">Projects</a></li>
+        <li><a href="/about">About us</a></li>
       </ul>
     </nav>
-    <a class="nav__cta" href="contact.html">Talk to us</a>
+    <a class="nav__cta" href="/contact">Talk to us</a>
     <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   </header>
 
   <!-- Phone menu, opened by the "Menu" button in the nav -->
   <nav class="menu" id="menu" aria-label="Menu">
     <ul class="menu__links">
-        <li style="--i: 0;"><a href="index.html">Home</a></li>
-        <li style="--i: 1;"><a href="index.html#work" aria-current="page">Projects</a></li>
-        <li style="--i: 2;"><a href="about.html">About us</a></li>
-        <li style="--i: 3;"><a class="menu__cta" href="contact.html">Talk to us</a></li>
+        <li style="--i: 0;"><a href="/">Home</a></li>
+        <li style="--i: 1;"><a href="/#work" aria-current="page">Projects</a></li>
+        <li style="--i: 2;"><a href="/about">About us</a></li>
+        <li style="--i: 3;"><a class="menu__cta" href="/contact">Talk to us</a></li>
     </ul>
     <div class="menu__foot">
       <a href="mailto:contact@onwun.com">contact@onwun.com</a>
@@ -964,7 +964,7 @@
         <!-- Contact: a nudge to get in touch, in the right-hand column like the case text above -->
         <div class="case__contact reveal">
           <p class="case__text">Got a brand that needs a story? Let’s talk.</p>
-          <a class="case__cta" href="contact.html"><span aria-hidden="true">→</span> Start a project</a>
+          <a class="case__cta" href="/contact"><span aria-hidden="true">→</span> Start a project</a>
         </div>
       </div>
     </section>
@@ -984,7 +984,7 @@
     </section>
 
     <section class="closing" id="contact" aria-label="Start a project">
-      <p class="closing__cta">We look forward to working with you. <a href="contact.html">Start a project</a> or <a href="https://calendly.com/niallpenn19/brand-discovery" target="_blank" rel="noopener">book a discovery call</a> and we can get started straight away.</p>
+      <p class="closing__cta">We look forward to working with you. <a href="/contact">Start a project</a> or <a href="https://calendly.com/niallpenn19/brand-discovery" target="_blank" rel="noopener">book a discovery call</a> and we can get started straight away.</p>
     </section>
   </main>
 
@@ -1003,15 +1003,15 @@
               <p>+44 7941 625316</p>
             </div>
           </div>
-          <img class="footer__logo" src="assets/onwun-wordmark.png" alt="Onwun">
+          <img class="footer__logo" src="/assets/onwun-wordmark.png" alt="Onwun">
         </div>
         <p class="footer__tagline">Designed to Lead.<br> Not Follow.</p>
       </div>
       <div class="footer__legal">
-        <a href="terms.html">T&amp;Cs</a>
+        <a href="/terms">T&amp;Cs</a>
         <div class="footer__legal-group">
           <a href="#cookie-settings" data-cookie-settings>Cookie settings</a>
-          <a href="privacy.html">Privacy policy</a>
+          <a href="/privacy">Privacy policy</a>
         </div>
       </div>
     </div>

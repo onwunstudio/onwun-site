@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://onwun.com/</loc></url>
-  <url><loc>https://onwun.com/about.html</loc></url>
-  <url><loc>https://onwun.com/contact.html</loc></url>
-  <url><loc>https://onwun.com/terms.html</loc></url>
-  <url><loc>https://onwun.com/privacy.html</loc></url>
-  <url><loc>https://onwun.com/atlas.html</loc></url>
-  <url><loc>https://onwun.com/denglish.html</loc></url>
-  <url><loc>https://onwun.com/elev8.html</loc></url>
-  <url><loc>https://onwun.com/rise.html</loc></url>
-  <url><loc>https://onwun.com/stuartfox.html</loc></url>
+  <url><loc>https://onwun.com/about</loc></url>
+  <url><loc>https://onwun.com/contact</loc></url>
+  <url><loc>https://onwun.com/terms</loc></url>
+  <url><loc>https://onwun.com/privacy</loc></url>
+  <url><loc>https://onwun.com/projects/atlas</loc></url>
+  <url><loc>https://onwun.com/projects/denglish</loc></url>
+  <url><loc>https://onwun.com/projects/elev8</loc></url>
+  <url><loc>https://onwun.com/projects/rise</loc></url>
+  <url><loc>https://onwun.com/projects/stuartfox</loc></url>
 </urlset>
