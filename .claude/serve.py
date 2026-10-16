@@ -12,20 +12,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 
-PROJECTS = ("atlas", "denglish", "elev8", "rise", "stuartfox")
-
-
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
 
     def translate_path(self, path):
-        """The same addresses as vercel.json on the live site: /projects/atlas serves atlas.html, and
-        /about serves about.html (clean URLs)."""
+        """Clean addresses, as vercel.json on the live site: /about serves about.html, and
+        /projects/atlas serves projects/atlas.html."""
         clean = path.split("?", 1)[0].split("#", 1)[0].rstrip("/")
-        parts = clean.split("/")
-        if len(parts) == 3 and parts[1] == "projects" and parts[2] in PROJECTS:
-            return str(ROOT / f"{parts[2]}.html")
         local = super().translate_path(path)
         if not os.path.splitext(clean)[1] and not os.path.isdir(local) and os.path.isfile(local + ".html"):
             return local + ".html"
