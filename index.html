@@ -1233,8 +1233,9 @@
         border-top: 1px solid var(--line-step);
       }
 
-      /* The wordmark rides in the top-right corner while you're in the section, above the steps
-         (taking no space of its own); each letter is written out as its step's word lights up */
+      /* The wordmark rides in the top-right corner of the steps (taking no space of its own): it shows
+         only from when Observe reaches the top until the last step leaves (script adds .is-shown), so it
+         never sits over the intro text. Each letter is written out as its step's word lights up. */
       .process__logo {
         display: block;
         position: sticky;
@@ -1244,7 +1245,11 @@
         width: auto;
         aspect-ratio: 3306 / 706;
         margin: 0 20px -20px auto;
+        opacity: 0;
+        transition: opacity 0.3s;
       }
+
+      .process__logo.is-shown { opacity: 1; }
 
       .process__logo-ink path { transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
     }
@@ -2057,6 +2062,25 @@
       }
       unwrite();
       phone.addEventListener('change', unwrite);
+      // The wordmark shows only while the steps fill the screen: from Observe reaching the nav to the last
+      // step's bottom passing under the wordmark
+      const logo = document.querySelector('.process__logo');
+      let logoTicking = false;
+      function placeLogo() {
+        logoTicking = false;
+        const navH = nav.offsetHeight;
+        const shown = steps[0].getBoundingClientRect().top <= navH + 1
+          && steps[steps.length - 1].getBoundingClientRect().bottom > navH + 60;
+        logo.classList.toggle('is-shown', shown);
+      }
+      window.addEventListener('scroll', () => {
+        if (!logoTicking) {
+          logoTicking = true;
+          requestAnimationFrame(placeLogo);
+        }
+      }, { passive: true });
+      placeLogo();
+
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           if (phone.matches && e.isIntersecting) {
