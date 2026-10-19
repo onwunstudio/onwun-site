@@ -77,7 +77,7 @@ PROJECTS = {
         "description": "A strategy-led rebrand and website for StuartFox, a Cheshire interior finishes company, reflecting the quality and precision of their work.",
         "og_alt": "StuartFox logo embossed in gold on white card",
         "poster": '<img class="poster__image" src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card">',
-        "intro": "A clean, strategy led rebrand and website for an interior finish company based in Cheshire.",
+        "intro": "A clean, strategy-led rebrand and website for an interior finish company based in Cheshire.",
         "client": "StuartFox",
         "industry": "Specialist finishes",
         "year": "2026",
