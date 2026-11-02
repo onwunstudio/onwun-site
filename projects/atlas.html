@@ -376,6 +376,26 @@
       line-height: 1.25;
     }
 
+    /* Result with an image or video beside it: the media in the left column, the label and text at the top of
+       the right one */
+    .case__result {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+    }
+
+    .case__result-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .case__result-copy .case__label {
+      padding-top: 0;
+    }
+
     .case__squares {
       grid-column: 1 / -1;
       display: grid;
@@ -781,6 +801,7 @@
       .case__label { padding-top: 0; margin-bottom: -40px; }
       .case__text { font-size: 20px; }
       .case__squares { grid-template-columns: minmax(0, 1fr); }
+      .case__result { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
       .media-pair { flex-direction: column; }
       .chapter__row { grid-template-columns: minmax(0, 1fr); }
       /* a squarer frame on phones where set ("phone_ratio" in build_projects.py), trimming empty space at
@@ -1016,7 +1037,8 @@
           <div class="chapter__group"><div class="chapter__row chapter__row--fit"><div class="media media--video reveal" style="aspect-ratio: 3 / 4; --ratio: 0.7500;"><video src="/assets/atlas/flash.mp4" poster="/assets/atlas/flash-poster.webp" muted loop playsinline preload="none" aria-label="ATLAS campaign: a man under a striped beach umbrella, with the ATLAS wordmark and Pack less. Travel more."></video></div><div class="media media--video reveal" style="--i: 1; aspect-ratio: 16 / 9; --ratio: 1.7778;"><video src="/assets/atlas/hero.mp4" poster="/assets/atlas/hero-poster.webp" muted loop playsinline preload="none" aria-label="ATLAS campaign film: Pack less. Travel more. on Meridian green"></video></div></div><p class="chapter__caption reveal">Campaign — Pack less. Travel more.</p></div>
         </div>
 
-        <!-- Result: same layout as the challenges and solution -->
+        <!-- Result: same layout as the challenges and solution (or, with "result_media", an image or video
+             in the left column and the label and text beside it) -->
         <h2 class="case__label dm reveal">Result:</h2>
         <p class="case__text">Atlas was presented to PUBLIC’s design studio at their London studio, receiving strong feedback on the system and overall concept.</p>
 

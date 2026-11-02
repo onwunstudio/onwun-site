@@ -45,8 +45,22 @@ PROJECTS = {
         "challenges": "Calore came to us for a logo: a mark for a luxury wellness brand built around the sauna ritual. It needed to feel rooted in sauna heritage without looking traditional or rustic, and premium enough for a high-end wellness space while staying simple and calm.",
         "solution": "The main mark takes its shape from the traditional felt sauna cap, tying the identity to sauna heritage while keeping it simple and modern. We then took it further into a full conceptual identity. The palette draws on natural materials: the deep brown of cedar wood, warm desert sand and soft clay, smooth pebble stone, pale rising steam and the rich red of glowing embers. Warm, low-light imagery, natural textures and plenty of breathing room complete the system.",
         "result": "A warm, grounded identity with a calm, relaxing atmosphere, so Calore feels like a place to slow down from the very first glance.",
-        # No images or videos yet: add them as chapters (see "Chapters" below), like ATLAS and Denglish
-        "chapters": {"intro": []},
+        # The laptop walkthrough sits beside the Result text (see "result_media" below the projects)
+        "result_media": ("assets/calore/laptop.mp4", "The Calore website on a laptop, resting on an armchair, scrolling through the rooms and rituals", {"ratio": "4 / 5", "poster": "assets/calore/laptop-poster.jpg"}),
+        "chapters": {
+            "intro": [
+                {"row": [
+                    ("assets/calore/flash.mp4", "The °Calore logo flashing through the brand’s colour pairings", {"ratio": "4 / 5", "poster": "assets/calore/flash-poster.jpg"}),
+                    ("assets/calore/palette.mp4", "The Calore colour palette: Cedar #5A412F, Desert #BDA378, Steam #EEECE0, Pebble #C7B7A5, Ember #761F21 and Clay #FFEDC9", {"ratio": "3 / 2", "poster": "assets/calore/palette-poster.jpg"}),
+                ]},
+            ],
+            "challenges": [
+                {"row": [
+                    ("assets/calore/carousel.mp4", "A Calore Instagram carousel", {"ratio": "4 / 5", "poster": "assets/calore/carousel-poster.jpg"}),
+                    ("assets/calore/instagram-profile.webp", "The Calore Instagram profile on a phone, resting on a cork board", {"ratio": "4 / 5"}),
+                ]},
+            ],
+        },
     },
     "denglish": {
         "name": "Denglish",
@@ -274,6 +288,9 @@ def media(slot, index, image):
     return f'<div class="filler filler--{slot} dm reveal"{style}>Coming soon</div>'
 
 
+# "result_media": (path, alt text, {"ratio": …, "poster": …}) puts an image or video in the left column beside the
+# Result label and text (Calore's laptop), instead of the label sitting there on its own.
+
 # Chapters: a project can list "chapters" instead of "images", for a freer layout (ATLAS and Denglish do). Each of
 # "intro" (after the project info), "challenges", "solution" and "result" (after that text) is a list of
 # blocks, stacked 20px apart, on the 20px-gutter grid:
@@ -379,6 +396,16 @@ def build():
         else:
             fields["client_label"] = "Client"
         fields["more_cards"] = more_cards(slug)
+        # Result: the label and text, or with "result_media" an image or video in the left column beside them
+        result_media = fields.pop("result_media", None)
+        if result_media:
+            fields["result_block"] = (
+                '        <div class="case__result">\n          ' + chapter_item(result_media) + '\n'
+                '          <div class="case__result-copy"><h2 class="case__label dm reveal">Result:</h2>'
+                f'<p class="case__text reveal">{fields["result"]}</p></div>\n        </div>')
+        else:
+            fields["result_block"] = (f'        <h2 class="case__label dm reveal">Result:</h2>\n'
+                                      f'        <p class="case__text">{fields["result"]}</p>')
         chapters = fields.pop("chapters", None)
         images = fields.pop("images", None) or [None] * 5
         if chapters:

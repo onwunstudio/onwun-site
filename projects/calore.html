@@ -376,6 +376,26 @@
       line-height: 1.25;
     }
 
+    /* Result with an image or video beside it: the media in the left column, the label and text at the top of
+       the right one */
+    .case__result {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+    }
+
+    .case__result-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .case__result-copy .case__label {
+      padding-top: 0;
+    }
+
     .case__squares {
       grid-column: 1 / -1;
       display: grid;
@@ -781,6 +801,7 @@
       .case__label { padding-top: 0; margin-bottom: -40px; }
       .case__text { font-size: 20px; }
       .case__squares { grid-template-columns: minmax(0, 1fr); }
+      .case__result { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
       .media-pair { flex-direction: column; }
       .chapter__row { grid-template-columns: minmax(0, 1fr); }
       /* a squarer frame on phones where set ("phone_ratio" in build_projects.py), trimming empty space at
@@ -993,14 +1014,18 @@
         </div>
 
         <!-- A big full-width landscape image under the info (or a chapter of images and videos) -->
-        
+        <div class="chapter">
+          <div class="chapter__row chapter__row--fit"><div class="media media--video reveal" style="aspect-ratio: 4 / 5; --ratio: 0.8000;"><video src="/assets/calore/flash.mp4" poster="/assets/calore/flash-poster.jpg" muted loop playsinline preload="none" aria-label="The °Calore logo flashing through the brand’s colour pairings"></video></div><div class="media media--video reveal" style="--i: 1; aspect-ratio: 3 / 2; --ratio: 1.5000;"><video src="/assets/calore/palette.mp4" poster="/assets/calore/palette-poster.jpg" muted loop playsinline preload="none" aria-label="The Calore colour palette: Cedar #5A412F, Desert #BDA378, Steam #EEECE0, Pebble #C7B7A5, Ember #761F21 and Clay #FFEDC9"></video></div></div>
+        </div>
 
         <!-- Challenges: label on the left, text in the right column -->
         <h2 class="case__label dm reveal">Challenges:</h2>
         <p class="case__text">Calore came to us for a logo: a mark for a luxury wellness brand built around the sauna ritual. It needed to feel rooted in sauna heritage without looking traditional or rustic, and premium enough for a high-end wellness space while staying simple and calm.</p>
 
         <!-- Three square images across the full width (or a chapter) -->
-        
+        <div class="chapter">
+          <div class="chapter__row"><div class="media media--video reveal" style="aspect-ratio: 4 / 5;"><video src="/assets/calore/carousel.mp4" poster="/assets/calore/carousel-poster.jpg" muted loop playsinline preload="none" aria-label="A Calore Instagram carousel"></video></div><div class="media reveal" style="--i: 1; aspect-ratio: 4 / 5;"><img src="/assets/calore/instagram-profile.webp" alt="The Calore Instagram profile on a phone, resting on a cork board" loading="lazy"></div></div>
+        </div>
 
         <!-- Solution: same layout as the challenges -->
         <h2 class="case__label dm reveal">Solution:</h2>
@@ -1009,9 +1034,12 @@
         <!-- A second full-width landscape image (or a chapter) -->
         
 
-        <!-- Result: same layout as the challenges and solution -->
-        <h2 class="case__label dm reveal">Result:</h2>
-        <p class="case__text">A warm, grounded identity with a calm, relaxing atmosphere, so Calore feels like a place to slow down from the very first glance.</p>
+        <!-- Result: same layout as the challenges and solution (or, with "result_media", an image or video
+             in the left column and the label and text beside it) -->
+        <div class="case__result">
+          <div class="media media--video reveal" style="aspect-ratio: 4 / 5;"><video src="/assets/calore/laptop.mp4" poster="/assets/calore/laptop-poster.jpg" muted loop playsinline preload="none" aria-label="The Calore website on a laptop, resting on an armchair, scrolling through the rooms and rituals"></video></div>
+          <div class="case__result-copy"><h2 class="case__label dm reveal">Result:</h2><p class="case__text reveal">A warm, grounded identity with a calm, relaxing atmosphere, so Calore feels like a place to slow down from the very first glance.</p></div>
+        </div>
 
 
         <!-- Contact: a nudge to get in touch, in the right-hand column like the case text above -->

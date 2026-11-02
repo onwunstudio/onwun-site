@@ -376,6 +376,26 @@
       line-height: 1.25;
     }
 
+    /* Result with an image or video beside it: the media in the left column, the label and text at the top of
+       the right one */
+    .case__result {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 660fr) minmax(0, 626fr);
+      column-gap: 40px;
+      align-items: start;
+    }
+
+    .case__result-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .case__result-copy .case__label {
+      padding-top: 0;
+    }
+
     .case__squares {
       grid-column: 1 / -1;
       display: grid;
@@ -781,6 +801,7 @@
       .case__label { padding-top: 0; margin-bottom: -40px; }
       .case__text { font-size: 20px; }
       .case__squares { grid-template-columns: minmax(0, 1fr); }
+      .case__result { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
       .media-pair { flex-direction: column; }
       .chapter__row { grid-template-columns: minmax(0, 1fr); }
       /* a squarer frame on phones where set ("phone_ratio" in build_projects.py), trimming empty space at
@@ -1009,9 +1030,9 @@
         <!-- A second full-width landscape image (or a chapter) -->
         {{after_solution}}
 
-        <!-- Result: same layout as the challenges and solution -->
-        <h2 class="case__label dm reveal">Result:</h2>
-        <p class="case__text">{{result}}</p>
+        <!-- Result: same layout as the challenges and solution (or, with "result_media", an image or video
+             in the left column and the label and text beside it) -->
+{{result_block}}
 {{after_result}}
 
         <!-- Contact: a nudge to get in touch, in the right-hand column like the case text above -->
