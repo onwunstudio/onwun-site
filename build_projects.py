@@ -63,6 +63,7 @@ PROJECTS = {
             "solution": [
                 {"row": [
                     ("assets/calore/bottle.webp", "A matte black °Calore water bottle with the logo in copper, resting on warm linen towels in low sunlight", {"ratio": "3 / 4"}),
+                    ("assets/calore/amber-soap.webp", "A close-up of a translucent amber °Calore soap, the logo and wordmark pressed into its glowing surface", {"ratio": "3 / 4"}),
                 ]},
             ],
         },
