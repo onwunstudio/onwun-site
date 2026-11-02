@@ -60,6 +60,11 @@ PROJECTS = {
                     ("assets/calore/instagram-profile.webp", "The Calore Instagram profile on a phone, resting on a cork board", {"ratio": "4 / 5"}),
                 ]},
             ],
+            "solution": [
+                {"row": [
+                    ("assets/calore/bottle.webp", "A matte black °Calore water bottle with the logo in copper, resting on warm linen towels in low sunlight", {"ratio": "3 / 4"}),
+                ]},
+            ],
         },
     },
     "denglish": {
