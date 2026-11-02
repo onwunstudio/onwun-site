@@ -66,6 +66,7 @@ PROJECTS = {
                 {"row": [
                     ("assets/denglish/post-73.mp4", "Denglish social post: Say it out loud! Today: at the cafe", {"ratio": "4 / 5", "poster": "assets/denglish/post-73-poster.webp"}),
                     ("assets/denglish/post-74.mp4", "Denglish social post: Ich hätte gern einen Kaffee, bitte. I’d like a coffee, please.", {"ratio": "4 / 5", "poster": "assets/denglish/post-74-poster.webp"}),
+                    ("assets/denglish/stickers-laptop.webp", "Denglish stickers on a laptop: the wordmark between sound-wave dots and the d icon, in two colourways", {"ratio": "4 / 5"}),
                  ], "caption": "Social — daily phrase series"},
             ],
         },
@@ -253,7 +254,8 @@ def media(slot, index, image):
 # "intro" (after the project info), "challenges", "solution" and "result" (after that text) is a list of
 # blocks, stacked 20px apart, on the 20px-gutter grid:
 #   {"full": image}                  one image or video across the full width (give it a "ratio")
-#   {"row": [image, image]}          two side by side, half width each (square unless given a "ratio");
+#   {"row": [image, image]}          two side by side, half width each (square unless given a "ratio"); three of
+#                                    the same shape sit a third of the width each (stacked on phones);
 #                                    if they're different shapes, they share the width at the same height
 #   {"row": [...], "caption": "…"}   the same, with a small caption underneath
 #   {"media": image, "caption": "…", "media_side": "left" or "right"}
@@ -276,7 +278,8 @@ def chapter_row(images):
     ratios = [ratio_of(image) for image in images]
     if len(set(ratios)) == 1:
         items = "".join(chapter_item(image, i) for i, image in enumerate(images))
-        return f'<div class="chapter__row">{items}</div>'
+        cls = "chapter__row chapter__row--3" if len(images) == 3 else "chapter__row"
+        return f'<div class="{cls}">{items}</div>'
     shares = []
     for r in ratios:
         w, h = (float(n) for n in r.split("/")) if "/" in r else (float(r), 1.0)

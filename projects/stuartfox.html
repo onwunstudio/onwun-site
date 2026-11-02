@@ -436,6 +436,11 @@
       gap: 20px;
     }
 
+    /* three of one shape in a row, a third of the width each */
+    .chapter__row--3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     /* Images of different shapes side by side at one height: each takes a share of the width in
        proportion to its shape (--ratio = width / height) */
     .chapter__row--fit {
