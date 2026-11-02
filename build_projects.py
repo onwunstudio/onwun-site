@@ -28,6 +28,28 @@ def services(*items):
 
 
 PROJECTS = {
+    # DRAFT: words are in, images still to come. Calore isn't linked from the home page, the "More projects"
+    # strip (CARDS) or sitemap.xml yet, and "noindex" keeps it off Google; change all of that when it's ready.
+    "calore": {
+        "noindex": True,
+        "name": "Calore",
+        # Page title, Google description and link-preview image text (image: assets/og/calore.jpg)
+        "title": "Calore Wellness &amp; Sauna Branding | Onwun Case Study",
+        "description": "Logo design and a conceptual brand identity for Calore, a luxury wellness brand built around the sauna ritual.",
+        "og_alt": "The °Calore logo in deep red on cream",
+        # The logo flashing through the brand's colour pairings (styles: "Calore poster" in the template)
+        "poster": '<div class="calore-flash" role="img" aria-label="The °Calore logo shown in each of the brand’s colour pairings: red on cream, cream on red, brown on tan, tan on brown and pale stone on stone"><div class="calore-flash__logo"></div></div>',
+        "intro": "A luxury, premium wellness brand built around the sauna ritual, with an identity that feels like a place to slow down.",
+        "client": "Calore",
+        "industry": "Wellness &amp; sauna",
+        "year": "2026",
+        "services": services("Logo design", "Brand identity", "Visual direction"),
+        "challenges": "Calore came to us for a logo: a mark for a luxury wellness brand built around the sauna ritual. It needed to feel rooted in sauna heritage without looking traditional or rustic, and premium enough for a high-end wellness space while staying simple and calm.",
+        "solution": "The main mark takes its shape from the traditional felt sauna cap, tying the identity to sauna heritage while keeping it simple and modern. We then took it further into a full conceptual identity. The palette draws on natural materials: the deep brown of cedar wood, warm desert sand and soft clay, smooth pebble stone, pale rising steam and the rich red of glowing embers. Warm, low-light imagery, natural textures and plenty of breathing room complete the system.",
+        "result": "A warm, grounded identity with a calm, relaxing atmosphere, so Calore feels like a place to slow down from the very first glance.",
+        # No images or videos yet: add them as chapters (see "Chapters" below), like ATLAS and Denglish
+        "chapters": {"intro": []},
+    },
     "denglish": {
         "name": "Denglish",
         # Page title, Google description and link-preview image text (image: assets/og/denglish.jpg)
@@ -351,6 +373,8 @@ def build():
         }
         fields.pop("poster_bg", None)
         fields["slug"] = slug
+        # a draft page can ask search engines not to list it yet ("noindex": True)
+        fields["robots"] = '  <meta name="robots" content="noindex">\n' if fields.pop("noindex", False) else ""
         if fields.pop("live_brief", False):
             fields["client_label"], fields["client"] = "Project type", "Live brief"
         else:

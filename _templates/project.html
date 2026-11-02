@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{title}}</title>
   <meta name="description" content="{{description}}">
-  <link rel="canonical" href="https://onwun.com/projects/{{slug}}">
+{{robots}}  <link rel="canonical" href="https://onwun.com/projects/{{slug}}">
   <!-- Link previews (LinkedIn, WhatsApp, iMessage, Slack…): 1200 × 630 images in assets/og -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Onwun">
@@ -238,6 +238,50 @@
     @keyframes poster-letter {
       0%, 76% { opacity: 0; transform: translateY(45%) scale(0.85); animation-timing-function: var(--spring); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ───────── Calore poster ─────────
+       The °Calore logo, centred, flashing through the brand's five colour pairings (background and logo
+       swap together): each holds, then cuts across with a quick fade. The logo is the stencil
+       (assets/calore/logo.svg) the colour shows through, so it changes colour with the background. */
+    .calore-flash {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      animation: calore-bg 9s infinite;
+    }
+
+    .calore-flash__logo {
+      width: calc(51.36 / 267 * 100%); /* the logo's size on the brand cards in Figma */
+      aspect-ratio: 52 / 54;
+      -webkit-mask: url("/assets/calore/logo.svg") center / contain no-repeat;
+      mask: url("/assets/calore/logo.svg") center / contain no-repeat;
+      animation: calore-logo 9s infinite;
+    }
+
+    /* cream, red, tan, brown, stone: 1.8s each, 0.2s to change */
+    @keyframes calore-bg {
+      0%, 17.8% { background-color: #ffedc9; }
+      20%, 37.8% { background-color: #761f21; }
+      40%, 57.8% { background-color: #bda378; }
+      60%, 77.8% { background-color: #5a412f; }
+      80%, 97.8% { background-color: #c7b7a5; }
+      100% { background-color: #ffedc9; }
+    }
+
+    @keyframes calore-logo {
+      0%, 17.8% { background-color: #761f21; }
+      20%, 37.8% { background-color: #ffedc9; }
+      40%, 57.8% { background-color: #5a412f; }
+      60%, 77.8% { background-color: #bda378; }
+      80%, 97.8% { background-color: #eeece0; }
+      100% { background-color: #761f21; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .calore-flash { animation: none; background-color: #ffedc9; }
+      .calore-flash__logo { animation: none; background-color: #761f21; }
     }
 
     /* ───────── Overview ─────────
