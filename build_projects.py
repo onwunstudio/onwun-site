@@ -60,8 +60,8 @@ PROJECTS = {
             ],
             "solution": [
                 {"row": [
-                    ("assets/denglish/website-ipad.webp", "The Denglish website on an iPad"),
-                    ("assets/denglish/app-screens.webp", "Three Denglish app screens: coach, vocabulary drill and word trainer"),
+                    ("assets/denglish/app-walkthrough.mp4", "The Denglish app on an iPhone: the splash screen loads, then a walk through the coach, word trainer and a speaking drill", {"ratio": "1", "poster": "assets/denglish/app-walkthrough-poster.jpg"}),
+                    ("assets/denglish/instagram-posts.mp4", "Three Denglish Instagram posts side by side: the logo animation, a Kopfkino post and Say it out loud", {"ratio": "1", "poster": "assets/denglish/instagram-posts-poster.jpg"}),
                 ]},
                 {"row": [
                     ("assets/denglish/post-73.mp4", "Denglish social post: Say it out loud! Today: at the cafe", {"ratio": "4 / 5", "poster": "assets/denglish/post-73-poster.webp"}),
