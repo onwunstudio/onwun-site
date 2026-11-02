@@ -64,10 +64,14 @@ PROJECTS = {
                     ("assets/denglish/instagram-posts.mp4", "Three Denglish Instagram posts side by side: the logo animation, a Kopfkino post and Say it out loud", {"ratio": "1", "poster": "assets/denglish/instagram-posts-poster.jpg"}),
                 ]},
                 {"row": [
-                    ("assets/denglish/post-73.mp4", "Denglish social post: Say it out loud! Today: at the cafe", {"ratio": "4 / 5", "poster": "assets/denglish/post-73-poster.webp"}),
+                    ("assets/denglish/notification.mp4", "A Denglish push notification: Your daily lesson awaits", {"ratio": "4 / 5", "poster": "assets/denglish/notification-poster.jpg"}),
                     ("assets/denglish/post-74.mp4", "Denglish social post: Ich hätte gern einen Kaffee, bitte. I’d like a coffee, please.", {"ratio": "4 / 5", "poster": "assets/denglish/post-74-poster.webp"}),
                     ("assets/denglish/stickers-laptop.webp", "Denglish stickers on a laptop: the wordmark between sound-wave dots and the d icon, in two colourways", {"ratio": "4 / 5"}),
                  ], "caption": "Social — daily phrase series"},
+                {"row": [
+                    ("assets/denglish/billboard.mp4", "A Denglish billboard in a station, a traveller walking past", {"ratio": "4 / 3", "poster": "assets/denglish/billboard-poster.jpg"}),
+                    ("assets/denglish/chrome-display.mp4", "denglish.app loading in Chrome above the Denglish brand board on a studio display", {"ratio": "4 / 5", "poster": "assets/denglish/chrome-display-poster.jpg"}),
+                ]},
             ],
         },
     },
