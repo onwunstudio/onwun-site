@@ -240,6 +240,9 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    /* The Calore card in "More projects" uses the same flashing logo */
+    .more__image--calore { position: relative; }
+
     /* ───────── Calore poster ─────────
        The °Calore logo, centred, flashing through the brand's five colour pairings (background and logo
        swap together): each holds, then cuts across with a quick fade. The logo is the stencil
@@ -1040,6 +1043,11 @@
             <div class="more__image"><img src="/assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>
             <p class="more__title">StuartFox</p>
             <p class="more__meta">Specialist finishes · 2026</p>
+          </a>
+          <a class="more__card" href="/projects/calore">
+            <div class="more__image more__image--calore"><div class="calore-flash" role="img" aria-label="The °Calore logo shown in each of the brand’s colour pairings"><div class="calore-flash__logo"></div></div></div>
+            <p class="more__title">Calore</p>
+            <p class="more__meta">Wellness &amp; sauna · 2026</p>
           </a>
           <a class="more__card" href="/projects/atlas">
             <div class="more__image"><img src="/assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>

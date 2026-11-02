@@ -523,6 +523,51 @@
 
     .project__mockup { overflow: hidden; }
 
+    /* ───────── Calore card ─────────
+       The °Calore logo flashing through the brand's five colour pairings, as on its project page
+       (keep the two in step). The logo is the stencil the colour shows through. */
+    .project__mockup--calore { position: relative; }
+
+    .calore-flash {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      animation: calore-bg 9s infinite;
+    }
+
+    .calore-flash__logo {
+      width: calc(51.36 / 267 * 100%);
+      aspect-ratio: 52 / 54;
+      -webkit-mask: url("/assets/calore/logo.svg") center / contain no-repeat;
+      mask: url("/assets/calore/logo.svg") center / contain no-repeat;
+      animation: calore-logo 9s infinite;
+    }
+
+    @keyframes calore-bg {
+      0%, 17.8% { background-color: #ffedc9; }
+      20%, 37.8% { background-color: #761f21; }
+      40%, 57.8% { background-color: #bda378; }
+      60%, 77.8% { background-color: #5a412f; }
+      80%, 97.8% { background-color: #c7b7a5; }
+      100% { background-color: #ffedc9; }
+    }
+
+    @keyframes calore-logo {
+      0%, 17.8% { background-color: #761f21; }
+      20%, 37.8% { background-color: #ffedc9; }
+      40%, 57.8% { background-color: #5a412f; }
+      60%, 77.8% { background-color: #bda378; }
+      80%, 97.8% { background-color: #eeece0; }
+      100% { background-color: #761f21; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .calore-flash { animation: none; background-color: #ffedc9; }
+      .calore-flash__logo { animation: none; background-color: #761f21; }
+    }
+
+
     .project__mockup img {
       display: block;
       width: 100%;
@@ -1471,6 +1516,22 @@
         </div>
       </article>
 
+      <article class="project">
+        <div class="rule"></div>
+        <div class="project__card">
+          <div class="project__mockup project__mockup--calore"><div class="calore-flash" role="img" aria-label="The °Calore logo shown in each of the brand’s colour pairings"><div class="calore-flash__logo"></div></div></div>
+          <div class="project__details">
+            <div class="project__heading">
+              <h3 class="project__title"><a class="project__link" href="/projects/calore">Calore</a></h3>
+              <p class="project__meta">Wellness &amp; sauna · 2026</p>
+            </div>
+            <div class="project__bottom">
+              <p class="project__desc">Calore is a luxury, premium wellness brand built around the sauna ritual. We designed its logo, then took it further into a full conceptual identity rooted in natural materials, warmth and calm.</p>
+              <p class="project__tags">Logo design <span class="sep">/</span> Brand identity <span class="sep">/</span> Visual direction</p>
+            </div>
+          </div>
+        </div>
+      </article>
       <article class="project">
         <div class="rule"></div>
         <div class="project__card">

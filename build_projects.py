@@ -28,10 +28,8 @@ def services(*items):
 
 
 PROJECTS = {
-    # DRAFT: words are in, images still to come. Calore isn't linked from the home page, the "More projects"
-    # strip (CARDS) or sitemap.xml yet, and "noindex" keeps it off Google; change all of that when it's ready.
+    # Images still to come: add them as chapters below
     "calore": {
-        "noindex": True,
         "name": "Calore",
         # Page title, Google description and link-preview image text (image: assets/og/calore.jpg)
         "title": "Calore Wellness &amp; Sauna Branding | Onwun Case Study",
@@ -341,6 +339,7 @@ def chapter(blocks):
 CARDS = [
     ("stuartfox", "StuartFox", "Specialist finishes · 2026", '<div class="more__image"><img src="assets/stuartfox-mockup.webp" alt="StuartFox logo embossed in gold on white card"></div>'),
     ("denglish", "Denglish", "Language app · 2026", '<div class="more__image more__image--denglish"><img src="assets/denglish-logo.png" alt="Denglish logo"></div>'),
+    ("calore", "Calore", "Wellness &amp; sauna · 2026", '<div class="more__image more__image--calore"><div class="calore-flash" role="img" aria-label="The °Calore logo shown in each of the brand’s colour pairings"><div class="calore-flash__logo"></div></div></div>'),
     ("atlas", "ATLAS", "Premium menswear · Live brief · 2026", '<div class="more__image"><img src="assets/atlas/poster.webp" alt="An ATLAS poster on a wall reading Style rented. Journey owned."></div>'),
     ("elev8", "ELEV8", "Electrolyte craft beer · Live brief · 2025", '<div class="more__image"><img src="assets/elev8-mockup.webp" alt="ELEV8 electrolyte craft beer cans in grapefruit, mango and kiwi flavours"></div>'),
     ("rise", "rise", "Insect granola · Live brief · 2025", '<div class="more__image"><img src="assets/rise-mockup.jpg" alt="Three rise insect granola pouches resting on a mossy tree root"></div>'),
